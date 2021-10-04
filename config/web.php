@@ -22,12 +22,12 @@ $config = [
         'loginUrl' => null,
         'response' => [
             'class' => 'yii\web\Response',
-//            'on beforeSend' => function ($event) {
-//                yii::createObject([
-//                    'class' => yiier\helpers\ResponseHandler::class,
-//                    'event' => $event,
-//                ])->formatResponse();
-//            },
+            'on beforeSend' => function ($event) {
+                yii::createObject([
+                    'class' => yiier\helpers\ResponseHandler::class,
+                    'event' => $event,
+                ])->formatResponse();
+            },
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
