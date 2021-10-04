@@ -59,7 +59,7 @@ class UsuarioController extends \yii\rest\ActiveController
             /// Atribuindo horario/data para os atributos do modelo 
             $dtz = new DateTimeZone("America/Sao_Paulo");
             $now = new DateTime("now", $dtz);
-            $now = $now->format("d/m/Y H:i:s");
+            $now = $now->format("Y-m-d H:i:s");
             $model->created_at = $now;
             $model->updated_at = $now;
 
