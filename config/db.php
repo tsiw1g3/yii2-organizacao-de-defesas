@@ -2,13 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=organizacao_defesa',
-    'username' => 'root',
-    'password' => '',
+    'dsn' => 'mysql:host=remotemysql.com;dbname=D1mjwjLAtG',
+    'username' => 'D1mjwjLAtG',
+    'password' => 'i7j0vZ0P6X',
     'charset' => 'utf8',
-
-    // Schema cache options (for production environment)
-    //'enableSchemaCache' => true,
-    //'schemaCacheDuration' => 60,
-    //'schemaCache' => 'cache',
 ];
