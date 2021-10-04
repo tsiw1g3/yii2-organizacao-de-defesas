@@ -186,12 +186,6 @@ ALTER TABLE `usuario`
 ALTER TABLE `usuario_banca`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de tabela `session`
---
-ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;  
-
 ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `auth_key` (`auth_key`) USING BTREE;
 ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `username` (`username`) USING BTREE;
 ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `email` (`email`) USING BTREE;

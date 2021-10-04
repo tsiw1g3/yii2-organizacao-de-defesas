@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=remotemysql.com;dbname=D1mjwjLAtG',
-    'username' => 'D1mjwjLAtG',
-    'password' => 'i7j0vZ0P6X',
+    'dsn' => 'mysql:host=l0ebsc9jituxzmts.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;dbname=usr5duio2satt5pg',
+    'username' => 'hy8qvzw452vi5lyb',
+    'password' => 'bzzy6w4l1nem798f',
     'charset' => 'utf8',
 ];
