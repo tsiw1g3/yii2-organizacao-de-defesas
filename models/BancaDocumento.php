@@ -9,9 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $id_banca
- * @property string $path
- * @property string $descricao
- * @property string|null $url_repositorio
+ * @property int $id_documento
  */
 class BancaDocumento extends \yii\db\ActiveRecord
 {
@@ -29,10 +27,8 @@ class BancaDocumento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_banca', 'path', 'descricao'], 'required'],
-            [['id_banca'], 'integer'],
-            [['descricao'], 'string'],
-            [['path', 'url_repositorio'], 'string', 'max' => 255],
+            [['id_banca', 'id_documento'], 'required'],
+            [['id_banca', 'id_documento'], 'integer'],
         ];
     }
 
@@ -44,9 +40,7 @@ class BancaDocumento extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'id_banca' => 'Id Banca',
-            'path' => 'Path',
-            'descricao' => 'Descricao',
-            'url_repositorio' => 'Url Repositorio',
+            'id_documento' => 'Id Documento',
         ];
     }
 }

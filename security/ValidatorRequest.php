@@ -17,7 +17,9 @@ class ValidatorRequest
         if(!$session_db) {
             return false;
         }
+
         $model = Usuario::findIdentityByAccessToken($session_db->token_access);
+        
         if ($model === null) {
             throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
         }
