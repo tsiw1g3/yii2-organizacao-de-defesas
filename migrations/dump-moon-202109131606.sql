@@ -47,9 +47,7 @@ CREATE TABLE `banca` (
 CREATE TABLE `banca_documento` (
   `id` int(11) NOT NULL,
   `id_banca` int(11) NOT NULL,
-  `path` varchar(255) NOT NULL,
-  `descricao` text NOT NULL,
-  `url_repositorio` varchar(255) DEFAULT NULL
+  `id_documento` int(11) NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -60,8 +58,8 @@ CREATE TABLE `banca_documento` (
 
 CREATE TABLE `documento` (
   `id` int(11) NOT NULL,
-  `path` varchar(255) NOT NULL,
-  `id_banca` int(11) NOT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `descricao` text NOT NULL,
   `status` varchar(64) NOT NULL,
   `data_submissao` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -186,11 +184,6 @@ ALTER TABLE `usuario`
 ALTER TABLE `usuario_banca`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de tabela `session`
---
-ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;  
 
 ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `auth_key` (`auth_key`) USING BTREE;
 ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `username` (`username`) USING BTREE;

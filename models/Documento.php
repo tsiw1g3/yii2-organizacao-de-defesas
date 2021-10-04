@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $path
- * @property int $id_banca
+ * @property string $descricao
  * @property string $status
  * @property string $data_submissao
  */
@@ -29,8 +29,8 @@ class Documento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['path', 'id_banca', 'status', 'data_submissao'], 'required'],
-            [['id_banca'], 'integer'],
+            [['path', 'descricao', 'status', 'data_submissao'], 'required'],
+            [['descricao'], 'string'],
             [['data_submissao'], 'safe'],
             [['path'], 'string', 'max' => 255],
             [['status'], 'string', 'max' => 64],
@@ -45,7 +45,7 @@ class Documento extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'path' => 'Path',
-            'id_banca' => 'Id Banca',
+            'descricao' => 'Descricao',
             'status' => 'Status',
             'data_submissao' => 'Data Submissao',
         ];

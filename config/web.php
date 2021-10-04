@@ -84,11 +84,17 @@ $config = [
                     ['banca' => 'banca'], // CRUD banca
                     'extraPatterns' => [
                         'GET <id>/users' =>'get-users', // Listar todos os usuarios de uma banca
-                        'DELETE <id>/user/<user>' => 'delete-user-banca', // Listar todas as bancas de um usuario
+                        'DELETE <id>/user/<user>' => 'delete-user-banca', // Deletar um usuário de uma banca
+                        'GET <id>/documento' => 'get-documents', // Listar todos os documentos de uma banca
+                        'GET <id>/documento/<doc>' => 'get-document', // Listar um documentos de uma banca
+                        // 'GET <id>/documento/<doc>/view' => 'view-document', // Visualizar um documentos de uma banca
+                        'POST <id>/documento' => 'add-document', // Adicionar um documentos a uma banca
+                        'DELETE <id>/documento/<doc>' => 'delete-document', // Deletar um documentos a uma banca
                     ]
                 ],
                 'POST usuario-banca/<id>' => 'usuario-banca/add', // Adicionar usuario na banca
                 'POST login' => 'login/login', // Realizar login
+                'POST logout' => 'login/logout', // Realizar logouut
             ],
         ],
     ],
