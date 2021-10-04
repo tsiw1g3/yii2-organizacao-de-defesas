@@ -224,15 +224,20 @@ class BancaController extends \yii\rest\ActiveController
                 throw new \yii\web\NotFoundHttpException('O documento requisitado não existe.', 404);
             }
 
-            // if ($documento->delete()) {
-            //     Yii::$app->response->statusCode = 204;
-            //     return Yii::$app->response->data;
-            // }
-            // Caso a validacao falhe, lançar erros para o front
-            Yii::$app->response->data = $documento->errors;
-            Yii::$app->response->statusCode = 422;
+            // Header content type
+            header('Content-type: application/pdf');
 
-            return Yii::$app->response->data;
+            header('Content-Disposition: inline; filename="' . $documento->path . '"');
+
+            header('Content-Transfer-Encoding: binary');
+
+            header('Accept-Ranges: bytes');
+
+            @readfile($documento->path);
+
+            return $documento->path;
+
+            // return Yii::$app->response->data;
         } catch (Exception $e) {
             throw $e;
         }
