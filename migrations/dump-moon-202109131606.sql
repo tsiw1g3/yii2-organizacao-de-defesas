@@ -47,7 +47,7 @@ CREATE TABLE `banca` (
 CREATE TABLE `banca_documento` (
   `id` int(11) NOT NULL,
   `id_banca` int(11) NOT NULL,
-  `id_documento` int(11) NOT NULL,
+  `id_documento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
