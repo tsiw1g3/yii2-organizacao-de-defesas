@@ -12,15 +12,6 @@ use Yii;
 class LoginController extends \yii\rest\ActiveController
 {
 
-    public function behaviors()
-    {
-        return [
-            'corsFilter' => [
-                'class' => \yii\filters\Cors::className(),
-            ],
-        ];
-    }
-
     public $modelClass = 'app\models\LoginForm';
 
     /**
