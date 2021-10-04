@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Banca;
 use app\models\LoginForm;
 use app\models\User;
 use app\models\Usuario;
+use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
 use DateTime;
 use DateTimeZone;
@@ -36,6 +38,8 @@ class UsuarioController extends \yii\rest\ActiveController
     {
         $defaultActions = parent::actions();
         unset($defaultActions['create']);
+        unset($defaultActions['delete']);
+        unset($defaultActions['update']);
         return $defaultActions;
     }
 
@@ -75,7 +79,7 @@ class UsuarioController extends \yii\rest\ActiveController
                 $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
 
                 // Salva o modelo no banco de dados
-                // $model->save();
+                $model->save();
 
                 return [];
             }
@@ -91,35 +95,14 @@ class UsuarioController extends \yii\rest\ActiveController
         // throw new \yii\web\NotFoundHttpException('The requested page does not exist.', 403);
     }
 
-    public function actionLogin()
+    public function actionGetBanca($id)
     {
         try {
-            $model = new LoginForm();
-
-            // Coletando valores da requisição POST que foi recebida
-            $data = Yii::$app->request->post();
-
-            // Atribuindo os atributos da requição para o modelo
-            $model->attributes = Yii::$app->request->post();
-
-            // Validando o login
-            if ($model->login()) {
-                // $session = Yii::$app->session;
-                // $session->set('token_access', 'Rafael');
-                // $session->save();
-                json_encode(Yii::$app->user->getId());
-                // return Yii::$app->user->;
-            }
-
-            // Caso a validacao falhe, lançar erros para o front
-            return $model;
+            $bancas = $this->findBancasByUser($id);
+            return $bancas;
         } catch (Exception $e) {
             throw $e;
         }
-    }
-
-    public function actionView()
-    {
     }
 
     protected function findModelById($id)
@@ -128,7 +111,7 @@ class UsuarioController extends \yii\rest\ActiveController
             return $model;
         }
 
-        throw new \yii\web\NotFoundHttpException('The requested page does not exist.', 404);
+        throw new \yii\web\NotFoundHttpException('O usuario informado nao existe.', 404);
     }
 
     protected function findModelByUsername($username)
@@ -147,5 +130,19 @@ class UsuarioController extends \yii\rest\ActiveController
         }
 
         return false;
+    }
+
+    protected function findBancasByUser($user)
+    {
+        if (($models = Banca::find()
+        ->select('banca.*')
+        ->innerJoin('usuario_banca', '`usuario_banca`.`id_banca` = `banca`.`id`')
+        // ->leftJoin('usuario_banca', '`usuario_banca`.`id_banca` = `banca`.`id`')
+        ->where(['usuario_banca.id_usuario' => $user])
+        ->all()) !== null) {
+            return $models;
+        }
+
+        throw new \yii\web\NotFoundHttpException('Nao existem bancas para este usuario.', 404);
     }
 }

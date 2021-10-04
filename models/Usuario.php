@@ -66,6 +66,20 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
 
+    public function fields()
+    {
+        return [
+            'id',
+            'username',
+            'email',
+            'universidade' => 'school',
+            'titulo_academico' => 'academic_title',
+            'link_latters' => 'lattesUrl',
+            'status'
+
+        ];
+    }
+
     /**
      * Localiza uma identidade pelo ID informado
      *

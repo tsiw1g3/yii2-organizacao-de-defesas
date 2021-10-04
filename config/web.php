@@ -19,6 +19,7 @@ $config = [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
+        'loginUrl' => null,
         'response' => [
             'class' => 'yii\web\Response',
             'on beforeSend' => function ($event) {
@@ -77,12 +78,22 @@ $config = [
             'enableStrictParsing' => true,
             'rules' => [
                 [
-                    'class' => 'yii\rest\UrlRule', 'controller' => ['usuario' => 'usuario'], 'except' => ['delete'],
+                    'class' => 'yii\rest\UrlRule', 'controller' =>
+                    ['usuario' => 'usuario'], // CRUD Usuario
                     'extraPatterns' => [
-                        'POST login' => 'login',
+                        'GET <id>/banca' => 'get-banca', // Listar todas as bancas de um usuario
                     ]
                 ],
-                'POST login' => 'login/login',
+                [
+                    'class' => 'yii\rest\UrlRule', 'controller' =>
+                    ['banca' => 'banca'], // CRUD banca
+                    'extraPatterns' => [
+                        'GET <id>/users' =>'get-users', // Listar todos os usuarios de uma banca
+                        'DELETE <id>/user/<user>' => 'delete-user-banca', // Listar todas as bancas de um usuario
+                    ]
+                ],
+                'POST usuario-banca/<id>' => 'usuario-banca/add', // Adicionar usuario na banca
+                'POST login' => 'login/login', // Realizar login
             ],
         ],
     ],
