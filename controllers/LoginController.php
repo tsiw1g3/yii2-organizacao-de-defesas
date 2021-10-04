@@ -54,8 +54,11 @@ class LoginController extends \yii\rest\ActiveController
                 return Yii::$app->session->getId();
             }
 
-            // Caso a validacao falhe, lançar erros para o front
-            return $model;
+            // Caso o login falhe, lançar erros para o front
+            Yii::$app->response->data = $model->errors;
+            Yii::$app->response->statusCode = 403;
+
+            return Yii::$app->response->data;
         } catch (Exception $e) {
             throw $e;
         }

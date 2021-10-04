@@ -108,7 +108,7 @@ CREATE TABLE `usuario_banca` (
 --
 CREATE TABLE `session`
 (
-    `id` CHAR(40) NOT NULL,
+    `id` varchar(40) NOT NULL,
     `expire` INTEGER,
     `data` BLOB,
     `token_access`varchar(255) DEFAULT NULL

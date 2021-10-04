@@ -59,11 +59,6 @@ $config = [
         ],
         'session' => [
             'class' => 'yii\web\DbSession',
-            // 'writeCallback' => function($session) {
-            //     return [
-            //         'token_access' => Yii::$app->user->to
-            //     ]
-            // }
         ],
         'db' => $db,
         'formatter' => [
