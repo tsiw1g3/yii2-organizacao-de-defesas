@@ -8,6 +8,7 @@ use app\models\Usuario;
 use app\security\ValidatorRequest;
 use Exception;
 use Yii;
+use yii\web\Response;
 
 class LoginController extends \yii\rest\ActiveController
 {
@@ -60,7 +61,14 @@ class LoginController extends \yii\rest\ActiveController
 
                 $session_db->save();
 
-                return Yii::$app->session->getId();
+                return \Yii::createObject([
+                    'class' => 'yii\web\Response',
+                    'format' => \yii\web\Response::FORMAT_JSON,
+                    'data' => [
+                        'id' => $id,
+                        'token' => Yii::$app->session->getId(),
+                    ],
+                ]);
             }
 
             // Caso o login falhe, lançar erros para o front

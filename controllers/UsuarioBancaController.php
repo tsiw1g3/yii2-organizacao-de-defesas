@@ -68,6 +68,35 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         }
     }
 
+    public function actionId($id_banca, $id_usuario) {
+        return $this->findUbByUserAndBanca($id_usuario, $id_banca);
+    }
+
+    public function actionNota($id_banca) {
+        $users = $this->findUsuariosBancaByBanca($id_banca);
+        $cnt = 0;
+        $sum = 0.0;
+        foreach ($users as $user) {
+            $nota = $user->nota;
+            if($nota != null) {
+                $sum += $user->nota;
+                $cnt++;
+            }
+        }
+        if($cnt == 0) {
+            return "Nenhuma nota foi cadastrada";
+        }
+        return $sum / $cnt;
+    }
+
+    protected function findUbByUserAndBanca($idUsuario, $idBanca) {
+        if(($ub = UsuarioBanca::findOne(['id_banca' => $idBanca, 'id_usuario' => $idUsuario]))) {
+            return $ub;
+        }
+
+        throw new \yii\web\NotFoundHttpException('O usuário informado não existe.', 404);
+    }
+
     protected function findUserById($id)
     {
         if (($user = Usuario::findOne($id)) !== null) {

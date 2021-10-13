@@ -19,7 +19,7 @@ class BancaController extends \yii\rest\ActiveController
     public function beforeAction($action)
     {
         $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission) {
+        if (!$permission && $action->id != 'index') {
             throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
         }
         return parent::beforeAction($action);

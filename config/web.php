@@ -92,7 +92,15 @@ $config = [
                         'DELETE <id>/documento/<doc>' => 'delete-document', // Deletar um documentos a uma banca
                     ]
                 ],
-                'POST usuario-banca/<id>' => 'usuario-banca/add', // Adicionar usuario na banca
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['usuario-banca' => 'usuario-banca'], // CRUD Usuario-banca
+                    'extraPatterns' => [
+                        'GET id/<id_banca>/<id_usuario>' => 'id', // Pegar id do ub com id do user e banca
+                        'POST <id>' => 'add', // Adicionar usuario na banca
+                    ]
+                ],
+                'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'POST login' => 'login/login', // Realizar login
                 'POST logout' => 'login/logout', // Realizar logouut
             ],
