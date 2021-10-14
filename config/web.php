@@ -76,18 +76,28 @@ $config = [
                     'class' => 'yii\rest\UrlRule', 'controller' =>
                     ['usuario' => 'usuario'], // CRUD Usuario
                     'extraPatterns' => [
+                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS <id>' => 'allow-cors',
+                        'POST <id>' => 'view',
                         'GET <id>/banca' => 'get-banca', // Listar todas as bancas de um usuario
+                        'OPTIONS <id>/banca' => 'allow-cors', // Listar todas as bancas de um usuario
                     ]
                 ],
                 [
                     'class' => 'yii\rest\UrlRule', 'controller' =>
                     ['banca' => 'banca'], // CRUD banca
                     'extraPatterns' => [
+                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS <id>' => 'allow-cors',
                         'GET <id>/users' =>'get-users', // Listar todos os usuarios de uma banca
+                        'OPTIONS <id>/users' =>'allow-cors', // Listar todos os usuarios de uma banca
                         'DELETE <id>/user/<user>' => 'delete-user-banca', // Deletar um usuário de uma banca
+                        'OPTIONS <id>/user/<user>' => 'allow-cors', // Deletar um usuário de uma banca
                         'GET <id>/documento' => 'get-documents', // Listar todos os documentos de uma banca
+                        'OPTIONS <id>/documento' => 'allow-cors', // Listar todos os documentos de uma banca
                         'GET <id>/documento/<doc>' => 'get-document', // Listar um documentos de uma banca
                         'GET <id>/documento/<doc>/view' => 'view-document', // Visualizar um documentos de uma banca
+                        'OPTIONS <id>/documento/<doc>/view' => 'allow-cors', // Visualizar um documentos de uma banca
                         'POST <id>/documento' => 'add-document', // Adicionar um documentos a uma banca
                         'DELETE <id>/documento/<doc>' => 'delete-document', // Deletar um documentos a uma banca
                     ]
@@ -96,11 +106,15 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['usuario-banca' => 'usuario-banca'], // CRUD Usuario-banca
                     'extraPatterns' => [
+                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS <id>' => 'allow-cors',
                         'GET id/<id_banca>/<id_usuario>' => 'id', // Pegar id do ub com id do user e banca
+                        'OPTIONS id/<id_banca>/<id_usuario>' => 'allow-cors', // Pegar id do ub com id do user e banca
                         'POST <id>' => 'add', // Adicionar usuario na banca
                     ]
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
+                'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
                 'POST login' => 'login/login', // Realizar login
                 'POST logout' => 'login/logout', // Realizar logouut
             ],

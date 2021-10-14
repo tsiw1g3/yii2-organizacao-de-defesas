@@ -16,11 +16,20 @@ class UsuarioBancaController extends \yii\rest\ActiveController
 
     public function beforeAction($action)
     {
+        if($action->id == 'allow-cors') {
+           $this->enableCsrfValidation = false;
+           return parent::beforeAction($action);
+        }
+
         $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
         if (!$permission) {
             throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
         }
         return parent::beforeAction($action);
+    }
+
+    public function actionAllowCors() {
+        return;
     }
 
     /**
