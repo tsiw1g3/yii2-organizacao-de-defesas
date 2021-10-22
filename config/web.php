@@ -89,8 +89,8 @@ $config = [
                     'extraPatterns' => [
                         'OPTIONS' => 'allow-cors',
                         'OPTIONS <id>' => 'allow-cors',
-                        'GET <id>/users' =>'get-users', // Listar todos os usuarios de uma banca
-                        'OPTIONS <id>/users' =>'allow-cors', // Listar todos os usuarios de uma banca
+                        'GET <id>/users' => 'get-users', // Listar todos os usuarios de uma banca
+                        'OPTIONS <id>/users' => 'allow-cors', // Listar todos os usuarios de uma banca
                         'DELETE <id>/user/<user>' => 'delete-user-banca', // Deletar um usuário de uma banca
                         'OPTIONS <id>/user/<user>' => 'allow-cors', // Deletar um usuário de uma banca
                         'GET <id>/documento' => 'get-documents', // Listar todos os documentos de uma banca
@@ -115,6 +115,8 @@ $config = [
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
+                'GET documento/<id_banca>' => 'documento/get-doc', // Pegar a nota final dado o id da banca
+                'OPTIONS documento/<id_banca>' => 'documento/allow-cors', // Pegar a nota final dado o id da banca
                 'POST login' => 'login/login', // Realizar login
                 'POST logout' => 'login/logout', // Realizar logouut
             ],

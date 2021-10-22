@@ -189,6 +189,9 @@ ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `auth_key` (`auth_key`) US
 ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `username` (`username`) USING BTREE;
 ALTER TABLE `organizacao_defesa`.`usuario` ADD UNIQUE `email` (`email`) USING BTREE;
 
+ALTER TABLE `usuario` ADD `nome` VARCHAR(255) NULL AFTER `email`;
+ALTER TABLE `usuario` CHANGE `nome` `nome` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

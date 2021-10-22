@@ -13,6 +13,7 @@ use yii\web\IdentityInterface;
  * @property string $password_has
  * @property string $auth_key
  * @property string $email
+ * @property string $nome
  * @property string $school
  * @property string $academic_title
  * @property string|null $lattesUrl
@@ -36,11 +37,11 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password_has', 'auth_key', 'email', 'school', 'academic_title', 'status', 'created_at', 'updated_at'], 'required'],
+            [['username', 'password_has', 'auth_key', 'email', 'school', 'academic_title', 'status', 'created_at', 'updated_at', 'nome'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'email', 'auth_key'], 'unique'],
             [['password_has', 'username', 'email'], 'default'],
-            [['username', 'password_has', 'auth_key'], 'string', 'max' => 255],
+            [['username', 'password_has', 'auth_key', 'nome'], 'string', 'max' => 255],
             [['email', 'school', 'academic_title', 'lattesUrl'], 'string', 'max' => 64],
             [['status'], 'string', 'max' => 12],
         ];
@@ -57,6 +58,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'password_has' => 'Password Has',
             'auth_key' => 'Auth Key',
             'email' => 'Email',
+            'nome' => 'Nome',
             'school' => 'School',
             'academic_title' => 'Academic Title',
             'lattesUrl' => 'Lattes Url',
@@ -72,6 +74,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'id',
             'username',
             'email',
+            'nome',
             'universidade' => 'school',
             'titulo_academico' => 'academic_title',
             'link_latters' => 'lattesUrl',
