@@ -22,7 +22,7 @@ class DocumentoController extends \yii\web\Controller
         $orientador_id = UsuarioBanca::find()->select(['id_usuario', 'nota'])->where(['role' => 'orientador', 'id_banca' => $id_banca])->one();
         $orientador = Usuario::findOne($orientador_id)->nome;
 
-        $discente_id = UsuarioBanca::find()->select(['id_usuario'])->where(['role' => 'discente', 'id_banca' => $id_banca])->one();
+        $discente_id = UsuarioBanca::find()->select(['id_usuario'])->where(['role' => 'aluno', 'id_banca' => $id_banca])->one();
         $discente = Usuario::findOne($discente_id)->nome;
 
         $avaliadores_id = UsuarioBanca::find()->select(['id_usuario', 'nota'])->where(['role' => 'avaliador', 'id_banca' => $id_banca])->all();
