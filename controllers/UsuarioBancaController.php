@@ -14,11 +14,24 @@ class UsuarioBancaController extends \yii\rest\ActiveController
 
     public $modelClass = 'app\models\UsuarioBanca';
 
+    protected $role_allowed = [
+        'discente',
+        'orientador',
+        'avaliador'
+    ];
+
+
+    protected $role_participants = [
+        'discente' => 1,
+        'orientador' => 1,
+        'avaliador' => 2
+    ];
+
     public function beforeAction($action)
     {
-        if($action->id == 'allow-cors') {
-           $this->enableCsrfValidation = false;
-           return parent::beforeAction($action);
+        if ($action->id == 'allow-cors') {
+            $this->enableCsrfValidation = false;
+            return parent::beforeAction($action);
         }
 
         $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
@@ -28,7 +41,8 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         return parent::beforeAction($action);
     }
 
-    public function actionAllowCors() {
+    public function actionAllowCors()
+    {
         return;
     }
 
@@ -59,9 +73,18 @@ class UsuarioBancaController extends \yii\rest\ActiveController
             // $aux = $this->findUsuarioBancaByBanca($id, $model->id_usuario);
             // return empty($aux);
             // Valida se o usuário já esta na banca
-            if($this->findUsuarioBancaByBanca($id, $model->id_usuario)) {
-                throw new \yii\web\NotFoundHttpException('Usuario ja cadastrado na banca.', 404);
+            if ($this->findUsuarioBancaByBanca($id, $model->id_usuario)) {
+                throw new \yii\web\ForbiddenHttpException('Usuario ja cadastrado na banca.', 403);
             }
+
+            if (!$this->validateRole($model)) {
+                throw new \yii\web\ForbiddenHttpException($model->role . ' nao permitida.', 403);
+            }
+
+            if (!$this->validateParticipants($model)) {
+                throw new \yii\web\ForbiddenHttpException('Limite de ' . $model->role . ' atingido', 403);
+            }
+
 
             if ($model->validate() && $model->save()) {
                 return [];
@@ -77,29 +100,47 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         }
     }
 
-    public function actionId($id_banca, $id_usuario) {
+    public function actionId($id_banca, $id_usuario)
+    {
         return $this->findUbByUserAndBanca($id_usuario, $id_banca);
     }
 
-    public function actionNota($id_banca) {
+    public function actionNota($id_banca)
+    {
         $users = $this->findUsuariosBancaByBanca($id_banca);
         $cnt = 0;
         $sum = 0.0;
         foreach ($users as $user) {
             $nota = $user->nota;
-            if($nota != null) {
+            if ($nota != null) {
                 $sum += $user->nota;
                 $cnt++;
             }
         }
-        if($cnt == 0) {
+        if ($cnt == 0) {
             return "Nenhuma nota foi cadastrada";
         }
         return $sum / $cnt;
     }
 
-    protected function findUbByUserAndBanca($idUsuario, $idBanca) {
-        if(($ub = UsuarioBanca::findOne(['id_banca' => $idBanca, 'id_usuario' => $idUsuario]))) {
+    protected function validateRole($model)
+    {
+        if (!in_array($model->role, $this->role_allowed)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function validateParticipants($model)
+    {
+        $count = UsuarioBanca::find()->where(['role' => $model->role, 'id_banca' => $model->id_banca])->count();
+        return $this->role_participants[$model->role] <= $count ? false : true;
+    }
+
+    protected function findUbByUserAndBanca($idUsuario, $idBanca)
+    {
+        if (($ub = UsuarioBanca::findOne(['id_banca' => $idBanca, 'id_usuario' => $idUsuario]))) {
             return $ub;
         }
 
