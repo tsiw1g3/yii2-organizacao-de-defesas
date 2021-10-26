@@ -32,6 +32,8 @@ class DocumentoController extends \yii\web\Controller
         return $this->render('index');
     }
 
+    public function actionAllowCors() {}
+
     public function actionGetDoc($id_banca)
     {
         $banca = Banca::find()->where(['id' => $id_banca])->one();

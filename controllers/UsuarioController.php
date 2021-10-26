@@ -36,9 +36,7 @@ class UsuarioController extends \yii\rest\ActiveController
         return parent::beforeAction($action);
     }
 
-    public function actionAllowCors() {
-        return;
-    }
+    public function actionAllowCors() {}
 
     /**
      * @inheritdoc
