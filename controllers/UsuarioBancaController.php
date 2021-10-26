@@ -120,6 +120,10 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         return $sum / $cnt;
     }
 
+    public function actionUsuariosBancaByBanca($id_banca) {
+        return $this->findUsuariosBancaByBanca($id_banca);
+    }
+
     protected function validateRole($model)
     {
         if (!in_array($model->role, $this->role_allowed)) {

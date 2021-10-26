@@ -111,6 +111,8 @@ $config = [
                         'GET id/<id_banca>/<id_usuario>' => 'id', // Pegar id do ub com id do user e banca
                         'OPTIONS id/<id_banca>/<id_usuario>' => 'allow-cors', // Pegar id do ub com id do user e banca
                         'POST <id>' => 'add', // Adicionar usuario na banca
+                        'GET usuarios/<id_banca>' => 'usuarios-banca-by-banca',
+                        'OPTIONS usuarios/<id_banca>' => 'allow-cors',
                     ]
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
