@@ -123,7 +123,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
 
     public function actionUsuariosBancaByBanca($id_banca) {
         $query = (new \yii\db\Query())
-                ->select(['usuario_banca.id_usuario', 'usuario_banca.role', 'usuario_banca.nota', 'usuario.nome', 'usuario.username'])
+                ->select(['usuario_banca.id_usuario AS id', 'usuario_banca.role', 'usuario_banca.nota', 'usuario.nome', 'usuario.username'])
                 ->from('usuario_banca')
                 ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
                 ->all();
