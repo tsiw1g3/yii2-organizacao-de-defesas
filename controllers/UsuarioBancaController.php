@@ -16,14 +16,14 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     public $modelClass = 'app\models\UsuarioBanca';
 
     protected $role_allowed = [
-        'discente',
+        'aluno',
         'orientador',
         'avaliador'
     ];
 
 
     protected $role_participants = [
-        'discente' => 1,
+        'aluno' => 1,
         'orientador' => 1,
         'avaliador' => 2
     ];
