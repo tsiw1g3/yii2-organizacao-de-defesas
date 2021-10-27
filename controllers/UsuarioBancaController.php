@@ -8,6 +8,7 @@ use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
 use Exception;
 use Yii;
+use yii\db\Query;
 
 class UsuarioBancaController extends \yii\rest\ActiveController
 {
@@ -121,7 +122,12 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     }
 
     public function actionUsuariosBancaByBanca($id_banca) {
-        return $this->findUsuariosBancaByBanca($id_banca);
+        $query = (new \yii\db\Query())
+                ->select(['usuario_banca.id_usuario', 'usuario_banca.role', 'usuario_banca.nota', 'usuario.nome', 'usuario.username'])
+                ->from('usuario_banca')
+                ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+                ->all();
+        return $query;
     }
 
     protected function validateRole($model)
