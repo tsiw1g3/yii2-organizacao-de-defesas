@@ -10,6 +10,9 @@ use DateTime;
 use DateTimeZone;
 use Yii;
 
+/**
+ * Controller que gerencia a geração de documentos.
+ */
 class DocumentoController extends \yii\web\Controller
 {
 

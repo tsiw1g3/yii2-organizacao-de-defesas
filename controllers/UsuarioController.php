@@ -15,6 +15,9 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
+/**
+ * Controller que gerencia todas as rotas necessárias para os usuários.
+ */
 class UsuarioController extends \yii\rest\ActiveController
 {
 

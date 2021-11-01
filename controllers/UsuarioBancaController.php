@@ -10,6 +10,9 @@ use Exception;
 use Yii;
 use yii\db\Query;
 
+/**
+ * Controller que gerencia as relações dos usuários com as bancas.
+ */
 class UsuarioBancaController extends \yii\rest\ActiveController
 {
 

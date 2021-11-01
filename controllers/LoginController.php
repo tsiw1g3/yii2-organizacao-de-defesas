@@ -10,6 +10,9 @@ use Exception;
 use Yii;
 use yii\web\Response;
 
+/**
+ * Controller que gerencia toda a parte de login/logout do sistema.
+ */
 class LoginController extends \yii\rest\ActiveController
 {
 

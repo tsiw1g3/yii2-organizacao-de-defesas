@@ -11,6 +11,9 @@ use app\security\ValidatorRequest;
 use Exception;
 use Yii;
 
+/**
+ * Controller que gerencia todas as rotas necessárias para a banca.
+ */
 class BancaController extends \yii\rest\ActiveController
 {
 
