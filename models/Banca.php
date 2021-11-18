@@ -33,7 +33,7 @@ class Banca extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'tipo_banca'], 'required'],
+            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao'], 'required'],
             [['resumo', 'abstract', 'palavras_chave', 'tipo_banca'], 'string'],
             [['data_realizacao'], 'safe'],
             [['nota_final'], 'number'],
