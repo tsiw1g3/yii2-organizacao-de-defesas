@@ -3,12 +3,17 @@
 namespace app\controllers;
 
 use app\models\Banca;
+use app\models\BancaDocumento;
+use app\models\Documento;
 use app\models\Usuario;
 use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
 use Exception;
 use Yii;
 
+/**
+ * Controller que gerencia todas as rotas necessárias para a banca.
+ */
 class BancaController extends \yii\rest\ActiveController
 {
 
@@ -16,6 +21,11 @@ class BancaController extends \yii\rest\ActiveController
 
     public function beforeAction($action)
     {
+        if($action->id == 'allow-cors' || $action->id == 'index') {
+           $this->enableCsrfValidation = false;
+           return parent::beforeAction($action);
+        }
+
         $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
         if (!$permission) {
             throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
@@ -23,6 +33,7 @@ class BancaController extends \yii\rest\ActiveController
         return parent::beforeAction($action);
     }
 
+    public function actionAllowCors() {}
 
     /**
      * @inheritdoc
@@ -107,6 +118,140 @@ class BancaController extends \yii\rest\ActiveController
         }
     }
 
+    public function actionGetDocuments($id)
+    {
+        try {
+            $banca = $this->findByBancaById($id);
+
+            return $this->findDocsByBanca($banca->id);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function actionGetDocument($id, $doc)
+    {
+        try {
+            $banca = $this->findByBancaById($id);
+            $documento = $this->findDocByBancaAndDoc($banca->id, $doc);
+            if (empty($documento)) {
+                throw new \yii\web\NotFoundHttpException('O documento requisitado não existe.', 404);
+            }
+            return $documento;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function actionAddDocument($id)
+    {
+        try {
+            $banca = $this->findByBancaById($id);
+
+            $documento = new Documento();
+            $data = Yii::$app->request->post();
+
+            $documento->attributes  = $data;
+            $file = $_FILES['documento'];
+
+            $type = $file['type'];
+            if ($type !== 'application/pdf') {
+                throw new \yii\web\MethodNotAllowedHttpException('O tipo do documento nao eh suportado.');
+            }
+
+            $name_file = $file['name'];
+            $temp_folder = explode('\\', $file['tmp_name']);
+            $temp_folder = $temp_folder[count($temp_folder) - 1];
+            $temp_folder = str_replace(".tmp", "", $temp_folder);
+
+            $fileTarget = '../documents_banca/' . $temp_folder;
+
+            // If the directory does not exist, create a new
+            if (!file_exists($fileTarget)) {
+                mkdir($fileTarget, 0700, true);
+            }
+
+            $fileTarget = '../documents_banca/' . $temp_folder . '/' . $name_file;
+            $fileTarget = $this->stripAccents($fileTarget);
+
+            $result = move_uploaded_file($file['tmp_name'], $fileTarget);
+
+            if (!$result) {
+                return 'ERROR';
+                die();
+            }
+
+            $documento->path = '../documents_banca/' . $temp_folder . '/' . $name_file;
+            if ($documento->validate() && $documento->save()) {
+                $doc_banca = new BancaDocumento();
+                $doc_banca->id_banca = $banca->id;
+                $doc_banca->id_documento = $documento->id;
+                $doc_banca->save();
+
+                return [];
+            }
+
+            // Caso a validacao falhe, lançar erros para o front
+            Yii::$app->response->data = $documento->errors;
+            Yii::$app->response->statusCode = 422;
+
+            return Yii::$app->response->data;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function actionDeleteDocument($id, $doc)
+    {
+        try {
+            $banca = $this->findByBancaById($id);
+            $documento = $this->findDocByBancaAndDoc($banca->id, $doc);
+            if (empty($documento)) {
+                throw new \yii\web\NotFoundHttpException('O documento requisitado não existe.', 404);
+            }
+
+            if ($documento->delete()) {
+                Yii::$app->response->statusCode = 204;
+                return Yii::$app->response->data;
+            }
+            // Caso a validacao falhe, lançar erros para o front
+            Yii::$app->response->data = $documento->errors;
+            Yii::$app->response->statusCode = 422;
+
+            return Yii::$app->response->data;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function actionViewDocument($id, $doc)
+    {
+        try {
+            $banca = $this->findByBancaById($id);
+            $documento = $this->findDocByBancaAndDoc($banca->id, $doc);
+            if (empty($documento)) {
+                throw new \yii\web\NotFoundHttpException('O documento requisitado não existe.', 404);
+            }
+
+            // Header content type
+            header('Content-type: application/pdf');
+
+            header('Content-Disposition: inline; filename="' . $documento->path . '"');
+
+            header('Content-Transfer-Encoding: binary');
+
+            header('Accept-Ranges: bytes');
+
+            @readfile($documento->path);
+
+            return $documento->path;
+
+            // return Yii::$app->response->data;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
     protected function findByBancaById($id)
     {
         if (($user = Banca::findOne($id)) !== null) {
@@ -135,5 +280,41 @@ class BancaController extends \yii\rest\ActiveController
         }
 
         throw new \yii\web\NotFoundHttpException('O usuário informado não existe nesta banca.', 404);
+    }
+
+    protected function findDocsByBanca($banca)
+    {
+        $models = Documento::find()
+            ->select('documento.*')
+            ->leftJoin('banca_documento', '`banca_documento`.`id_documento` = `documento`.`id`')
+            ->where(['banca_documento.id_banca' => $banca])
+            // ->with('orders')
+            ->all();
+
+        return $models;
+    }
+
+    protected function findDocByBancaAndDoc($banca, $doc)
+    {
+        $model = Documento::find()
+            ->select('documento.*')
+            ->leftJoin('banca_documento', '`banca_documento`.`id_documento` = `documento`.`id`')
+            ->where(['banca_documento.id_banca' => $banca, 'banca_documento.id_documento' => $doc])
+            // ->with('orders')
+            ->one();
+
+        return $model;
+    }
+
+    protected function stripAccents($string)
+    {
+
+        $string = strtr(
+            utf8_decode($string),
+            utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),
+            'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy'
+        );
+
+        return $string;
     }
 }

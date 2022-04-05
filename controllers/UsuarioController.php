@@ -15,6 +15,9 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
+/**
+ * Controller que gerencia todas as rotas necessárias para os usuários.
+ */
 class UsuarioController extends \yii\rest\ActiveController
 {
 
@@ -24,12 +27,19 @@ class UsuarioController extends \yii\rest\ActiveController
 
     public function beforeAction($action)
     {
+        if($action->id == 'allow-cors') {
+           $this->enableCsrfValidation = false;
+           return parent::beforeAction($action);
+        }
+
         $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission) {
+        if (!$permission && $action->id != 'create') {
             throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
         }
         return parent::beforeAction($action);
     }
+
+    public function actionAllowCors() {}
 
     /**
      * @inheritdoc

@@ -15,6 +15,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $academic_title;
     public $lattesUrl;
     public $status;
+    public $nome;
     public $created_at;
     public $updated_at;
     public $accessToken;
