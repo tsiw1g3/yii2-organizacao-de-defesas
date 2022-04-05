@@ -11,6 +11,9 @@ use Yii;
  * @property string $titulo_trabalho
  * @property string $resumo
  * @property string $tipo_banca
+ * @property string $curso
+ * @property string $autor
+ * @property string $disciplina
  * @property string $abstract
  * @property string $palavras_chave
  * @property string $data_realizacao
@@ -33,11 +36,11 @@ class Banca extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao'], 'required'],
+            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'disciplina', 'autor'], 'required'],
             [['resumo', 'abstract', 'palavras_chave', 'tipo_banca'], 'string'],
             [['data_realizacao'], 'safe'],
             [['nota_final'], 'number'],
-            [['titulo_trabalho', 'local'], 'string', 'max' => 255],
+            [['titulo_trabalho', 'local', 'curso', 'disciplina', 'autor'], 'string', 'max' => 255],
         ];
     }
 
@@ -56,6 +59,9 @@ class Banca extends \yii\db\ActiveRecord
             'nota_final' => 'Nota Final',
             'tipo_banca' => 'Tipo Banca',
             'local' => 'Local',
+            'curso' => 'Curso',
+            'disciplina' => 'Disciplina',
+            'autor' => 'Autor',
         ];
     }
 }
