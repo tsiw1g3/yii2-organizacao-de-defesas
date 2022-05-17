@@ -44,8 +44,6 @@ class DocumentoController extends \yii\web\Controller
         $orientador_id = UsuarioBanca::find()->select(['id_usuario', 'nota'])->where(['role' => 'orientador', 'id_banca' => $id_banca])->one();
         $orientador = Usuario::findOne($orientador_id)->nome;
 
-        $discente_id = UsuarioBanca::find()->select(['id_usuario'])->where(['role' => 'aluno', 'id_banca' => $id_banca])->one();
-        $discente = empty($discente_id) ? '--' : Usuario::findOne($discente_id)->nome;
 
         $avaliadores_id = UsuarioBanca::find()->select(['id_usuario', 'IFNULL(nota, 0) as nota'])->where(['role' => 'avaliador', 'id_banca' => $id_banca])->all();
 
@@ -73,13 +71,17 @@ class DocumentoController extends \yii\web\Controller
         $horario = $dateTime->format('H:i');
 
         $tcc = $this->renderPartial('_tcc.php', [
+            'curso' => $banca->curso,
+            'disciplina' => $banca->disciplina,
+            'turma' => $banca->turma,
             'titulo_trabalho' => $banca->titulo_trabalho,
             'orientador' => $orientador,
             'nota_orientador' => isset($orientador_id->nota) ? $orientador_id->nota : 0,
-            'discente' => $discente,
+            'aluno' => $banca->autor,
             'avaliadores' => $avaliadores,
             'data' => $data,
             'horario' => $horario,
+            'semestre' => $banca->ano . "." . $banca->semestre_letivo
         ]);
 
         $mpdf = new \Mpdf\Mpdf();

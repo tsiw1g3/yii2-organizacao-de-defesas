@@ -6,9 +6,11 @@ use app\models\Banca;
 use app\models\Usuario;
 use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
+use yii\helpers\Url;
 use Exception;
 use Yii;
 use yii\db\Query;
+use bitcko\googlecalendar\GoogleCalendarApi;
 
 /**
  * Controller que gerencia as relações dos usuários com as bancas.
@@ -21,6 +23,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     protected $role_allowed = [
         'aluno',
         'orientador',
+        'co-orientador',
         'avaliador'
     ];
 
@@ -28,6 +31,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     protected $role_participants = [
         'aluno' => 1,
         'orientador' => 1,
+        'co-orientador' => 1,
         'avaliador' => 2
     ];
 
@@ -70,12 +74,26 @@ class UsuarioBancaController extends \yii\rest\ActiveController
 
             $user = $this->findUserById($model->id_usuario);
             $model->id_banca = $id;
+            
+            $alluser_bancas = UsuarioBanca::find()->where(["id_usuario" => $model->id_usuario])->all();
+            
+            //valida se o usuário ja possui uma banca 1 hora antes ou depois da banca atual
+            $date = new \DateTime($banca['data_realizacao']);
+            foreach($alluser_bancas as $ub){
+                $user_banca = Banca::findOne($ub['id_banca']);
+                $date_banca = new \DateTime($user_banca['data_realizacao']);
+                $interval = $date->diff($date_banca);
+                if($interval->format("%d") == 0 && $interval->format("%m") == 0 && $interval->format("%y") == 0 && 
+                $interval->format("%i") == 0 && $interval->format("%s") == 0 && $interval->format("%h") <= 1){
+                    throw new \yii\web\ForbiddenHttpException('O Usuário já está cadastrado em uma banca neste horário.', 403);
+                }
+            }
 
             // $aux = $this->findUsuarioBancaByBanca($id, $model->id_usuario);
             // return empty($aux);
             // Valida se o usuário já esta na banca
             if ($this->findUsuarioBancaByBanca($id, $model->id_usuario)) {
-                throw new \yii\web\ForbiddenHttpException('Usuario ja cadastrado na banca.', 403);
+                throw new \yii\web\ForbiddenHttpException('Usuário já cadastrado na banca.', 403);
             }
 
             if (!$this->validateRole($model)) {
@@ -124,14 +142,118 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         return $sum / $cnt;
     }
 
+    public function actionGiveScore($id_banca, $id_user)
+    {
+        try{
+            $user_id = $id_user != 0 ? $id_user : Yii::$app->user->getId();
+            $model = UsuarioBanca::find()->where(['id_banca' => $id_banca, 'id_usuario' => $user_id])->one();
+            $data = Yii::$app->request->post();
+            if ($model !== null) {
+                $model->nota = $data['nota'];
+                if ($model->validate()) {
+                    $model->save();
+                    return "Nota atualizada com sucesso";
+                }
+            }
+            // Caso a validacao falhe, lançar erros para o front
+            Yii::$app->response->data = $model->errors;
+            Yii::$app->response->statusCode = 422;
+            return Yii::$app->response->data;
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        
+    }
+
     public function actionUsuariosBancaByBanca($id_banca) {
         $query = (new \yii\db\Query())
-                ->select(['usuario_banca.id_usuario AS id', 'usuario_banca.role', 'usuario_banca.nota', 'usuario.nome', 'usuario.username'])
-                ->from('usuario_banca')
-                ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
-                ->where("usuario_banca.id_banca = $id_banca")
-                ->all();
+        ->select(['usuario_banca.id_usuario AS id', 'usuario_banca.role', 'usuario_banca.nota', 'usuario.nome', 'usuario.username'])
+        ->from('usuario_banca')
+        ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+        ->where("usuario_banca.id_banca = $id_banca")
+        ->all();
         return $query;
+    }
+    
+    public function CreateEvent($banca){
+        $redirectUrl = Url::to(['/google-calendar/auth'], true);
+        $calendarId = '1dimt5iv0ba88goaephucfrmqo@group.calendar.google.com';
+        $username="any_name";
+        $googleApi = new GoogleCalendarApi($username,$calendarId,$redirectUrl);
+        $date = new \DateTime($banca['data_realizacao'], new \DateTimeZone("America/Sao_paulo"));
+        $dateEnd = new \DateTime($banca['data_realizacao'], new \DateTimeZone("America/Sao_paulo"));
+        $dateEnd->add(new \DateInterval('PT1H'));
+        if($googleApi->checkIfCredentialFileExists()){
+            $event = array(
+                'summary' => $banca['titulo_trabalho'],
+                'location' => $banca['local'],
+                'description' => 'Defesa de TCC da banca ' . $banca['titulo_trabalho'] . ' feita pelo aluno ' . $banca['autor'],
+                'start' => array(
+                    'dateTime' => $date->format(\DateTime::RFC3339),
+                    'timeZone' => 'America/Sao_Paulo',
+                ),
+                'end' => array(
+                    'dateTime' => $dateEnd->format(\DateTime::RFC3339),
+                    'timeZone' => 'America/Sao_Paulo',
+                ),
+                'recurrence' => array(
+                    'RRULE:FREQ=DAILY;COUNT=2'
+                ),
+                'attendees' => array(
+                    // array('email' => 'lpage@example.com'),
+                    // array('email' => 'sbrin@example.com'),
+                ),
+                'reminders' => array(
+                    'useDefault' => FALSE,
+                    'overrides' => array(
+                        array('method' => 'email', 'minutes' => 24 * 60),
+                        array('method' => 'popup', 'minutes' => 10),
+                    ),
+                ),
+            );
+            
+            $calEvent = $googleApi->createGoogleCalendarEvent($event);
+            $e_id = explode("eid=", $calEvent->htmlLink);
+            $invite = "https://calendar.google.com/event?action=TEMPLATE&tmeid=" . $e_id[1] . "&tmsrc=1dimt5iv0ba88goaephucfrmqo%40group.calendar.google.com&scp=ALL";
+            return $invite;
+        }else{
+            return $this->redirect(['auth']);
+        }
+    }
+
+    public function actionSendEmail(){
+        try{
+            $data = Yii::$app->request->post();
+            $banca = Banca::findOne($data['banca']);
+            $user = Usuario::findOne($banca['user_id']);
+            $users_banca = UsuarioBanca::find()->where(['id_banca' => $banca['id']])->all();
+            $avaliadores = array();
+            if($users_banca){
+                foreach($users_banca as $avaliador){
+                    $user = Usuario::findOne($avaliador['id_usuario']);
+                    array_push($avaliadores, $user["nome"]);
+                }
+            }
+            $inviteLink = $this->CreateEvent($banca);
+            $emails = explode(",", $data['emails']);
+            $message = Yii::$app->mailer->compose('emailTemplate', 
+            [
+                'banca' => $banca, 
+                'content' => $data['mensagem'],
+                'orientador' => $user->nome,
+                'avaliadores' => $avaliadores,
+                'invite_google' => $inviteLink, 
+            ]);
+            $message->setFrom('sistemadedefesasufba@gmail.com');
+            $message->setTo($emails);
+            $message->setSubject($data['assunto']);
+            $message->send();
+            return "Email enviado com sucesso!";
+        } catch (Exception $e) {
+            return "Ocorreu um erro ao tentar enviar o email, tente novamente mais tarde!";
+            // return $e->getMessage();
+        }
     }
 
     protected function validateRole($model)

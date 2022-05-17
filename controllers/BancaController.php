@@ -10,6 +10,7 @@ use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
 use Exception;
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * Controller que gerencia todas as rotas necessárias para a banca.
@@ -27,7 +28,7 @@ class BancaController extends \yii\rest\ActiveController
         }
 
         $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission) {
+        if (!$permission && $action->id != "view") {
             throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
         }
         return parent::beforeAction($action);
@@ -65,7 +66,12 @@ class BancaController extends \yii\rest\ActiveController
                 $usuario_banca = new UsuarioBanca();
                 $usuario_banca->id_banca = $banca->id;
                 $usuario_banca->id_usuario = Yii::$app->user->getId();
-                $usuario_banca->role = 'orientador';
+                if(Yii::$app->user->identity->getRole() == 1 || Yii::$app->user->identity->getRole() == 3){
+                    $usuario_banca->role = 'orientador';
+                }
+                else if (Yii::$app->user->identity->getRole() == 2){
+                    $usuario_banca->role = 'co-orientador';
+                }
                 $usuario_banca->save();
 
                 return [];
@@ -78,6 +84,11 @@ class BancaController extends \yii\rest\ActiveController
             return Yii::$app->response->data;
         } catch (Exception $e) {
         }
+    }
+
+    public function actionGetBancasByUser($user_id){
+        $bancas = Banca::findAll(['user_id' => $user_id]);
+        return $bancas;
     }
 
     public function actionGetUsers($id)
@@ -99,9 +110,9 @@ class BancaController extends \yii\rest\ActiveController
 
             $usuario = $this->findUserByBanca($id, $user);
 
-            if ($usuario->role == 'orientador') {
-                throw new \yii\web\NotFoundHttpException('O orientador nao pode ser deletado', 403);
-            }
+            // if ($usuario->role == 'orientador') {
+            //     throw new \yii\web\NotFoundHttpException('O orientador nao pode ser deletado', 403);
+            // }
 
             if ($usuario->delete()) {
                 Yii::$app->response->statusCode = 204;

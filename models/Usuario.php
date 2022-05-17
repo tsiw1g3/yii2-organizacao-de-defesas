@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property string $status
  * @property string $created_at
  * @property string $updated_at
+ * @property string $role
  */
 class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -37,7 +38,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password_has', 'auth_key', 'email', 'school', 'academic_title', 'status', 'created_at', 'updated_at', 'nome'], 'required'],
+            [['username', 'password_has', 'auth_key', 'email', 'school', 'academic_title', 'status', 'created_at', 'updated_at', 'nome', 'role'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'email', 'auth_key'], 'unique'],
             [['password_has', 'username', 'email'], 'default'],
@@ -65,6 +66,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'role' => 'Role',
         ];
     }
 
@@ -78,6 +80,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'universidade' => 'school',
             'titulo_academico' => 'academic_title',
             'link_latters' => 'lattesUrl',
+            'role' => 'role',
             'status'
 
         ];
@@ -111,6 +114,22 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return int|string a Role do usuário atual
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @return int|string o Email do usuário atual
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**

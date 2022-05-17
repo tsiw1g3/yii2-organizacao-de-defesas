@@ -6,6 +6,7 @@ use app\models\Banca;
 use app\models\LoginForm;
 use app\models\User;
 use app\models\Usuario;
+use app\models\Invite;
 use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
 use DateTime;
@@ -87,7 +88,7 @@ class UsuarioController extends \yii\rest\ActiveController
             if ($model->validate()) {
                 //  Faz a criptografia da senha enviada
                 $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-
+                $invite = Invite::findOne(['invite_hash' => $data["hash"]])->delete();
                 // Salva o modelo no banco de dados
                 $model->save();
 
@@ -98,6 +99,29 @@ class UsuarioController extends \yii\rest\ActiveController
             Yii::$app->response->data = $model->errors;
             Yii::$app->response->statusCode = 422;
 
+            return Yii::$app->response->data;
+        } catch (Exception $e) {
+            throw $e;
+        }
+        // throw new \yii\web\NotFoundHttpException('The requested page does not exist.', 403);
+    }
+
+    public function actionEditRole($id)
+    {
+        try {
+            // Coletando valores da requisição POST que foi recebida
+            $data = Yii::$app->request->post();
+            $model = Usuario::findOne($id);
+            if ($model !== null) {
+                $model->role = $data['role'];
+                if ($model->validate()) {
+                    $model->save();
+                    return "Cargo atualizado com sucesso";
+                }
+            }
+            // Caso a validacao falhe, lançar erros para o front
+            Yii::$app->response->data = $model->errors;
+            Yii::$app->response->statusCode = 422;
             return Yii::$app->response->data;
         } catch (Exception $e) {
             throw $e;

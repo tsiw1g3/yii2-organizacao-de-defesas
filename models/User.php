@@ -19,6 +19,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $created_at;
     public $updated_at;
     public $accessToken;
+    public $role;
 
     /**
      * {@inheritdoc}
@@ -60,6 +61,14 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRole()
+    {
+        return $this->role;
     }
 
     /**

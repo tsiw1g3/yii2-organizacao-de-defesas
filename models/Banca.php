@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "banca".
  *
  * @property int $id
+ * @property int $user_id
  * @property string $titulo_trabalho
  * @property string $resumo
  * @property string $tipo_banca
@@ -18,7 +19,9 @@ use Yii;
  * @property string $palavras_chave
  * @property string $data_realizacao
  * @property float|null $nota_final
- * @property string|null $local
+ * @property string $local
+ * @property string $ano
+ * @property string $semestre_letivo
  */
 class Banca extends \yii\db\ActiveRecord
 {
@@ -36,11 +39,11 @@ class Banca extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'disciplina', 'autor'], 'required'],
+            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'disciplina', 'autor', 'turma', 'user_id', 'ano', 'semestre_letivo', 'matricula'], 'required'],
             [['resumo', 'abstract', 'palavras_chave', 'tipo_banca'], 'string'],
             [['data_realizacao'], 'safe'],
             [['nota_final'], 'number'],
-            [['titulo_trabalho', 'local', 'curso', 'disciplina', 'autor'], 'string', 'max' => 255],
+            [['titulo_trabalho', 'local', 'curso', 'disciplina', 'autor', 'turma', 'ano' , 'semestre_letivo', 'matricula'], 'string', 'max' => 255],
         ];
     }
 
@@ -62,6 +65,11 @@ class Banca extends \yii\db\ActiveRecord
             'curso' => 'Curso',
             'disciplina' => 'Disciplina',
             'autor' => 'Autor',
+            'turma' => 'Turma',
+            'user_id' => 'User Id',
+            'ano' => 'Ano',
+            'semestre_letivo' => 'Semestre Letivo',
+            'matricula' => 'Matrícula',
         ];
     }
 }
