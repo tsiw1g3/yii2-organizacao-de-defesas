@@ -25,7 +25,7 @@ $media += $nota_orientador;
     }
 
     .mt-1-5 {
-        margin-top: 1.5rem;
+        margin-top: 1.3rem;
     }
 
     .text-danger {
@@ -47,14 +47,68 @@ $media += $nota_orientador;
         font-family: 'Libre Franklin';
         width: 30em;
         font-size: 16px;
-        top: 7.7rem;
-        left: 26rem;
+        top: 8rem;
+        left: 23rem;
         font-weight: bold;
     }
 
     .cabecalho p {
         display: inline-block;
         max-width: 50%;
+    }
+
+    .curso {
+        font-family: 'Libre Franklin';
+        width: 30em;
+        font-size: 16px;
+        top: 4.75rem;
+        left: 9.35rem;
+        font-weight: bold;
+    }
+
+    .universidade {
+        font-family: 'Libre Franklin';
+        width: 30em;
+        font-size: 16px;
+        top: 1.5rem;
+        left: 9.2rem;
+        font-weight: bold;
+    }
+
+    .instituto {
+        font-family: 'Libre Franklin';
+        width: 30em;
+        font-size: 16px;
+        top: 3.1rem;
+        left: 9.35rem;
+        font-weight: bold;
+    }
+
+    .disciplina {
+        font-family: 'Libre Franklin';
+        width: 30em;
+        font-size: 16px;
+        top: 6.3rem;
+        left: 9.35rem;
+        font-weight: bold;
+    }
+
+    .turma {
+        font-family: 'Libre Franklin';
+        width: 30em;
+        font-size: 16px;
+        top: 6.3rem;
+        left: 28.35rem;
+        font-weight: bold;
+    }
+
+    .semestre {
+        font-family: 'Libre Franklin';
+        width: 30em;
+        font-size: 16px;
+        top: 8rem;
+        left: 9.35rem;
+        font-weight: bold;
     }
 
     .informacao {
@@ -73,6 +127,11 @@ $media += $nota_orientador;
     }
 
     .orientador {
+        margin-top: 2.1rem;
+        margin-left: 0.51rem;
+    }
+
+    .coorientador {
         margin-top: 2.1rem;
         margin-left: 0.51rem;
     }
@@ -96,12 +155,36 @@ $media += $nota_orientador;
     <img src="./resources/img/page_1.jpg">
 </section>
 
-<div class="cabecalho section">
-    <p class="datetime"><?= $data ?>, <span class="text-danger"><?= $horario ?></span></p>
+<div class="section universidade">
+    <p>Universidade Federal da Bahia</p>
+</div>
+
+<div class="section instituto">
+    <p>Instituto de Computação</p>
+</div>
+
+<div class="section disciplina">
+    <p><?= $disciplina ?> - Projeto Final II</p>
+</div>
+
+<div class="section curso">
+    <p>Bacharelado em <?= $curso == "BCC" ? "Ciência da Computação" : "Sistemas da Informação" ?></p>
+</div>
+
+<div class="section semestre">
+    <p>Semestre: <?= $semestre ?></p>
+</div>
+
+<div class="section turma">
+    <p>Turma: <?= $turma ?></p>
+</div>
+
+<div class="section cabecalho datetime">
+    <p class="datetime">DATA: <?= $data ?>, <span><?= $horario ?></span></p>
 </div>
 
 <div class="informacao section">
-    <p class="aluno"><?= $discente ?></p>
+    <p class="aluno"><?= $aluno ?></p>
     <p class="titulo mt-1-5"><?= $titulo_trabalho ?></p>
     <p class="orientador"><?= $orientador ?></p>
 </div>
