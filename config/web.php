@@ -33,7 +33,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Usuario',
             'enableAutoLogin' => false,
             'enableSession' => false,
             'loginUrl' => 403
@@ -46,7 +46,15 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'sistemadedefesasufba@gmail.com',
+                'password' => 'sisdef123',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],             
+            'useFileTransport' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -79,8 +87,21 @@ $config = [
                         'OPTIONS' => 'allow-cors',
                         'OPTIONS <id>' => 'allow-cors',
                         'POST <id>' => 'view',
+                        'POST <id>/role' => 'edit-role',
+                        'OPTIONS <id>/role' => 'allow-nota',
+                        'OPTIONS <id>/invite' => 'allow-cors',
                         'GET <id>/banca' => 'get-banca', // Listar todas as bancas de um usuario
                         'OPTIONS <id>/banca' => 'allow-cors', // Listar todas as bancas de um usuario
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule', 'controller' =>
+                    ['invite' => 'invite'], // CRUD Usuario
+                    'extraPatterns' => [
+                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS <id>' => 'allow-cors',
+                        'GET <hash>' => 'get-invite',
+                        'OPTIONS <id>' => 'allow-cors',
                     ]
                 ],
                 [
@@ -100,6 +121,8 @@ $config = [
                         'OPTIONS <id>/documento/<doc>/view' => 'allow-cors', // Visualizar um documentos de uma banca
                         'POST <id>/documento' => 'add-document', // Adicionar um documentos a uma banca
                         'DELETE <id>/documento/<doc>' => 'delete-document', // Deletar um documentos a uma banca
+                        'OPTIONS <user_id>/bancas' => 'allow-cors',
+                        'GET <user_id>/bancas' => 'get-bancas-by-user', // Listar todas as bancas de um usuário
                     ]
                 ],
                 [
@@ -113,6 +136,19 @@ $config = [
                         'POST <id>' => 'add', // Adicionar usuario na banca
                         'GET usuarios/<id_banca>' => 'usuarios-banca-by-banca',
                         'OPTIONS usuarios/<id_banca>' => 'allow-cors',
+                        'POST usuarios/email' => 'send-email', // Envio de emails para convite
+                        'OPTIONS nota/<id_banca>/<id_user>' => 'allow-cors', // Dar nota para a banca
+                        'POST nota/<id_banca>/<id_user>' => 'give-score', // Dar nota para a banca
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['google-calendar' => 'google-calendar'], // CRUD google-calendar
+                    'extraPatterns' => [
+                        'OPTIONS' => 'allow-cors',
+                        'GET auth' => 'auth',
+                        'OPTIONS create' => 'allow-cors',
+                        'POST create' => 'create-event',
                     ]
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
