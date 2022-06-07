@@ -46,6 +46,7 @@ class BancaController extends \yii\rest\ActiveController
         // note that if you are sending data as query params you can use Yii::$app->request->queryParams instead.
 
         unset($defaultActions['create']);
+        unset($defaultActions['delete']);
         return $defaultActions;
     }
 
@@ -115,6 +116,26 @@ class BancaController extends \yii\rest\ActiveController
             // }
 
             if ($usuario->delete()) {
+                Yii::$app->response->statusCode = 204;
+                return Yii::$app->response->data;
+            }
+
+            // Caso a exclusao falhe, lançar erros para o front
+            Yii::$app->response->data = $usuario->errors;
+            Yii::$app->response->statusCode = 422;
+
+            return Yii::$app->response->data;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function actionDeleteBanca($id)
+    {
+        try {
+            $banca = $this->findByBancaById($id);
+
+            if ($banca->delete()) {
                 Yii::$app->response->statusCode = 204;
                 return Yii::$app->response->data;
             }

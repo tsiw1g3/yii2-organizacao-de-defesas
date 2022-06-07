@@ -123,6 +123,8 @@ $config = [
                         'DELETE <id>/documento/<doc>' => 'delete-document', // Deletar um documentos a uma banca
                         'OPTIONS <user_id>/bancas' => 'allow-cors',
                         'GET <user_id>/bancas' => 'get-bancas-by-user', // Listar todas as bancas de um usuário
+                        'DELETE <id>/delete' => 'delete-banca', // Listar todas as bancas de um usuário
+                        'OPTIONS <id>/delete' => 'allow-cors', // Deletar uma banca
                     ]
                 ],
                 [
