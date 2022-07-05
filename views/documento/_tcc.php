@@ -7,6 +7,7 @@ $media = 0;
 
 $media += $nota_orientador;
 
+
 ?>
 
 <style>

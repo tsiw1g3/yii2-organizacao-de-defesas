@@ -1,0 +1,139 @@
+body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12px;
+    color: black;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.mt-1-5 {
+    margin-top: 1.3rem;
+}
+
+.text-danger {
+    color: red;
+}
+
+section {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.section {
+    position: absolute;
+    z-index: 999;
+}
+
+.cabecalho {
+    font-family: 'Libre Franklin';
+    width: 30em;
+    font-size: 16px;
+    top: 8rem;
+    left: 23rem;
+    font-weight: bold;
+}
+
+.cabecalho p {
+    display: inline-block;
+    max-width: 50%;
+}
+
+.curso {
+    font-family: 'Libre Franklin';
+    width: 30em;
+    font-size: 16px;
+    top: 4.75rem;
+    left: 9.35rem;
+    font-weight: bold;
+}
+
+.universidade {
+    font-family: 'Libre Franklin';
+    width: 30em;
+    font-size: 16px;
+    top: 1.5rem;
+    left: 9.2rem;
+    font-weight: bold;
+}
+
+.instituto {
+    font-family: 'Libre Franklin';
+    width: 30em;
+    font-size: 16px;
+    top: 3.1rem;
+    left: 9.35rem;
+    font-weight: bold;
+}
+
+.disciplina {
+    font-family: 'Libre Franklin';
+    width: 30em;
+    font-size: 16px;
+    top: 6.3rem;
+    left: 9.35rem;
+    font-weight: bold;
+}
+
+.turma {
+    font-family: 'Libre Franklin';
+    width: 30em;
+    font-size: 16px;
+    top: 6.3rem;
+    left: 28.35rem;
+    font-weight: bold;
+}
+
+.semestre {
+    font-family: 'Libre Franklin';
+    width: 30em;
+    font-size: 16px;
+    top: 8rem;
+    left: 9.35rem;
+    font-weight: bold;
+}
+
+.informacao {
+    top: 16.3rem;
+    left: 20rem;
+}
+
+.aluno {
+    top: 0px;
+    left: 0px;
+}
+
+.titulo {
+    height: 4%;
+    width: 90%;
+}
+
+.orientador {
+    margin-top: 2.1rem;
+    margin-left: 0.51rem;
+}
+
+.coorientador {
+    margin-top: 2.1rem;
+    margin-left: 0.51rem;
+}
+
+.banca_examinadora {
+    font-size: 14px;
+    top: 31.5rem;
+    left: 18rem;
+}
+
+.primeira_avaliacao {
+    font-family: 'Libre Franklin';
+    font-size: 15px;
+    top: 44.3rem;
+    left: 23rem;
+    width: 10%;
+}

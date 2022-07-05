@@ -223,7 +223,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     }
 
     public function actionSendEmail(){
-        try{
+        // try{
             $data = Yii::$app->request->post();
             $banca = Banca::findOne($data['banca']);
             $user = Usuario::findOne($banca['user_id']);
@@ -235,7 +235,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
                     array_push($avaliadores, $user["nome"]);
                 }
             }
-            // $inviteLink = $this->CreateEvent($banca);
+            $inviteLink = $this->CreateEvent($banca);
             $emails = explode(",", $data['emails']);
             $message = Yii::$app->mailer->compose('emailTemplate', 
             [
@@ -243,17 +243,17 @@ class UsuarioBancaController extends \yii\rest\ActiveController
                 'content' => $data['mensagem'],
                 'orientador' => $user->nome,
                 'avaliadores' => $avaliadores,
-                // 'invite_google' => $inviteLink, 
+                'invite_google' => $inviteLink, 
             ]);
             $message->setFrom('sistemadedefesasufba@gmail.com');
             $message->setTo($emails);
             $message->setSubject($data['assunto']);
             $message->send();
             return "Email enviado com sucesso!";
-        } catch (Exception $e) {
-            return "Ocorreu um erro ao tentar enviar o email, tente novamente mais tarde!";
-            // return $e->getMessage();
-        }
+        // } catch (Exception $e) {
+        //     // return "Ocorreu um erro ao tentar enviar o email, tente novamente mais tarde!";
+        //     return $e->getMessage();
+        // }
     }
 
     protected function validateRole($model)

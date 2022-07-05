@@ -50,7 +50,7 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
                 'username' => 'sistemadedefesasufba@gmail.com',
-                'password' => 'sisdef123',
+                'password' => 'lkcwmpltlxojzyod',
                 'port' => '587',
                 'encryption' => 'tls',
             ],             
@@ -155,8 +155,10 @@ $config = [
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
-                'GET documento/<id_banca>' => 'documento/get-doc', // Pegar a nota final dado o id da banca
-                'OPTIONS documento/<id_banca>' => 'documento/allow-cors', // Pegar a nota final dado o id da banca
+                'POST documento/<id_banca>' => 'documento/get-doc', // Gerar o relatorio
+                'OPTIONS documento/<id_banca>' => 'documento/allow-cors', // Gerar o relatorio
+                'GET documento/documentoInfo/<id_banca>' => 'documento/documento-info', // Pegar informacoes para gerar relatorio
+                'OPTIONS documento/documentoInfo/<id_banca>' => 'documento/allow-cors', // Pegar informacoes para gerar relatorio
                 'POST login' => 'login/login', // Realizar login
                 'POST logout' => 'login/logout', // Realizar logouut
             ],

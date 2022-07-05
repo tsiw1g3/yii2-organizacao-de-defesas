@@ -9,6 +9,11 @@ use app\security\ValidatorRequest;
 use DateTime;
 use DateTimeZone;
 use Yii;
+use app\controllers\common\filters\Cors;
+use mikehaertl\wkhtmlto\Pdf;
+use Spiritix\HtmlToPdf\Converter;
+use Spiritix\HtmlToPdf\Input\UrlInput;
+use Spiritix\HtmlToPdf\Output\DownloadOutput;
 
 /**
  * Controller que gerencia a geração de documentos.
@@ -18,7 +23,7 @@ class DocumentoController extends \yii\web\Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'allow-cors') {
+        if ($action->id == 'allow-cors' || $action->id == 'get-doc') {
             $this->enableCsrfValidation = false;
             return parent::beforeAction($action);
         }
@@ -30,62 +35,99 @@ class DocumentoController extends \yii\web\Controller
         return parent::beforeAction($action);
     }
 
-    public function actionIndex()
-    {
-        return $this->render('index');
+    public static function allowedDomains() {
+        return [$_SERVER["REMOTE_ADDR"], 'http://localhost:3000/'];
     }
-
-    public function actionAllowCors() {}
-
-    public function actionGetDoc($id_banca)
-    {
-        $banca = Banca::find()->where(['id' => $id_banca])->one();
-
-        $orientador_id = UsuarioBanca::find()->select(['id_usuario', 'nota'])->where(['role' => 'orientador', 'id_banca' => $id_banca])->one();
-        $orientador = Usuario::findOne($orientador_id)->nome;
-
-
-        $avaliadores_id = UsuarioBanca::find()->select(['id_usuario', 'IFNULL(nota, 0) as nota'])->where(['role' => 'avaliador', 'id_banca' => $id_banca])->all();
-
-        if (!empty($avaliadores_id)) {
-            $avaliador_1 = isset($avaliadores_id[0]) ? Usuario::findOne($avaliadores_id[0])->nome : '--';
-            $avaliador_2 = isset($avaliadores_id[1]) ? Usuario::findOne($avaliadores_id[1])->nome : '--';
-
-            $avaliadores = [
-                $avaliador_1 => isset($avaliadores_id[0]) ? $avaliadores_id[0]->nota : 0,
-                $avaliador_2 => isset($avaliadores_id[1]) ? $avaliadores_id[1]->nota : 0
-            ];
-        } else {
-            $avaliador_1 = '--';
-            $avaliador_2 = '--';
-
-            $avaliadores = [
-                $avaliador_1 => 0,
-                $avaliador_2 => 0
-            ];
+    
+    function behaviors()
+        {
+            
+            $behaviors = parent::behaviors();
+            return array_merge($behaviors, [
+                'corsFilter'  => [
+                    'class' => Cors::className(),
+                    'cors'  => [
+                        // restrict access to domains:
+                        'Origin'                           => static::allowedDomains(),
+                        'Access-Control-Request-Method'    => ['POST', 'GET', 'OPTIONS'],
+                        'Access-Control-Allow-Credentials' => true,
+                        'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
+                        'Access-Control-Allow-Headers' => ['authorization','X-Requested-With','content-type', 'Access-Control-Allow-Origin'],
+                        'Access-Control-Check' => true
+                    ],
+                ],
+            ]);
+            return $behaviors;
         }
 
-        $dtz = new DateTimeZone("America/Sao_Paulo");
-        $dateTime = date_create_from_format("Y-m-d H:i:s", $banca->data_realizacao, $dtz);
-        $data = $dateTime->format('d/m/Y');
-        $horario = $dateTime->format('H:i');
+    
+        public function actionIndex()
+        {
+            return $this->render('index');
+        }
 
-        $tcc = $this->renderPartial('_tcc.php', [
-            'curso' => $banca->curso,
-            'disciplina' => $banca->disciplina,
-            'turma' => $banca->turma,
-            'titulo_trabalho' => $banca->titulo_trabalho,
-            'orientador' => $orientador,
-            'nota_orientador' => isset($orientador_id->nota) ? $orientador_id->nota : 0,
-            'aluno' => $banca->autor,
-            'avaliadores' => $avaliadores,
-            'data' => $data,
-            'horario' => $horario,
-            'semestre' => $banca->ano . "." . $banca->semestre_letivo
-        ]);
+        public function actionAllowCors() {}
 
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML($tcc);
-        $mpdf->Output();
-    }
+        public function actionGetDoc($id_banca)
+        {
+            // throw new Error;
+            $tcc = $this->renderPartial('_tcc.php', [
+                'curso' => $_POST['curso'],
+                'disciplina' => $_POST['disciplina'],
+                'turma' => $_POST['turma'],
+                'titulo_trabalho' => $_POST['titulo_trabalho'],
+                'orientador' => $_POST['orientador'],
+                'nota_orientador' => isset($_POST['orientador_nota']) ? $_POST['orientador_nota'] : 0,
+                'aluno' => $_POST['aluno'],
+                'avaliadores' => json_decode($_POST['avaliadores']),
+                'data' => $_POST['data'],
+                'horario' => $_POST['horario'],
+                'semestre' => $_POST['semestre'],
+            ]);
+
+            $mpdf = new \Mpdf\Mpdf();
+            $mpdf->WriteHTML($tcc);
+            $mpdf->Output();
+        }
+
+        public function actionDocumentoInfo($id_banca){
+            $banca = Banca::find()->where(['id' => $id_banca])->one();
+
+            $membros_banca = (new \yii\db\Query())
+            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome'])
+            ->from('usuario_banca')
+            ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+            ->where("usuario_banca.id_banca = $id_banca")
+            ->all();
+            $orientador;
+            $avaliadores = array();
+            foreach($membros_banca as $membro){
+                if($membro['role'] == "orientador"){
+                    $orientador = $membro;
+                }
+                else if($membro['role'] == "avaliador"){
+                    $avaliadores[$membro['nome']] = $membro['nota'];
+                }
+            }
+
+            $dtz = new DateTimeZone("America/Sao_Paulo");
+            $dateTime = date_create_from_format("Y-m-d H:i:s", $banca->data_realizacao, $dtz);
+            $data = $dateTime->format('d/m/Y');
+            $horario = $dateTime->format('H:i');
+
+            $response = [
+                'curso' => $banca->curso,
+                'disciplina' => $banca->disciplina,
+                'turma' => $banca->turma,
+                'titulo_trabalho' => $banca->titulo_trabalho,
+                'orientador' => $orientador["nome"],
+                'nota_orientador' => isset($orientador["nota"]) ? $orientador["nota"] : 0,
+                'aluno' => $banca->autor,
+                'avaliadores' => $avaliadores,
+                'data' => $data,
+                'horario' => $horario,
+                'semestre' => $banca->ano . "." . $banca->semestre_letivo
+            ];
+            return json_encode($response);
+        }
 }
