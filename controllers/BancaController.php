@@ -104,6 +104,7 @@ class BancaController extends \yii\rest\ActiveController
         } catch (Exception $e) {
             throw $e;
         }
+        
     }
 
     public function actionDeleteUserBanca($id, $user)
