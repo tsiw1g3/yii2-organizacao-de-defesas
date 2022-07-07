@@ -125,6 +125,10 @@ $config = [
                         'GET <user_id>/bancas' => 'get-bancas-by-user', // Listar todas as bancas de um usuário
                         'DELETE <id>/delete' => 'delete-banca', // Listar todas as bancas de um usuário
                         'OPTIONS <id>/delete' => 'allow-cors', // Deletar uma banca
+                        'OPTIONS <id_banca>/report' => 'allow-cors', // Gerar o relatorio
+                        'POST <id_banca>/report' => 'get-report', // Gerar o relatorio
+                        'OPTIONS <id_banca>/reportInfo' => 'allow-cors', // Pegar informacoes para gerar relatorio
+                        'GET <id_banca>/reportInfo' => 'report-info', // Pegar informacoes para gerar relatorio
                     ]
                 ],
                 [

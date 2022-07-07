@@ -10,10 +10,7 @@ use DateTime;
 use DateTimeZone;
 use Yii;
 use app\controllers\common\filters\Cors;
-use mikehaertl\wkhtmlto\Pdf;
-use Spiritix\HtmlToPdf\Converter;
-use Spiritix\HtmlToPdf\Input\UrlInput;
-use Spiritix\HtmlToPdf\Output\DownloadOutput;
+
 
 /**
  * Controller que gerencia a geração de documentos.
@@ -70,7 +67,7 @@ class DocumentoController extends \yii\web\Controller
 
         public function actionGetDoc($id_banca)
         {
-            // throw new Error;
+            $_POST["tempo3"] = time();
             $tcc = $this->renderPartial('_tcc.php', [
                 'curso' => $_POST['curso'],
                 'disciplina' => $_POST['disciplina'],
@@ -84,13 +81,20 @@ class DocumentoController extends \yii\web\Controller
                 'horario' => $_POST['horario'],
                 'semestre' => $_POST['semestre'],
             ]);
-
+            $_POST["tempo4"] = time();
+            
             $mpdf = new \Mpdf\Mpdf();
             $mpdf->WriteHTML($tcc);
             $mpdf->Output();
+
+            $_POST["tempo5"] = time();
+
+            throw new Error;
         }
 
         public function actionDocumentoInfo($id_banca){
+            $_POST["tempo1"] = time();
+
             $banca = Banca::find()->where(['id' => $id_banca])->one();
 
             $membros_banca = (new \yii\db\Query())
@@ -126,8 +130,11 @@ class DocumentoController extends \yii\web\Controller
                 'avaliadores' => $avaliadores,
                 'data' => $data,
                 'horario' => $horario,
-                'semestre' => $banca->ano . "." . $banca->semestre_letivo
+                'semestre' => $banca->ano . "." . $banca->semestre_letivo,
+                'tempo1' => time()
             ];
+            $_POST["tempo2"] = time();
+
             return json_encode($response);
         }
 }

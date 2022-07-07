@@ -10,6 +10,8 @@ use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
 use Exception;
 use Yii;
+use DateTime;
+use DateTimeZone;
 use yii\helpers\VarDumper;
 
 /**
@@ -22,11 +24,11 @@ class BancaController extends \yii\rest\ActiveController
 
     public function beforeAction($action)
     {
+        $_POST['action2'] = $action->id;
         if($action->id == 'allow-cors' || $action->id == 'index') {
            $this->enableCsrfValidation = false;
            return parent::beforeAction($action);
         }
-
         $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
         if (!$permission && $action->id != "view") {
             throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
@@ -283,6 +285,78 @@ class BancaController extends \yii\rest\ActiveController
             throw $e;
         }
     }
+
+    public function actionGetReport($id_banca)
+        {
+            $_POST["tempo3"] = time();
+            $tcc = $this->renderPartial('../documento/_tcc.php', [
+                'curso' => $_POST['curso'],
+                'disciplina' => $_POST['disciplina'],
+                'turma' => $_POST['turma'],
+                'titulo_trabalho' => $_POST['titulo_trabalho'],
+                'orientador' => $_POST['orientador'],
+                'nota_orientador' => isset($_POST['orientador_nota']) ? $_POST['orientador_nota'] : 0,
+                'aluno' => $_POST['aluno'],
+                'avaliadores' => json_decode($_POST['avaliadores']),
+                'data' => $_POST['data'],
+                'horario' => $_POST['horario'],
+                'semestre' => $_POST['semestre'],
+            ]);
+            $_POST["tempo4"] = time();
+            
+            $mpdf = new \Mpdf\Mpdf();
+            $mpdf->WriteHTML($tcc);
+            $mpdf->Output();
+
+            $_POST["tempo5"] = time();
+
+        }
+
+        public function actionReportInfo($id_banca){
+            $_POST["tempo1"] = time();
+
+            $banca = Banca::find()->where(['id' => $id_banca])->one();
+
+            $membros_banca = (new \yii\db\Query())
+            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome'])
+            ->from('usuario_banca')
+            ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+            ->where("usuario_banca.id_banca = $id_banca")
+            ->all();
+            $orientador;
+            $avaliadores = array();
+            foreach($membros_banca as $membro){
+                if($membro['role'] == "orientador"){
+                    $orientador = $membro;
+                }
+                else if($membro['role'] == "avaliador"){
+                    $avaliadores[$membro['nome']] = $membro['nota'];
+                }
+            }
+
+            $dtz = new DateTimeZone("America/Sao_Paulo");
+            $dateTime = date_create_from_format("Y-m-d H:i:s", $banca->data_realizacao, $dtz);
+            $data = $dateTime->format('d/m/Y');
+            $horario = $dateTime->format('H:i');
+
+            $response = [
+                'curso' => $banca->curso,
+                'disciplina' => $banca->disciplina,
+                'turma' => $banca->turma,
+                'titulo_trabalho' => $banca->titulo_trabalho,
+                'orientador' => $orientador["nome"],
+                'nota_orientador' => isset($orientador["nota"]) ? $orientador["nota"] : 0,
+                'aluno' => $banca->autor,
+                'avaliadores' => $avaliadores,
+                'data' => $data,
+                'horario' => $horario,
+                'semestre' => $banca->ano . "." . $banca->semestre_letivo,
+                'tempo1' => time()
+            ];
+            $_POST["tempo2"] = time();
+
+            return $response;
+        }
 
     protected function findByBancaById($id)
     {
