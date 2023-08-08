@@ -64,7 +64,7 @@ class BancaController extends \yii\rest\ActiveController
             // Atribuindo os atributos da requição para o modelo
             $banca->attributes = $data;
 
-            if ($banca->validate()  && $banca->save()) {
+            if ($banca->validate() && $banca->save()) {
 
                 $usuario_banca = new UsuarioBanca();
                 $usuario_banca->id_banca = $banca->id;
@@ -86,6 +86,7 @@ class BancaController extends \yii\rest\ActiveController
 
             return Yii::$app->response->data;
         } catch (Exception $e) {
+            throw $e;
         }
     }
 
