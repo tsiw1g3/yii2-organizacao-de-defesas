@@ -74,7 +74,7 @@ class DocumentoController extends \yii\web\Controller
                 'turma' => $_POST['turma'],
                 'titulo_trabalho' => $_POST['titulo_trabalho'],
                 'orientador' => $_POST['orientador'],
-                'nota_orientador' => isset($_POST['orientador_nota']) ? $_POST['orientador_nota'] : 0,
+                'nota_orientador' => isset($_POST['nota_orientador']) ? $_POST['nota_orientador'] : 0,
                 'aluno' => $_POST['aluno'],
                 'avaliadores' => json_decode($_POST['avaliadores']),
                 'data' => $_POST['data'],
