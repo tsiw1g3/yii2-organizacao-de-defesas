@@ -85,10 +85,12 @@ class UsuarioController extends \yii\rest\ActiveController
             }
 
             // Validar os atributos do modelo
-            if ($model->validate()) {
+            $invite = Invite::findOne(['invite_hash' => $data["hash"]]);
+            if ($model->validate() && $invite) {
+                // Remove o invite da base de dados.
+                $invite->delete();
                 //  Faz a criptografia da senha enviada
                 $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-                $invite = Invite::findOne(['invite_hash' => $data["hash"]])->delete();
                 // Salva o modelo no banco de dados
                 $model->save();
 

@@ -74,7 +74,7 @@ class InviteController extends \yii\rest\ActiveController
 
             return Yii::$app->response->data;
         } catch (Exception $e) {
-            var_dump("Achei invite", $e); die();
+            throw $e;
         }
     }
 
