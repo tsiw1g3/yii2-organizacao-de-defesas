@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Linux (x86_64)
 --
 -- Host: localhost    Database: organizacao_defesa
 -- ------------------------------------------------------
--- Server version	8.0.34
+-- Server version       8.0.34
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -45,6 +45,15 @@ CREATE TABLE `banca` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `banca`
+--
+
+LOCK TABLES `banca` WRITE;
+/*!40000 ALTER TABLE `banca` DISABLE KEYS */;
+/*!40000 ALTER TABLE `banca` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `banca_documento`
 --
 
@@ -58,6 +67,15 @@ CREATE TABLE `banca_documento` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `banca_documento`
+--
+
+LOCK TABLES `banca_documento` WRITE;
+/*!40000 ALTER TABLE `banca_documento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `banca_documento` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `documento`
@@ -77,6 +95,15 @@ CREATE TABLE `documento` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `documento`
+--
+
+LOCK TABLES `documento` WRITE;
+/*!40000 ALTER TABLE `documento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `documento` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `invite`
 --
 
@@ -88,8 +115,17 @@ CREATE TABLE `invite` (
   `user_id` int DEFAULT NULL,
   `invite_hash` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `invite`
+--
+
+LOCK TABLES `invite` WRITE;
+/*!40000 ALTER TABLE `invite` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invite` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `session`
@@ -106,6 +142,16 @@ CREATE TABLE `session` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `session`
+--
+
+LOCK TABLES `session` WRITE;
+/*!40000 ALTER TABLE `session` DISABLE KEYS */;
+INSERT INTO `session` VALUES ('35d004be5693b2e94af61dfd64dd2a04',1691592036,_binary '__flash|a:0:{}','EhBI2m5lkqjD5ep7Z-Jb9LZhvFhAjzHk'),('b000b6a7f3e726305cb9eb7e58bbc0ec',1691592145,_binary '__flash|a:0:{}','EhBI2m5lkqjD5ep7Z-Jb9LZhvFhAjzHk');
+/*!40000 ALTER TABLE `session` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario`
@@ -132,8 +178,18 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `auth_key` (`auth_key`) USING BTREE,
   UNIQUE KEY `username` (`username`) USING BTREE,
   UNIQUE KEY `email` (`email`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (9,'root','$2y$13$wT/lWjkyz31VlxSPLAH/f.HK6eU04r5f3GYxLGuag6Afw1M.IxrVW','EhBI2m5lkqjD5ep7Z-Jb9LZhvFhAjzHk','root@root.com','Root User','Root','Bacharelado',NULL,'user','2023-08-09 11:16:17','2023-08-09 11:16:17',3);
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario_banca`
@@ -151,6 +207,15 @@ CREATE TABLE `usuario_banca` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario_banca`
+--
+
+LOCK TABLES `usuario_banca` WRITE;
+/*!40000 ALTER TABLE `usuario_banca` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario_banca` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -161,4 +226,4 @@ CREATE TABLE `usuario_banca` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-09  9:12:43
+-- Dump completed on 2023-08-09 14:19:08
