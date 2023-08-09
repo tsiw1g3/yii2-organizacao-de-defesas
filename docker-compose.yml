@@ -2,19 +2,17 @@ version: '2'
 services:
   php:
     image: yiisoftware/yii2-php:7.4-apache
-    volumes:
-      # - ~/.composer-docker/cache:/root/.composer/cache:delegated
+    volumes:      
       - ./:/app
     ports:
       - '8000:80'
     depends_on:
-      - db
+      - db    
   db:
-    image: mysql:8.0-debian    
+    image: mysql:5.7-debian    
     restart: always
     environment:
       - MYSQL_DATABASE=organizacao_defesa
-      - MYSQL_PASSWORD=root
-      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=root
     cap_add:
       - SYS_NICE
