@@ -85,6 +85,7 @@ $config = [
                     ['usuario' => 'usuario'], // CRUD Usuario
                     'extraPatterns' => [
                         'OPTIONS' => 'allow-cors',
+                        'GET' => 'get-usuarios',
                         'OPTIONS <id>' => 'allow-cors',
                         'POST <id>' => 'view',
                         'POST <id>/role' => 'edit-role',

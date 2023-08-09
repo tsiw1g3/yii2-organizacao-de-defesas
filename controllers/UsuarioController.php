@@ -108,6 +108,16 @@ class UsuarioController extends \yii\rest\ActiveController
         // throw new \yii\web\NotFoundHttpException('The requested page does not exist.', 403);
     }
 
+    public function actionGetUsuarios(){
+        try {            
+            $role = Yii::$app->getRequest()->getQueryParam('role');
+            if($role) return Usuario::find()->where(['role' => $role])->all();
+            return Usuario::find()->all();
+        } catch(Exception $e) {
+            throw $e;
+        }
+    }
+
     public function actionEditRole($id)
     {
         try {
