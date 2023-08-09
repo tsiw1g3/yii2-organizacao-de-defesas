@@ -118,13 +118,29 @@ CREATE TABLE `invite` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+-- reset_password id user_id reset_password_hash
 --
--- Dumping data for table `invite`
+-- Table structure for table `reset_password`
 --
 
-LOCK TABLES `invite` WRITE;
-/*!40000 ALTER TABLE `invite` DISABLE KEYS */;
-/*!40000 ALTER TABLE `invite` ENABLE KEYS */;
+DROP TABLE IF EXISTS `reset_password`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reset_password` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `reset_password_hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reset_password`
+--
+
+LOCK TABLES `reset_password` WRITE;
+/*!40000 ALTER TABLE `reset_password` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reset_password` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

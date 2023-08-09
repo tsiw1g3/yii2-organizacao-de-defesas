@@ -158,6 +158,18 @@ $config = [
                         'POST create' => 'create-event',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['reset-password' => 'reset-password'], // CRUD google-calendar
+                    'extraPatterns' => [
+                        'OPTIONS' => 'allow-cors',
+                        'POST' => 'create',
+                        'GET <hash>' => 'get-reset-hash',
+                        'OPTIONS <hash>' => 'allow-cors',
+                        'POST reset' => 'reset',
+                        'OPTIONS reset' => 'allow-cors',
+                    ]
+                ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
                 'POST documento/<id_banca>' => 'documento/get-doc', // Gerar o relatorio
