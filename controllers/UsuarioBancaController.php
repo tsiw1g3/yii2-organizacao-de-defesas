@@ -183,8 +183,11 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         $googleApi = new GoogleCalendarApi($username, $calendarId, $redirectUrl);
         $date = new \DateTime($banca['data_realizacao'], new \DateTimeZone("America/Sao_paulo"));
         $dateEnd = new \DateTime($banca['data_realizacao'], new \DateTimeZone("America/Sao_paulo"));
-        $dateEnd->add(new \DateInterval('PT1H'));     
-        if($googleApi->checkIfCredentialFileExists()){            
+        $dateEnd->add(new \DateInterval('PT1H'));
+        if(!$googleApi->checkIfCredentialFileExists()){
+            $googleApi->generateGoogleApiAccessToken();
+        }
+        if($googleApi->checkIfCredentialFileExists()){
             $event = array(
                 'summary' => $banca['titulo_trabalho'],
                 'location' => $banca['local'],
@@ -214,9 +217,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
             );
             
             $calEvent = $googleApi->createGoogleCalendarEvent($event);            
-            $e_id = explode("eid=", $calEvent->htmlLink);
-            $invite = "https://calendar.google.com/event?action=TEMPLATE&tmeid=" . $e_id[1] . "&tmsrc=1dimt5iv0ba88goaephucfrmqo%40group.calendar.google.com&scp=ALL";
-            return $invite;
+            return $calEvent->htmlLink;
         }else{
             return $this->redirect(['auth']);
         }

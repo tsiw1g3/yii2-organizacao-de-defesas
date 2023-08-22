@@ -5,9 +5,11 @@ services:
     volumes:      
       - ./:/app
     ports:
-      - '8000:80'
+      - '8080:80'
     depends_on:
-      - db    
+      - db
+    environment:
+      - BASE_URL=http://localhost:8080
   db:
     image: mysql:5.7-debian    
     restart: always
