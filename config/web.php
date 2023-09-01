@@ -170,12 +170,20 @@ $config = [
                         'OPTIONS reset' => 'allow-cors',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['documento' => 'documento'], // CRUD google-calendar
+                    'extraPatterns' => [                        
+                        'POST <id_banca>' => 'get-doc', // Gerar o relatorio
+                        'OPTIONS <id_banca>' => 'allow-cors', // Gerar o relatorio
+                        'GET participacao/<id_banca>' => 'get-doc-participacao', // Gerar documento de participação na banca.
+                        'GET orientacao/<id_banca>' => 'get-doc-orientacao', // Gerar documento de participação na banca.
+                        'GET documentoInfo/<id_banca>' => 'documento-info', // Pegar informacoes para gerar relatorio
+                        'OPTIONS documentoInfo/<id_banca>' => 'allow-cors', // Pegar informacoes para gerar relatorio
+                    ]
+                ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
-                'POST documento/<id_banca>' => 'documento/get-doc', // Gerar o relatorio
-                'OPTIONS documento/<id_banca>' => 'documento/allow-cors', // Gerar o relatorio
-                'GET documento/documentoInfo/<id_banca>' => 'documento/documento-info', // Pegar informacoes para gerar relatorio
-                'OPTIONS documento/documentoInfo/<id_banca>' => 'documento/allow-cors', // Pegar informacoes para gerar relatorio
                 'POST login' => 'login/login', // Realizar login
                 'POST logout' => 'login/logout', // Realizar logouut
             ],

@@ -92,6 +92,58 @@ class DocumentoController extends \yii\web\Controller
             throw new Error;
         }
 
+        public function actionGetDocParticipacao($id_banca) {
+            $banca = Banca::find()->where(['id' => $id_banca])->one();
+            
+            $orientador = (new \yii\db\Query())
+            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome'])
+            ->from('usuario_banca')
+            ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+            ->where("usuario_banca.id_banca = $id_banca AND usuario_banca.role = 'orientador'")
+            ->one();
+
+            $dtz = new DateTimeZone("America/Sao_Paulo");
+            $dateTime = date_create_from_format("Y-m-d H:i:s", $banca->data_realizacao, $dtz);
+            $data = $dateTime->format('m/d/Y');
+
+            $participacao = $this->renderPartial('_participacao.php', [
+                'titulo_trabalho' => $banca->titulo_trabalho,
+                'orientador' => $orientador["nome"],
+                'aluno' => $banca->autor,
+                'data' => $data,
+            ]);
+                        
+            $mpdf = new \Mpdf\Mpdf();            
+            $mpdf->WriteHTML($participacao);
+            $mpdf->Output();
+        }
+        
+        public function actionGetDocOrientacao($id_banca) {
+            $banca = Banca::find()->where(['id' => $id_banca])->one();
+            
+            $orientador = (new \yii\db\Query())
+            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome'])
+            ->from('usuario_banca')
+            ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+            ->where("usuario_banca.id_banca = $id_banca AND usuario_banca.role = 'orientador'")
+            ->one();
+
+            $dtz = new DateTimeZone("America/Sao_Paulo");
+            $dateTime = date_create_from_format("Y-m-d H:i:s", $banca->data_realizacao, $dtz);
+            $data = $dateTime->format('m/d/Y');
+
+            $orientacao = $this->renderPartial('_orientacao.php', [
+                'titulo_trabalho' => $banca->titulo_trabalho,
+                'orientador' => $orientador["nome"],
+                'aluno' => $banca->autor,
+                'data' => $data,
+            ]);
+                        
+            $mpdf = new \Mpdf\Mpdf();
+            $mpdf->WriteHTML($orientacao);
+            $mpdf->Output();
+        }
+
         public function actionDocumentoInfo($id_banca){
             $_POST["tempo1"] = time();
 
