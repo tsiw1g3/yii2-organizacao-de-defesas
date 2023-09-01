@@ -25,7 +25,7 @@ $data_defesa = date("d/m/Y", $timestamp);
         <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
           <tr>
             <td align="center" style="background:#70BBD9;">
-              <img src="https://sistema-de-defesa.herokuapp.com/resources/img/instituto_de_computacao.png" alt="" width="60" style="height:auto;display:block;" />
+              <img src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png" alt="Logo Instituto de Computação" width="60" style="height:auto;display:block;" />
             </td>
           </tr>
           <tr>
@@ -72,7 +72,11 @@ $data_defesa = date("d/m/Y", $timestamp);
                         <td style="max-width:540px;padding:0;vertical-align:top;color:#153643; text-align:center;" colspan="3">
                           <div>
 	                    	  <h3 style="font-size:24px;margin:16px 0 20px 0;font-family:Arial,sans-serif;">Adicionar ao google agenda:</h3>
-	                          <p style="font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="<?= $invite_google; ?>"><img style="margin-left:auto; margin-right:auto;" src="https://sistema-de-defesa.herokuapp.com/resources/img/google_agenda.png" alt="" width="300" style="height:auto;display:block;" /></p></a>
+	                          <p style="font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
+                              <a href="<?= $invite_google; ?>">
+                                <img style="margin-left:auto; margin-right:auto;" src="<?= $_ENV["BASE_URL"] ?>/resources/img/google_agenda.png" alt="Adicionar à agenda" width="300" style="height:auto;display:block;" />
+                              </a>
+                            </p>
                           </div>
                         </td>
                       </tr>

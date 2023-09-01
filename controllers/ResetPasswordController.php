@@ -58,7 +58,7 @@ class ResetPasswordController extends \yii\rest\ActiveController
             $data['reset_password_hash'] = $data['email'] . $data['reset_password_hash'];
             if($resetPassword == null){
                 $resetPassword = new ResetPassword();
-            }
+            }            
             
             // Atribuindo os atributos da requição para o modelo
             $resetPassword->attributes = $data;
@@ -68,6 +68,9 @@ class ResetPasswordController extends \yii\rest\ActiveController
                 // Salva o reset password no banco de dados
                 $resetPassword->save();
                 $this->SendEmail($resetPassword->reset_password_hash, $data['email']);
+                Yii::$app->response->statusCode = 201;
+                Yii::$app->response->data = "O Email de redefinição de senha foi enviado";
+                return Yii::$app->response->data;
             }
 
             // Caso a validacao falhe, lançar erros para o front

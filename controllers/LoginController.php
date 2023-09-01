@@ -71,6 +71,7 @@ class LoginController extends \yii\rest\ActiveController
                         'id' => $id,
                         'token' => Yii::$app->session->getId(),
                         'role' => $usuario->role,
+                        'name' => $usuario->nome,
                     ],
                 ]);
             }

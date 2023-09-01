@@ -124,7 +124,7 @@ $media += $nota_orientador;
 
     .titulo {
         height: 4%;
-        width: 90%;
+        width: 100%;
     }
 
     .orientador {

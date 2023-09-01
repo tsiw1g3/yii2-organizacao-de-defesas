@@ -85,10 +85,12 @@ class UsuarioController extends \yii\rest\ActiveController
             }
 
             // Validar os atributos do modelo
-            if ($model->validate()) {
+            $invite = Invite::findOne(['invite_hash' => $data["hash"]]);
+            if ($model->validate() && $invite) {
+                // Remove o invite da base de dados.
+                $invite->delete();
                 //  Faz a criptografia da senha enviada
                 $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-                $invite = Invite::findOne(['invite_hash' => $data["hash"]])->delete();
                 // Salva o modelo no banco de dados
                 $model->save();
 
@@ -104,6 +106,16 @@ class UsuarioController extends \yii\rest\ActiveController
             throw $e;
         }
         // throw new \yii\web\NotFoundHttpException('The requested page does not exist.', 403);
+    }
+
+    public function actionGetUsuarios(){
+        try {            
+            $role = Yii::$app->getRequest()->getQueryParam('role');
+            if($role) return Usuario::find()->where(['role' => $role])->all();
+            return Usuario::find()->all();
+        } catch(Exception $e) {
+            throw $e;
+        }
     }
 
     public function actionEditRole($id)

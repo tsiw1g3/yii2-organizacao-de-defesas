@@ -85,10 +85,11 @@ $config = [
                     ['usuario' => 'usuario'], // CRUD Usuario
                     'extraPatterns' => [
                         'OPTIONS' => 'allow-cors',
+                        'GET' => 'get-usuarios',
                         'OPTIONS <id>' => 'allow-cors',
                         'POST <id>' => 'view',
                         'POST <id>/role' => 'edit-role',
-                        'OPTIONS <id>/role' => 'allow-nota',
+                        'OPTIONS <id>/role' => 'allow-cors',
                         'OPTIONS <id>/invite' => 'allow-cors',
                         'GET <id>/banca' => 'get-banca', // Listar todas as bancas de um usuario
                         'OPTIONS <id>/banca' => 'allow-cors', // Listar todas as bancas de um usuario
@@ -155,6 +156,18 @@ $config = [
                         'GET auth' => 'auth',
                         'OPTIONS create' => 'allow-cors',
                         'POST create' => 'create-event',
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['reset-password' => 'reset-password'], // CRUD google-calendar
+                    'extraPatterns' => [
+                        'OPTIONS' => 'allow-cors',
+                        'POST' => 'create',
+                        'GET <hash>' => 'get-reset-hash',
+                        'OPTIONS <hash>' => 'allow-cors',
+                        'POST reset' => 'reset',
+                        'OPTIONS reset' => 'allow-cors',
                     ]
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
