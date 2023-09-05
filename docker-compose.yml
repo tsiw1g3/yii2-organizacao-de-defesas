@@ -16,5 +16,7 @@ services:
     environment:
       - MYSQL_DATABASE=organizacao_defesa
       - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - '3309:3306'
     cap_add:
       - SYS_NICE

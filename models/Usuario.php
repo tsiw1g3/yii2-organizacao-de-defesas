@@ -21,6 +21,7 @@ use yii\web\IdentityInterface;
  * @property string $created_at
  * @property string $updated_at
  * @property string $role
+ * @property string $pronoun
  */
 class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -39,7 +40,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'password_has', 'auth_key', 'email', 'school', 'academic_title', 'status', 'created_at', 'updated_at', 'nome', 'role'], 'required'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'pronoun'], 'safe'],
             [['username', 'email', 'auth_key'], 'unique'],
             [['password_has', 'username', 'email'], 'default'],
             [['username', 'password_has', 'auth_key', 'nome'], 'string', 'max' => 255],
@@ -67,6 +68,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'role' => 'Role',
+            'pronoun' => 'Pronoun',
         ];
     }
 
@@ -81,6 +83,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'titulo_academico' => 'academic_title',
             'link_latters' => 'lattesUrl',
             'role' => 'role',
+            'pronoun' => 'pronoun',
             'status'
 
         ];

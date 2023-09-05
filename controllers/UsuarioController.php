@@ -64,8 +64,7 @@ class UsuarioController extends \yii\rest\ActiveController
             $data = Yii::$app->request->post();
 
             // Atribuindo os atributos da requição para o modelo
-            $model->attributes = $data;
-
+            $model->attributes = $data;            
 
             /// Atribuindo horario/data para os atributos do modelo 
             $dtz = new DateTimeZone("America/Sao_Paulo");

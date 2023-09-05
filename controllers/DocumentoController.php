@@ -122,7 +122,7 @@ class DocumentoController extends \yii\web\Controller
             $banca = Banca::find()->where(['id' => $id_banca])->one();
             
             $orientador = (new \yii\db\Query())
-            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome'])
+            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome', 'usuario.pronoun'])
             ->from('usuario_banca')
             ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
             ->where("usuario_banca.id_banca = $id_banca AND usuario_banca.role = 'orientador'")
@@ -133,6 +133,7 @@ class DocumentoController extends \yii\web\Controller
             $data = $dateTime->format('m/d/Y');
 
             $orientacao = $this->renderPartial('_orientacao.php', [
+                'pronome_orientador' => $orientador["pronoun"],
                 'titulo_trabalho' => $banca->titulo_trabalho,
                 'orientador' => $orientador["nome"],
                 'aluno' => $banca->autor,
