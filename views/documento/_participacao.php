@@ -7,7 +7,9 @@
         height: 100%;     
         z-index: 1;   
     }    
-
+    .uppercase {
+        text-transform: uppercase;
+    }
     .header {
         text-align: center;
     }
@@ -115,8 +117,8 @@
     );
     
     $lista_cursos = array(
-        "BCC" => "Bacharelado em Ciência da Computação",
-        "BSI" => "Bacharelado em Sistemas de Informação",
+        "BCC" => "Ciência da Computação",
+        "BSI" => "Sistemas de Informação",
     );
 
     $month = $mes_extenso[date("m", strtotime($data))];
@@ -141,7 +143,7 @@
         <h1>MINISTÉRIO DA EDUCAÇÃO</h1>
         <h1>UNIVERSIDADE FEDERAL DA BAHIA</h1>
         <h1>INSTITUTO DE COMPUTAÇÃO</h1>
-        <h1>COLEGIADO DO CURSO DE CIÊNCIA DA COMPUTAÇÃO</h1>
+        <h1 class="uppercase">COLEGIADO DO CURSO DE <?= $course_name ?></h1>
         <h2
             >Av. Ademar de Barros s/n – Campus Universitário de Ondina, Ondina –
             Salvador- Bahia</h2
@@ -153,7 +155,7 @@
         <p class="text">
             Declaro para os devidos fins, que <?= $teacher_role ?> <strong><?= $orientador ?></strong>,
             orientou e participou da banca de defesa do Projeto Final II de <?= $aluno ?>
-            <?= $student_role ?> do Curso de <?= $course_name ?>
+            <?= $student_role ?> do Curso de Bacharelado em <?= $course_name ?>
             da UFBA, intitulado “<?= $titulo_trabalho ?>”, que
             ocorreu em <?= $day ?> de <?= $month ?> de <?= $year ?>.
         </p>
