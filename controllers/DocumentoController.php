@@ -109,8 +109,10 @@ class DocumentoController extends \yii\web\Controller
             $participacao = $this->renderPartial('_participacao.php', [
                 'pronome_orientador' => $orientador["pronoun"],
                 'titulo_trabalho' => $banca->titulo_trabalho,
+                'pronome_aluno' => $banca->pronome_autor,
                 'orientador' => $orientador["nome"],
                 'aluno' => $banca->autor,
+                'curso' => $banca->curso,
                 'data' => $data,
             ]);
                         
@@ -136,8 +138,10 @@ class DocumentoController extends \yii\web\Controller
             $orientacao = $this->renderPartial('_orientacao.php', [
                 'pronome_orientador' => $orientador["pronoun"],
                 'titulo_trabalho' => $banca->titulo_trabalho,
+                'pronome_aluno' => $banca->pronome_autor,
                 'orientador' => $orientador["nome"],
                 'aluno' => $banca->autor,
+                'curso' => $banca->curso,
                 'data' => $data,
             ]);
                         

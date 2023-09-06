@@ -102,12 +102,25 @@
         1 => "a professora",
         2 => "e professore"
     );
+    
+    $lista_pronomes_aluno = array(
+        0 => "do aluno",
+        1 => "da aluna",
+        2 => "de alune"
+    );
+
+    $lista_cursos = array(
+        "BCC" => "Bacharelado em Ciência da Computação",
+        "BSI" => "Bacharelado em Sistemas de Informação",
+    );
 
     $month = $mes_extenso[date("m", strtotime($data))];
     $year = date("Y", strtotime($data));
     $day = date("d", strtotime($data));
 
     $teacher_role = $lista_pronomes_orientador[$pronome_orientador];
+    $student_role = $lista_pronomes_aluno[$pronome_aluno];
+    $course_name = $lista_cursos[$curso];
 ?>
 <div class="marca-dagua-container">
     <img class="marca-dagua" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">
@@ -131,8 +144,8 @@
         <h2>Declaração</h2>
         <p class="text">
             Declaro para os devidos fins, que <?= $teacher_role ?> <strong><?= $orientador ?></strong>,
-            participou como membro do Projeto Final de Curso II do aluno <?= $aluno ?>,
-            discente do Curso de Bacharelado em Ciência da Computação
+            participou como membro do Projeto Final de Curso II <?= $student_role ?> <?= $aluno ?>,
+            discente do Curso de <?= $course_name ?>
             da UFBA, intitulado “<?= $titulo_trabalho ?>”, apresentado em <?= $day ?> de <?= $month ?> de <?= $year ?>.
         </p>
     </section>

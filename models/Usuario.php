@@ -21,7 +21,7 @@ use yii\web\IdentityInterface;
  * @property string $created_at
  * @property string $updated_at
  * @property string $role
- * @property string $pronoun
+ * @property int $pronoun
  */
 class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
 {

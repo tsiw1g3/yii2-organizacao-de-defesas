@@ -14,6 +14,7 @@ use Yii;
  * @property string $tipo_banca
  * @property string $curso
  * @property string $autor
+ * @property int $pronome_autor
  * @property string $disciplina
  * @property string $abstract
  * @property string $palavras_chave
@@ -39,7 +40,7 @@ class Banca extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'disciplina', 'autor', 'turma', 'user_id', 'ano', 'semestre_letivo', 'matricula'], 'required'],
+            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'disciplina', 'autor', 'pronome_autor', 'turma', 'user_id', 'ano', 'semestre_letivo', 'matricula'], 'required'],
             [['resumo', 'abstract', 'palavras_chave', 'tipo_banca'], 'string'],
             [['data_realizacao'], 'safe'],
             [['nota_final'], 'number'],
@@ -65,6 +66,7 @@ class Banca extends \yii\db\ActiveRecord
             'curso' => 'Curso',
             'disciplina' => 'Disciplina',
             'autor' => 'Autor',
+            'pronome_autor' => 'Pronome Autor',
             'turma' => 'Turma',
             'user_id' => 'User Id',
             'ano' => 'Ano',
