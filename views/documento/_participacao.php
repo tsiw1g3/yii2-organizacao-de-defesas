@@ -77,6 +77,11 @@
         top: 80px;
         left: 40px;
     }
+    .logo-ic-container {
+        position: absolute;
+        top: 70px;
+        right: 40px;
+    }
     img.brasao {
         width: 120px;
     }
@@ -128,6 +133,9 @@
 <div class="brasao-container">
     <img class="brasao" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">        
 </div>
+<div class="logo-ic-container">
+    <img class="brasao" src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png">        
+</div>
 <section class="report">
     <section class="header">
         <h1>MINISTÉRIO DA EDUCAÇÃO</h1>
@@ -153,8 +161,7 @@
     <section class="footer">
         <p class="date">Salvador, <?= $day ?> de <?= $month ?> de <?= $year ?>.</p>
         <p class="leader">Maycon Leone Maciel Peixoto</p>
-        <p>Coordenador do Curso de Bacharelado em</p>
-        <p>Ciência da Computação</p>
+        <p>Coordenador do Curso de Bacharelado em Ciência da Computação</p>
         <p>UFBA</p>
     </section>
 </section>
