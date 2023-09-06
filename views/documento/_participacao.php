@@ -144,11 +144,9 @@
         <h1>UNIVERSIDADE FEDERAL DA BAHIA</h1>
         <h1>INSTITUTO DE COMPUTAÇÃO</h1>
         <h1 class="uppercase">COLEGIADO DO CURSO DE <?= $course_name ?></h1>
-        <h2
-            >Av. Ademar de Barros s/n – Campus Universitário de Ondina, Ondina –
-            Salvador- Bahia</h2
-        >
-        <h2>CEP 40170-110 Tel: (071) 3283-6337 /6336</h2>
+        <h2>IC - INSTITUTO DE COMPUTAÇÃO/UFBA</h2>
+        <h2>Avenida Milton Santos, s/n - Campus de Ondina, PAF 2</h2>
+        <h2>CEP: 40.170-110 Salvador-Bahia</h2>
     </section>
     <section class="content">
         <h2>Declaração</h2>
