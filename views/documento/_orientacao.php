@@ -96,9 +96,18 @@
         '11' => 'Outubro',
         '12' => 'Dezembro'
     );
+
+    $lista_pronomes_orientador = array(
+        0 => "o professor",
+        1 => "a professora",
+        2 => "e professore"
+    );
+
     $month = $mes_extenso[date("m", strtotime($data))];
     $year = date("Y", strtotime($data));
     $day = date("d", strtotime($data));
+
+    $teacher_role = $lista_pronomes_orientador[$pronome_orientador];
 ?>
 <div class="marca-dagua-container">
     <img class="marca-dagua" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">
@@ -121,7 +130,7 @@
     <section class="content">
         <h2>Declaração</h2>
         <p class="text">
-            Declaro para os devidos fins, que o professor <strong><?= $orientador ?></strong>,
+            Declaro para os devidos fins, que <?= $teacher_role ?> <strong><?= $orientador ?></strong>,
             participou como membro do Projeto Final de Curso II do aluno <?= $aluno ?>,
             discente do Curso de Bacharelado em Ciência da Computação
             da UFBA, intitulado “<?= $titulo_trabalho ?>”, apresentado em <?= $day ?> de <?= $month ?> de <?= $year ?>.
