@@ -182,6 +182,15 @@ $config = [
                         'OPTIONS documentoInfo/<id_banca>' => 'allow-cors', // Pegar informacoes para gerar relatorio
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['curso' => 'curso'], // CRUD cursos
+                    'extraPatterns' => [                        
+                        'GET' => 'get-cursos', // Obter lista de cursos
+                        'OPTIONS' => 'allow-cors',
+                        'PUT <id>' => 'edit-cursos', // Obter lista de cursos
+                    ]
+                ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
                 'POST login' => 'login/login', // Realizar login
