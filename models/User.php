@@ -20,6 +20,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $updated_at;
     public $accessToken;
     public $role;
+    public $pronoun;
 
     /**
      * {@inheritdoc}

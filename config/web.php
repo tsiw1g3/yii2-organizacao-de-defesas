@@ -130,6 +130,7 @@ $config = [
                         'POST <id_banca>/report' => 'get-report', // Gerar o relatorio
                         'OPTIONS <id_banca>/reportInfo' => 'allow-cors', // Pegar informacoes para gerar relatorio
                         'GET <id_banca>/reportInfo' => 'report-info', // Pegar informacoes para gerar relatorio
+                        'GET' => 'get-bancas', // Pegar todas as bancas de todos os usuários
                     ]
                 ],
                 [
@@ -170,12 +171,31 @@ $config = [
                         'OPTIONS reset' => 'allow-cors',
                     ]
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['documento' => 'documento'], // CRUD google-calendar
+                    'extraPatterns' => [                        
+                        'POST <id_banca>' => 'get-doc', // Gerar o relatorio
+                        'OPTIONS <id_banca>' => 'allow-cors', // Gerar o relatorio
+                        'GET participacao/<id_banca>' => 'get-doc-participacao', // Gerar documento de participação na banca.
+                        'OPTIONS participacao/<id_banca>' => 'allow-cors', // Gerar documento de participação na banca.
+                        'GET orientacao/<id_banca>' => 'get-doc-orientacao', // Gerar documento de orientação na banca.
+                        'OPTIONS orientacao/<id_banca>' => 'allow-cors', // Gerar documento de orientação na banca.
+                        'GET documentoInfo/<id_banca>' => 'documento-info', // Pegar informacoes para gerar relatorio
+                        'OPTIONS documentoInfo/<id_banca>' => 'allow-cors', // Pegar informacoes para gerar relatorio
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['curso' => 'curso'], // CRUD cursos
+                    'extraPatterns' => [                        
+                        'GET' => 'get-cursos', // Obter lista de cursos
+                        'OPTIONS' => 'allow-cors',
+                        'PUT <id>' => 'edit-cursos', // Obter lista de cursos
+                    ]
+                ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
-                'POST documento/<id_banca>' => 'documento/get-doc', // Gerar o relatorio
-                'OPTIONS documento/<id_banca>' => 'documento/allow-cors', // Gerar o relatorio
-                'GET documento/documentoInfo/<id_banca>' => 'documento/documento-info', // Pegar informacoes para gerar relatorio
-                'OPTIONS documento/documentoInfo/<id_banca>' => 'documento/allow-cors', // Pegar informacoes para gerar relatorio
                 'POST login' => 'login/login', // Realizar login
                 'POST logout' => 'login/logout', // Realizar logouut
             ],

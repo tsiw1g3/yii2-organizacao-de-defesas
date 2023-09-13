@@ -90,9 +90,21 @@ class BancaController extends \yii\rest\ActiveController
         }
     }
 
-    public function actionGetBancasByUser($user_id){
-        $bancas = Banca::findAll(['user_id' => $user_id]);
-        return $bancas;
+    public function actionGetBancas() {
+        return (new \yii\db\Query())
+            ->select(['banca.*', 'curso.sigla as sigla_curso'])
+            ->from('banca')
+            ->innerJoin('curso', 'banca.curso = curso.id')
+            ->all();
+    }
+
+    public function actionGetBancasByUser($user_id){        
+        return (new \yii\db\Query())
+            ->select(['banca.*', 'curso.sigla as sigla_curso'])
+            ->from('banca')
+            ->innerJoin('curso', 'banca.curso = curso.id')
+            ->where('user_id = ' . $user_id)
+            ->all();
     }
 
     public function actionGetUsers($id)

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Banca;
+use app\models\Curso;
 use app\models\Usuario;
 use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
@@ -92,10 +93,77 @@ class DocumentoController extends \yii\web\Controller
             throw new Error;
         }
 
+        public function actionGetDocParticipacao($id_banca) {
+            $banca = Banca::find()->where(['id' => $id_banca])->one();            
+            $curso = Curso::find()->where(['id' => $banca->curso])->one();
+            
+            $orientador = (new \yii\db\Query())
+            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome', 'usuario.pronoun'])
+            ->from('usuario_banca')
+            ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+            ->where("usuario_banca.id_banca = $id_banca AND usuario_banca.role = 'orientador'")
+            ->one();
+
+            $dtz = new DateTimeZone("America/Sao_Paulo");
+            $dateTime = date_create_from_format("Y-m-d H:i:s", $banca->data_realizacao, $dtz);
+            $data = $dateTime->format('m/d/Y');
+
+            $participacao = $this->renderPartial('_participacao.php', [
+                'pronome_orientador' => $orientador["pronoun"],
+                'titulo_trabalho' => $banca->titulo_trabalho,
+                'pronome_aluno' => $banca->pronome_autor,
+                'orientador' => $orientador["nome"],
+                'nome_curso' => $curso->nome,
+                'aluno' => $banca->autor,
+                'curso' => $banca->curso,
+                'data' => $data,
+                'coordenacao' => $curso->coordenacao,
+                'cargo_coordenacao' => $curso->cargo_coordenacao,
+            ]);
+                        
+            $mpdf = new \Mpdf\Mpdf();            
+            $mpdf->WriteHTML($participacao);
+            $mpdf->Output();
+        }
+        
+        public function actionGetDocOrientacao($id_banca) {
+            $banca = Banca::find()->where(['id' => $id_banca])->one();
+            $curso = Curso::find()->where(['id' => $banca->curso])->one();
+            
+            $orientador = (new \yii\db\Query())
+            ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome', 'usuario.pronoun'])
+            ->from('usuario_banca')
+            ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+            ->where("usuario_banca.id_banca = $id_banca AND usuario_banca.role = 'orientador'")
+            ->one();
+
+            $dtz = new DateTimeZone("America/Sao_Paulo");
+            $dateTime = date_create_from_format("Y-m-d H:i:s", $banca->data_realizacao, $dtz);
+            $data = $dateTime->format('m/d/Y');
+
+            $orientacao = $this->renderPartial('_orientacao.php', [
+                'pronome_orientador' => $orientador["pronoun"],
+                'titulo_trabalho' => $banca->titulo_trabalho,
+                'pronome_aluno' => $banca->pronome_autor,
+                'orientador' => $orientador["nome"],
+                'nome_curso' => $curso->nome,
+                'aluno' => $banca->autor,
+                'curso' => $banca->curso,
+                'data' => $data,
+                'coordenacao' => $curso->coordenacao,
+                'cargo_coordenacao' => $curso->cargo_coordenacao,
+            ]);
+                        
+            $mpdf = new \Mpdf\Mpdf();
+            $mpdf->WriteHTML($orientacao);
+            $mpdf->Output();
+        }
+
         public function actionDocumentoInfo($id_banca){
             $_POST["tempo1"] = time();
 
             $banca = Banca::find()->where(['id' => $id_banca])->one();
+            $curso = Curso::find()->where(['id' => $banca->curso])->one();
 
             $membros_banca = (new \yii\db\Query())
             ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome'])
@@ -121,7 +189,7 @@ class DocumentoController extends \yii\web\Controller
 
             $response = [
                 'curso' => $banca->curso,
-                'disciplina' => $banca->disciplina,
+                'disciplina' => $curso->disciplina,
                 'turma' => $banca->turma,
                 'titulo_trabalho' => $banca->titulo_trabalho,
                 'orientador' => $orientador["nome"],
