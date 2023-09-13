@@ -115,19 +115,13 @@
         1 => "aluna",
         2 => "alune"
     );
-    
-    $lista_cursos = array(
-        "BCC" => "Ciência da Computação",
-        "BSI" => "Sistemas de Informação",
-    );
 
     $month = $mes_extenso[date("m", strtotime($data))];
     $year = date("Y", strtotime($data));
     $day = date("d", strtotime($data));
 
     $teacher_role = $lista_pronomes_orientador[$pronome_orientador];
-    $student_role = $lista_pronomes_aluno[$pronome_aluno];
-    $course_name = $lista_cursos[$curso];
+    $student_role = $lista_pronomes_aluno[$pronome_aluno];    
 ?>
 <div class="marca-dagua-container">
     <img class="marca-dagua" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">
@@ -143,7 +137,7 @@
         <h1>MINISTÉRIO DA EDUCAÇÃO</h1>
         <h1>UNIVERSIDADE FEDERAL DA BAHIA</h1>
         <h1>INSTITUTO DE COMPUTAÇÃO</h1>
-        <h1 class="uppercase">COLEGIADO DO CURSO DE <?= $course_name ?></h1>
+        <h1 class="uppercase">COLEGIADO DO CURSO DE <?= $nome_curso ?></h1>
         <h2>IC - INSTITUTO DE COMPUTAÇÃO/UFBA</h2>
         <h2>Avenida Milton Santos, s/n - Campus de Ondina, PAF 2</h2>
         <h2>CEP: 40.170-110 Salvador-Bahia</h2>
@@ -153,15 +147,15 @@
         <p class="text">
             Declaro para os devidos fins, que <?= $teacher_role ?> <strong><?= $orientador ?></strong>,
             orientou e participou da banca de defesa do Projeto Final II de <?= $aluno ?>
-            <?= $student_role ?> do Curso de Bacharelado em <?= $course_name ?>
+            <?= $student_role ?> do Curso de Bacharelado em <?= $nome_curso ?>
             da UFBA, intitulado “<?= $titulo_trabalho ?>”, que
             ocorreu em <?= $day ?> de <?= $month ?> de <?= $year ?>.
         </p>
     </section>
     <section class="footer">
         <p class="date">Salvador, <?= $day ?> de <?= $month ?> de <?= $year ?>.</p>
-        <p class="leader">Maycon Leone Maciel Peixoto</p>
-        <p>Coordenador do Curso de Bacharelado em Ciência da Computação</p>
+        <p class="leader"><?= $coordenacao ?></p>
+        <p><?= $cargo_coordenacao ?></p>
         <p>UFBA</p>
     </section>
 </section>

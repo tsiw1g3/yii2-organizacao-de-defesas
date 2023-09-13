@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Banca;
+use app\models\Curso;
 use app\models\Usuario;
 use app\models\UsuarioBanca;
 use app\security\ValidatorRequest;
@@ -93,7 +94,8 @@ class DocumentoController extends \yii\web\Controller
         }
 
         public function actionGetDocParticipacao($id_banca) {
-            $banca = Banca::find()->where(['id' => $id_banca])->one();
+            $banca = Banca::find()->where(['id' => $id_banca])->one();            
+            $curso = Curso::find()->where(['id' => $banca->curso])->one();
             
             $orientador = (new \yii\db\Query())
             ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome', 'usuario.pronoun'])
@@ -111,9 +113,12 @@ class DocumentoController extends \yii\web\Controller
                 'titulo_trabalho' => $banca->titulo_trabalho,
                 'pronome_aluno' => $banca->pronome_autor,
                 'orientador' => $orientador["nome"],
+                'nome_curso' => $curso->nome,
                 'aluno' => $banca->autor,
                 'curso' => $banca->curso,
                 'data' => $data,
+                'coordenacao' => $curso->coordenacao,
+                'cargo_coordenacao' => $curso->cargo_coordenacao,
             ]);
                         
             $mpdf = new \Mpdf\Mpdf();            
@@ -123,6 +128,7 @@ class DocumentoController extends \yii\web\Controller
         
         public function actionGetDocOrientacao($id_banca) {
             $banca = Banca::find()->where(['id' => $id_banca])->one();
+            $curso = Curso::find()->where(['id' => $banca->curso])->one();
             
             $orientador = (new \yii\db\Query())
             ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome', 'usuario.pronoun'])
@@ -140,9 +146,12 @@ class DocumentoController extends \yii\web\Controller
                 'titulo_trabalho' => $banca->titulo_trabalho,
                 'pronome_aluno' => $banca->pronome_autor,
                 'orientador' => $orientador["nome"],
+                'nome_curso' => $curso->nome,
                 'aluno' => $banca->autor,
                 'curso' => $banca->curso,
                 'data' => $data,
+                'coordenacao' => $curso->coordenacao,
+                'cargo_coordenacao' => $curso->cargo_coordenacao,
             ]);
                         
             $mpdf = new \Mpdf\Mpdf();
@@ -154,6 +163,7 @@ class DocumentoController extends \yii\web\Controller
             $_POST["tempo1"] = time();
 
             $banca = Banca::find()->where(['id' => $id_banca])->one();
+            $curso = Curso::find()->where(['id' => $banca->curso])->one();
 
             $membros_banca = (new \yii\db\Query())
             ->select(['IFNULL(usuario_banca.nota,0) as nota', 'usuario_banca.role','usuario.nome'])
@@ -179,7 +189,7 @@ class DocumentoController extends \yii\web\Controller
 
             $response = [
                 'curso' => $banca->curso,
-                'disciplina' => $banca->disciplina,
+                'disciplina' => $curso->disciplina,
                 'turma' => $banca->turma,
                 'titulo_trabalho' => $banca->titulo_trabalho,
                 'orientador' => $orientador["nome"],

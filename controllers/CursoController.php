@@ -51,7 +51,7 @@ class CursoController extends \yii\rest\ActiveController
             if ($model !== null) {
                 $model->nome = $data['nome'];
                 $model->sigla = $data['sigla'];
-                $model->sigla = $data['disciplina'];
+                $model->disciplina = $data['disciplina'];
                 $model->coordenacao = $data['coordenacao'];
                 $model->cargo_coordenacao = $data['cargo_coordenacao'];
                 if ($model->validate()) {
