@@ -7,13 +7,13 @@
         height: 100%;     
         z-index: 1;   
     }    
-
-    .header {
-        text-align: center;
-    }
     .uppercase {
         text-transform: uppercase;
     }
+    .header {
+        text-align: center;
+    }
+
     .header h1 {
         font-size: 16px;
         line-height: 8px;
@@ -98,9 +98,9 @@
         '06' => 'Junho',
         '07' => 'Julho',
         '08' => 'Agosto',
-        '09' => 'Novembro',
-        '10' => 'Setembro',
-        '11' => 'Outubro',
+        '09' => 'Setembro',
+        '10' => 'Outubro',
+        '11' => 'Novembro',
         '12' => 'Dezembro'
     );
 
@@ -111,9 +111,9 @@
     );
     
     $lista_pronomes_aluno = array(
-        0 => "do aluno",
-        1 => "da aluna",
-        2 => "de alune"
+        0 => "aluno",
+        1 => "aluna",
+        2 => "alune"
     );
 
     $month = $mes_extenso[date("m", strtotime($data))];
@@ -121,7 +121,7 @@
     $day = date("d", strtotime($data));
 
     $teacher_role = $lista_pronomes_orientador[$pronome_orientador];
-    $student_role = $lista_pronomes_aluno[$pronome_aluno];
+    $student_role = $lista_pronomes_aluno[$pronome_aluno];    
 ?>
 <div class="marca-dagua-container">
     <img class="marca-dagua" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">
@@ -146,9 +146,10 @@
         <h2>Declaração</h2>
         <p class="text">
             Declaro para os devidos fins, que <?= $teacher_role ?> <strong><?= $orientador ?></strong>,
-            participou como membro do Projeto Final de Curso II <?= $student_role ?> <?= $aluno ?>,
-            discente do Curso de Bacharelado em <?= $nome_curso ?>
-            da UFBA, intitulado “<?= $titulo_trabalho ?>”, apresentado em <?= $day ?> de <?= $month ?> de <?= $year ?>.
+            orientou e participou da banca de defesa do Projeto Final II de <?= $aluno ?>
+            <?= $student_role ?> do Curso de Bacharelado em <?= $nome_curso ?>
+            da UFBA, intitulado “<?= $titulo_trabalho ?>”, que
+            ocorreu em <?= $day ?> de <?= $month ?> de <?= $year ?>.
         </p>
     </section>
     <section class="footer">

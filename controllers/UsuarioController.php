@@ -178,16 +178,13 @@ class UsuarioController extends \yii\rest\ActiveController
     }
 
     protected function findBancasByUser($user)
-    {
-        if (($models = Banca::find()
-        ->select('banca.*')
-        ->innerJoin('usuario_banca', '`usuario_banca`.`id_banca` = `banca`.`id`')
-        // ->leftJoin('usuario_banca', '`usuario_banca`.`id_banca` = `banca`.`id`')
-        ->where(['usuario_banca.id_usuario' => $user])
-        ->all()) !== null) {
-            return $models;
-        }
-
-        throw new \yii\web\NotFoundHttpException('Nao existem bancas para este usuario.', 404);
+    {        
+        return (new \yii\db\Query())
+                ->select(['banca.*', 'curso.sigla as sigla_curso'])
+                ->from('banca')
+                ->innerJoin('usuario_banca', 'usuario_banca.id_banca = banca.id')
+                ->innerJoin('curso', 'curso.id = banca.curso')
+                ->where(['usuario_banca.id_usuario' => $user])
+                ->all();
     }
 }

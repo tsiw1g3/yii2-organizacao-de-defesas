@@ -130,6 +130,7 @@ $config = [
                         'POST <id_banca>/report' => 'get-report', // Gerar o relatorio
                         'OPTIONS <id_banca>/reportInfo' => 'allow-cors', // Pegar informacoes para gerar relatorio
                         'GET <id_banca>/reportInfo' => 'report-info', // Pegar informacoes para gerar relatorio
+                        'GET' => 'get-bancas', // Pegar todas as bancas de todos os usuários
                     ]
                 ],
                 [
@@ -177,7 +178,9 @@ $config = [
                         'POST <id_banca>' => 'get-doc', // Gerar o relatorio
                         'OPTIONS <id_banca>' => 'allow-cors', // Gerar o relatorio
                         'GET participacao/<id_banca>' => 'get-doc-participacao', // Gerar documento de participação na banca.
-                        'GET orientacao/<id_banca>' => 'get-doc-orientacao', // Gerar documento de participação na banca.
+                        'OPTIONS participacao/<id_banca>' => 'allow-cors', // Gerar documento de participação na banca.
+                        'GET orientacao/<id_banca>' => 'get-doc-orientacao', // Gerar documento de orientação na banca.
+                        'OPTIONS orientacao/<id_banca>' => 'allow-cors', // Gerar documento de orientação na banca.
                         'GET documentoInfo/<id_banca>' => 'documento-info', // Pegar informacoes para gerar relatorio
                         'OPTIONS documentoInfo/<id_banca>' => 'allow-cors', // Pegar informacoes para gerar relatorio
                     ]
