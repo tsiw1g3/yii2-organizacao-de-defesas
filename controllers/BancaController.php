@@ -25,7 +25,7 @@ class BancaController extends \yii\rest\ActiveController
     public function beforeAction($action)
     {
         $_POST['action2'] = $action->id;
-        if($action->id == 'allow-cors' || $action->id == 'index') {
+        if($action->id == 'allow-cors' || $action->id == 'index' || $action->id == 'get-bancas') {
            $this->enableCsrfValidation = false;
            return parent::beforeAction($action);
         }
