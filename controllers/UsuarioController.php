@@ -83,22 +83,32 @@ class UsuarioController extends \yii\rest\ActiveController
                 $model->auth_key = Yii::$app->getSecurity()->generateRandomString();
             }
 
+            $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
             // Validar os atributos do modelo
-            $invite = Invite::findOne(['invite_hash' => $data["hash"]]);
-            if ($model->validate() && $invite) {
-                // Remove o invite da base de dados.
-                $invite->delete();
-                //  Faz a criptografia da senha enviada
+            if(isset($data["hash"])) {
+                $invite = Invite::findOne(['invite_hash' => $data["hash"]]);
+                if ($model->validate() && $invite) {
+                    // Remove o invite da base de dados.
+                    $invite->delete();
+                    // Define o nível mais alto de credenciais para pessoas convidadas
+                    $model->role = 3;
+                    // Salva o modelo no banco de dados
+                    $model->save();
+    
+                    return [];
+                }
+    
+                // Caso a validacao falhe, lançar erros para o front
+                Yii::$app->response->data = $model->errors;
+                Yii::$app->response->statusCode = 422;
+            } else {
                 $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-                // Salva o modelo no banco de dados
+                // Define o nível mais baixo de credenciais para usuários gerais
+                $model->role = 1;
                 $model->save();
 
                 return [];
             }
-
-            // Caso a validacao falhe, lançar erros para o front
-            Yii::$app->response->data = $model->errors;
-            Yii::$app->response->statusCode = 422;
 
             return Yii::$app->response->data;
         } catch (Exception $e) {
