@@ -73,7 +73,6 @@ class UsuarioController extends \yii\rest\ActiveController
             $model->created_at = $now;
             $model->updated_at = $now;
 
-
             // Coleta a senha enviada pelo formulário para fazer a validacao
             $model->password_has = $data['password'];
 
@@ -97,19 +96,23 @@ class UsuarioController extends \yii\rest\ActiveController
     
                     return [];
                 }
-    
-                // Caso a validacao falhe, lançar erros para o front
-                Yii::$app->response->data = $model->errors;
-                Yii::$app->response->statusCode = 422;
             } else {
-                $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-                // Define o nível mais baixo de credenciais para usuários gerais
-                $model->role = 1;
-                $model->save();
-
-                return [];
+                if($model->validate()) {
+                    $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
+                    
+                    // Define o nível mais baixo de credenciais para usuários gerais
+                    $model->role = 1;
+                    $model->save();
+                    
+                    return [];
+                }
+                
             }
-
+            
+            // Caso a validacao falhe, lançar erros para o front
+            Yii::$app->response->data = $model->errors;
+            Yii::$app->response->statusCode = 422;
+            
             return Yii::$app->response->data;
         } catch (Exception $e) {
             throw $e;

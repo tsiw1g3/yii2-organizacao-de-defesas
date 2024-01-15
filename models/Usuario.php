@@ -40,7 +40,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'password_has', 'auth_key', 'email', 'school', 'academic_title', 'status', 'created_at', 'updated_at', 'nome', 'role'], 'required'],
-            [['created_at', 'updated_at', 'pronoun'], 'safe'],
+            [['created_at', 'updated_at', 'pronoun', 'registration_id'], 'safe'],
             [['username', 'email', 'auth_key'], 'unique'],
             [['password_has', 'username', 'email'], 'default'],
             [['username', 'password_has', 'auth_key', 'nome'], 'string', 'max' => 255],
@@ -69,6 +69,7 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'updated_at' => 'Updated At',
             'role' => 'Role',
             'pronoun' => 'Pronoun',
+            'registration_id' => 'Registration ID'
         ];
     }
 
@@ -84,8 +85,8 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
             'link_latters' => 'lattesUrl',
             'role' => 'role',
             'pronoun' => 'pronoun',
-            'status'
-
+            'status',
+            'registration_id'
         ];
     }
 
