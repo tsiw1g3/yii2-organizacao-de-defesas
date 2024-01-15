@@ -123,8 +123,8 @@ class UsuarioController extends \yii\rest\ActiveController
     public function actionGetUsuarios(){
         try {            
             $role = Yii::$app->getRequest()->getQueryParam('role');
-            if($role) return Usuario::find()->where(['role' => $role])->all();
-            return Usuario::find()->all();
+            if($role) return Usuario::find()->where(['role' => $role])->andWhere(['<>','username', "root"])->orderBy('nome ASC')->all();
+            return Usuario::find()->where(['<>','username', "root"])->orderBy('nome ASC')->all();
         } catch(Exception $e) {
             throw $e;
         }
