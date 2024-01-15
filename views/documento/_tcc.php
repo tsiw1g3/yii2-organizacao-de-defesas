@@ -169,8 +169,9 @@ $media += $nota_orientador;
 </div>
 
 <div class="section curso">
-    <p>Bacharelado em <?= $curso == "BCC" ? "Ciência da Computação" : "Sistemas da Informação" ?></p>
+    <p>Bacharelado em <?= $curso ?></p>
 </div>
+<p><?= $curso ?></p>
 
 <div class="section semestre">
     <p>Semestre: <?= $semestre ?></p>

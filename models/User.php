@@ -21,6 +21,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $accessToken;
     public $role;
     public $pronoun;
+    public $registration_id;
 
     /**
      * {@inheritdoc}

@@ -62,19 +62,42 @@ class BancaController extends \yii\rest\ActiveController
 
 
             // Atribuindo os atributos da requição para o modelo
+            if($data['docente']) {
+                // Valida caso em que a banca é cadastrada por um aluno.
+                $aluno = Usuario::findOne(Yii::$app->user->getId());                            
+
+                $data['matricula'] = $aluno->registration_id;
+                $data['pronome_autor'] = $aluno->pronoun;
+                $data['autor'] = $aluno->nome;
+            }
+            
             $banca->attributes = $data;
 
             if ($banca->validate() && $banca->save()) {
-
                 $usuario_banca = new UsuarioBanca();
-                $usuario_banca->id_banca = $banca->id;
-                $usuario_banca->id_usuario = Yii::$app->user->getId();
-                if(Yii::$app->user->identity->getRole() == 1 || Yii::$app->user->identity->getRole() == 3){
-                    $usuario_banca->role = 'orientador';
+                $usuario_banca->id_banca = $banca->id;                
+
+                
+                if($data['docente'] && ($docente = Usuario::findOne($data['docente']))) {
+                    $usuario_banca->id_usuario = $docente->id;
+                    $role = $docente->role;
+                } else {
+                    $usuario_banca->id_usuario = Yii::$app->user->getId();
+                    $role = Yii::$app->user->identity->getRole();
                 }
-                else if (Yii::$app->user->identity->getRole() == 2){
-                    $usuario_banca->role = 'co-orientador';
+
+                switch($role) {
+                    case 1:
+                        $usuario_banca->role = 'discente';
+                        break;
+                    case 2:
+                        $usuario_banca->role = 'co-orientador';
+                        break;
+                    case 3:
+                        $usuario_banca->role = 'orientador';
+                        break;
                 }
+
                 $usuario_banca->save();
 
                 return [];
