@@ -193,7 +193,7 @@ class UsuarioController extends \yii\rest\ActiveController
     protected function findBancasByUser($user)
     {        
         return (new \yii\db\Query())
-                ->select(['banca.*', 'curso.sigla as sigla_curso'])
+                ->select(['banca.*', 'curso.sigla as sigla_curso', 'usuario_banca.role as funcao'])
                 ->from('banca')
                 ->innerJoin('usuario_banca', 'usuario_banca.id_banca = banca.id')
                 ->innerJoin('curso', 'curso.id = banca.curso')
