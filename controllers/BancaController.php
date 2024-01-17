@@ -177,9 +177,8 @@ class BancaController extends \yii\rest\ActiveController
     public function actionDeleteBanca($id)
     {
         try {
-            $banca = $this->findByBancaById($id);
-
-            if ($banca->delete()) {
+            $banca = Banca::find()->where(['id' => $id])->one();
+            if ($banca && $banca->delete() && UsuarioBanca::deleteAll('id_banca = :id_banca', array(':id_banca' => $id))) {
                 Yii::$app->response->statusCode = 204;
                 return Yii::$app->response->data;
             }
