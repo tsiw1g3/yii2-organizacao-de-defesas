@@ -25,7 +25,7 @@ class BancaController extends \yii\rest\ActiveController
     public function beforeAction($action)
     {
         $_POST['action2'] = $action->id;
-        if($action->id == 'allow-cors' || $action->id == 'index' || $action->id == 'get-bancas') {
+        if($action->id == 'allow-cors' || $action->id == 'index' || $action->id == 'get-bancas' || $action->id == 'get-banca') {
            $this->enableCsrfValidation = false;
            return parent::beforeAction($action);
         }
@@ -111,6 +111,10 @@ class BancaController extends \yii\rest\ActiveController
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    public function actionGetBanca($id) {
+        return $this->findByBancaById($id);
     }
 
     public function actionGetBancas() {
@@ -397,8 +401,15 @@ class BancaController extends \yii\rest\ActiveController
 
     protected function findByBancaById($id)
     {
-        if (($user = Banca::findOne($id)) !== null) {
-            return $user;
+        $banca = (new \yii\db\Query())
+                    ->select(['banca.*', 'curso.sigla as sigla_curso', 'curso.nome as nome_curso'])
+                    ->from('banca')
+                    ->innerJoin('curso', 'banca.curso = curso.id')
+                    ->where(['banca.id' => $id])
+                    ->one();
+
+        if ($banca != NULL) {
+            return $banca;
         }
 
         throw new \yii\web\NotFoundHttpException('A banca informada não existe.', 404);

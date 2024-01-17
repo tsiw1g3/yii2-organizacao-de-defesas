@@ -111,6 +111,7 @@ $config = [
                     'extraPatterns' => [
                         'OPTIONS' => 'allow-cors',
                         'OPTIONS <id>' => 'allow-cors',
+                        'GET <id>' => 'get-banca',
                         'GET <id>/users' => 'get-users', // Listar todos os usuarios de uma banca
                         'OPTIONS <id>/users' => 'allow-cors', // Listar todos os usuarios de uma banca
                         'DELETE <id>/user/<user>' => 'delete-user-banca', // Deletar um usuário de uma banca

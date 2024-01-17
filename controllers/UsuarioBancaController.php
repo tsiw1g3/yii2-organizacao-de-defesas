@@ -37,7 +37,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
 
     public function beforeAction($action)
     {
-        if ($action->id == 'allow-cors') {
+        if ($action->id == 'allow-cors' || $action->id == 'usuarios-banca-by-banca') {
             $this->enableCsrfValidation = false;
             return parent::beforeAction($action);
         }
