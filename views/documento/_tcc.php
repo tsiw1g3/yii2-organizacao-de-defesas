@@ -169,9 +169,8 @@ $media += $nota_orientador;
 </div>
 
 <div class="section curso">
-    <p>Bacharelado em <?= $curso ?></p>
+    <p>Bacharelado em <?= $nome_curso ?></p>
 </div>
-<p><?= $curso ?></p>
 
 <div class="section semestre">
     <p>Semestre: <?= $semestre ?></p>

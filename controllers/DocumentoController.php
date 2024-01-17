@@ -71,6 +71,7 @@ class DocumentoController extends \yii\web\Controller
             $_POST["tempo3"] = time();
             $tcc = $this->renderPartial('_tcc.php', [
                 'curso' => $_POST['curso'],
+                'nome_curso' => $_POST['nome_curso'],
                 'disciplina' => $_POST['disciplina'],
                 'turma' => $_POST['turma'],
                 'titulo_trabalho' => $_POST['titulo_trabalho'],
@@ -189,6 +190,7 @@ class DocumentoController extends \yii\web\Controller
 
             $response = [
                 'curso' => $banca->curso,
+                'nome_curso' => $curso->nome,
                 'disciplina' => $curso->disciplina,
                 'turma' => $banca->turma,
                 'titulo_trabalho' => $banca->titulo_trabalho,
