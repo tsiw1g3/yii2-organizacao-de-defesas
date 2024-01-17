@@ -62,14 +62,14 @@ class BancaController extends \yii\rest\ActiveController
 
 
             // Atribuindo os atributos da requição para o modelo
-            if($data['docente']) {
+            if(isset($data['docente'])) {
                 // Valida caso em que a banca é cadastrada por um aluno.
                 $aluno = Usuario::findOne(Yii::$app->user->getId());                            
 
                 $data['matricula'] = $aluno->registration_id;
                 $data['pronome_autor'] = $aluno->pronoun;
                 $data['autor'] = $aluno->nome;
-            }
+            }        
             
             $banca->attributes = $data;
 
@@ -78,7 +78,7 @@ class BancaController extends \yii\rest\ActiveController
                 $usuario_banca->id_banca = $banca->id;                
 
                 
-                if($data['docente'] && ($docente = Usuario::findOne($data['docente']))) {
+                if(isset($data['docente']) && ($docente = Usuario::findOne($data['docente']))) {
                     $usuario_banca->id_usuario = $docente->id;
                     $role = $docente->role;
                 } else {
@@ -122,6 +122,7 @@ class BancaController extends \yii\rest\ActiveController
             ->select(['banca.*', 'curso.sigla as sigla_curso'])
             ->from('banca')
             ->innerJoin('curso', 'banca.curso = curso.id')
+            ->where(['<>','visible', "0"])
             ->all();
     }
 
@@ -406,6 +407,7 @@ class BancaController extends \yii\rest\ActiveController
                     ->from('banca')
                     ->innerJoin('curso', 'banca.curso = curso.id')
                     ->where(['banca.id' => $id])
+                    ->andWhere(['<>','visible', "0"])
                     ->one();
 
         if ($banca != NULL) {

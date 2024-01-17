@@ -39,9 +39,10 @@ class Banca extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'autor', 'pronome_autor', 'turma', 'user_id', 'ano', 'semestre_letivo', 'matricula'], 'required'],
+            [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'autor', 'pronome_autor', 'turma', 'user_id', 'ano', 'semestre_letivo', 'matricula', 'visible'], 'required'],
             [['resumo', 'abstract', 'palavras_chave', 'tipo_banca'], 'string'],
             [['curso', 'nota_final'], 'number'],
+            ['visible', 'number'],
             [['data_realizacao'], 'safe'],
             [['titulo_trabalho', 'local', 'autor', 'turma', 'ano' , 'semestre_letivo', 'matricula'], 'string', 'max' => 255],
         ];

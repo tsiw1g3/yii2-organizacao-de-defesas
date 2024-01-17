@@ -171,7 +171,9 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         ->select(['usuario_banca.id_usuario AS id', 'usuario_banca.role', 'usuario_banca.nota', 'usuario.nome', 'usuario.username'])
         ->from('usuario_banca')
         ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
+        ->innerJoin('banca', 'banca.id = usuario_banca.id_banca')
         ->where("usuario_banca.id_banca = $id_banca")
+        ->andWhere(['<>','banca.visible', "0"])
         ->all();
         return $query;
     }
