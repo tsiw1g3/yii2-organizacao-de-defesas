@@ -23,7 +23,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     protected $role_allowed = [
         'aluno',
         'orientador',
-        'co-orientador',
+        'coorientador',
         'avaliador'
     ];
 
@@ -31,7 +31,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     protected $role_participants = [
         'aluno' => 1,
         'orientador' => 1,
-        'co-orientador' => 1,
+        'coorientador' => 1,
         'avaliador' => 2
     ];
 
@@ -263,7 +263,6 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         if (!in_array($model->role, $this->role_allowed)) {
             return false;
         }
-
         return true;
     }
 
