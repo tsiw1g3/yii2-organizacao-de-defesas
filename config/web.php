@@ -188,11 +188,12 @@ $config = [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => ['curso' => 'curso'], // CRUD cursos
+                    'controller' => ['cursos' => 'curso'], // CRUD cursos
                     'extraPatterns' => [                        
                         'GET' => 'get-cursos', // Obter lista de cursos
                         'OPTIONS' => 'allow-cors',
-                        'PUT <id>' => 'edit-cursos', // Obter lista de cursos
+                        'PUT <id>' => 'edit-cursos', // Editar um curso a partir de seu ID
+                        'OPTIONS <id_banca>' => 'allow-cors', // Editar um curso a partir de seu ID
                     ]
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
