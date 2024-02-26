@@ -195,6 +195,7 @@ $config = [
                         'POST' => 'create-curso', // Cria um curso
                         'OPTIONS' => 'allow-cors',
                         'PUT <id>' => 'edit-cursos', // Editar um curso a partir de seu ID
+                        'DELETE <id>' => 'delete-curso', // Editar um curso a partir de seu ID
                         'OPTIONS <id_banca>' => 'allow-cors', // Editar um curso a partir de seu ID
                     ]
                 ],

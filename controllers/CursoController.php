@@ -7,6 +7,7 @@ use app\security\ValidatorRequest;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\Curso;
+use app\models\Banca;
 use DateTimeZone;
 use Exception;
 use DateTime;
@@ -92,4 +93,19 @@ class CursoController extends \yii\rest\ActiveController
             throw $e;
         }
     }
+
+    public function actionDeleteCurso($id) {
+        try {
+            $model = Curso::findOne($id);
+            if($model !== null) {
+                $banca = Banca::find()->where(['curso' => $id])->one();
+                if(!$banca && $model->delete()) return $model;
+                else throw new \yii\web\ForbiddenHttpException('Este curso já pertence a uma banca e não pode ser excluído!', 403);
+            }
+            return $model;
+
+        } catch (Exception $e) {
+            throw $e;
+        }
+    } 
 }
