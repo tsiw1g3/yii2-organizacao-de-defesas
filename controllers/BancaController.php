@@ -119,18 +119,22 @@ class BancaController extends \yii\rest\ActiveController
 
     public function actionGetBancas() {
         return (new \yii\db\Query())
-            ->select(['banca.*', 'curso.sigla as sigla_curso'])
+            ->select(['banca.*', 'curso.sigla as sigla_curso', 'usuario_banca.id_usuario as id_orientador', 'usuario.nome as nome_orientador'])
             ->from('banca')
             ->innerJoin('curso', 'banca.curso = curso.id')
+            ->innerJoin('usuario_banca', 'usuario_banca.id_banca = banca.id && usuario_banca.role = \'orientador\'')
+            ->innerJoin('usuario', 'usuario.id = usuario_banca.id_usuario')
             ->where(['<>','visible', "0"])
             ->all();
     }
 
     public function actionGetBancasByUser($user_id){        
         return (new \yii\db\Query())
-            ->select(['banca.*', 'curso.sigla as sigla_curso'])
+            ->select(['banca.*', 'curso.sigla as sigla_curso', 'usuario_banca.id_usuario as id_orientador', 'usuario.nome as nome_orientador'])
             ->from('banca')
             ->innerJoin('curso', 'banca.curso = curso.id')
+            ->innerJoin('usuario_banca', 'usuario_banca.id_banca = banca.id && usuario_banca.role = \'orientador\'')
+            ->innerJoin('usuario', 'usuario.id = usuario_banca.id_usuario')
             ->where('user_id = ' . $user_id)
             ->all();
     }
