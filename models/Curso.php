@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $nome
  * @property string $sigla
+ * @property string $disciplinad
  * @property string $coordenacao
  * @property string $cargo_coordenacao
  */
@@ -28,7 +29,7 @@ class Curso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome', 'sigla', 'coordenacao', 'cargo_coordenacao'], 'required'],            
+            [['nome', 'sigla', 'coordenacao', 'disciplina', 'cargo_coordenacao'], 'required'],            
         ];
     }
 

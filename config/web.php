@@ -192,6 +192,8 @@ $config = [
                     'extraPatterns' => [                        
                         'GET' => 'get-cursos', // Obter lista de cursos
                         'OPTIONS' => 'allow-cors',
+                        'POST' => 'create-curso', // Cria um curso
+                        'OPTIONS' => 'allow-cors',
                         'PUT <id>' => 'edit-cursos', // Editar um curso a partir de seu ID
                         'OPTIONS <id_banca>' => 'allow-cors', // Editar um curso a partir de seu ID
                     ]

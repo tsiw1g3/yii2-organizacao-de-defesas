@@ -34,7 +34,34 @@ class CursoController extends \yii\rest\ActiveController
         return parent::beforeAction($action);
     }
 
+    public function actions() {
+        $defaultActions = parent::actions();
+        
+        unset($defaultActions['create']);
+    }
+
     public function actionAllowCors() {}
+
+    public function actionCreateCurso() {
+        $curso = new Curso();
+
+        // Coletando valores da requisição POST que foi recebida
+        $data = Yii::$app->request->post();
+
+        // Atribuindo os atributos da requição para o modelo
+        $curso->attributes = $data;
+        
+        if($curso->validate()) {
+            $curso->save();
+            return $curso;
+        }
+
+        // Caso a validacao falhe, lançar erros para o front
+        Yii::$app->response->data = $curso->errors;
+        Yii::$app->response->statusCode = 422;
+        
+        return Yii::$app->response->data;
+    }
 
     public function actionGetCursos() {
         try {
