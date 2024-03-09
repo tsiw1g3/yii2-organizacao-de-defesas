@@ -120,7 +120,7 @@ class ResetPasswordController extends \yii\rest\ActiveController
     }
 
     public function SendEmail($hash, $email){
-        // try{
+        try{
             $emails = explode(",", $email);
             $message = Yii::$app->mailer->compose('emailTemplateResetPass', 
             [
@@ -131,9 +131,9 @@ class ResetPasswordController extends \yii\rest\ActiveController
             $message->setSubject("Pedido de redefinição de senha");
             $message->send();
             return "Email enviado com sucesso!";
-        // } catch (Exception $e) {
-        //     // return "Ocorreu um erro ao tentar enviar o email, tente novamente mais tarde!";
-        //     return $e->getMessage();
-        // }
+        } catch (Exception $e) {
+            // return "Ocorreu um erro ao tentar enviar o email, tente novamente mais tarde!";
+            return $e->getMessage();
+        }
     }
 }
