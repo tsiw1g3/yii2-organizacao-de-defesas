@@ -133,6 +133,11 @@ class UsuarioController extends \yii\rest\ActiveController
     public function actionEditUsuario($id) {
         try {
             $data = Yii::$app->request->post();
+            $owner = ValidatorRequest::getCurrentSessionOwner(Yii::$app->request->headers);
+            if($owner->id != $id) {
+                throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para alterar este usuário!', 403);
+            }
+
             $model = Usuario::findOne($id);
             if($model !== null) {
                 $old_role = $model->role;
