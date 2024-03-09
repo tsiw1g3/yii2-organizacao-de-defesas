@@ -89,6 +89,7 @@ $config = [
                         'OPTIONS <id>' => 'allow-cors',
                         'POST <id>' => 'view',
                         'POST <id>/role' => 'edit-role',
+                        'PUT <id>' => 'edit-usuario',
                         'OPTIONS <id>/role' => 'allow-cors',
                         'OPTIONS <id>/invite' => 'allow-cors',
                         'GET <id>/banca' => 'get-banca', // Listar todas as bancas de um usuario

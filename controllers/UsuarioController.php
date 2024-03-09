@@ -130,6 +130,30 @@ class UsuarioController extends \yii\rest\ActiveController
         }
     }
 
+    public function actionEditUsuario($id) {
+        try {
+            $data = Yii::$app->request->post();
+            $model = Usuario::findOne($id);
+            if($model !== null) {
+                $old_role = $model->role;
+                
+                $model->attributes = $data;
+                $model->role = $old_role;
+                if ($model->validate()) {
+                    $model->save();
+                    return $model;
+                }
+            }
+
+            // Caso a validacao falhe, lançar erros para o front
+            Yii::$app->response->data = $model->errors;
+            Yii::$app->response->statusCode = 422;
+            return Yii::$app->response->data;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
     public function actionEditRole($id)
     {
         try {
