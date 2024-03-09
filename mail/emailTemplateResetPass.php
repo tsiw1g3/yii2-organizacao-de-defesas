@@ -26,7 +26,7 @@
                   <td style="padding:0 0 36px 0;color:#153643;">
                     <h3 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Redefinição de senha:</h3>
                     <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Um pedido de redefinição de senha foi
-                    realizado para a sua conta. Redefina sua senha acessando o <a href="http://localhost:3000/#/resetPass?hash=<?=$reset_hash; ?>">link</a></p>
+                    realizado para a sua conta. Redefina sua senha acessando o <a href="<?= $_ENV["BASE_FRONTEND_URL"] ?>/resetPass?hash=<?=$reset_hash; ?>">link</a></p>
                   </td>
                 </tr>
               </table>

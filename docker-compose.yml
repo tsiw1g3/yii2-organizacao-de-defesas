@@ -9,7 +9,8 @@ services:
     depends_on:
       - db
     environment:
-      - BASE_URL=http://localhost:80
+      - BASE_URL=https://sistema-de-defesas-api.app.ic.ufba.br/
+      - BASE_FRONTEND_URL=https://sistema-de-defesas.app.ic.ufba.br
   db:
     image: mysql:5.7-debian    
     restart: always
