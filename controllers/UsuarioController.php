@@ -101,7 +101,7 @@ class UsuarioController extends \yii\rest\ActiveController
                     $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
                     
                     // Define o nível mais baixo de credenciais para usuários gerais
-                    $model->role = 1;
+                    $model->role = 0;
                     $model->save();
                     
                     return [];
