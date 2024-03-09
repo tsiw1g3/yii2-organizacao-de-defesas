@@ -18,6 +18,12 @@ class ValidatorRequest
             return false;
         }
 
+        // Check if the session has expired
+        if($session_db->expire < time()) {
+            $session_db->delete();
+            return false;
+        }
+
         $model = Usuario::findIdentityByAccessToken($session_db->token_access);
         
         if ($model === null) {

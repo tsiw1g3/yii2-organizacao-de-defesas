@@ -17,7 +17,7 @@ $config = [
             'cookieValidationKey' => 'Jn7jOniUIfgOTJGzTioxpzIlm7oHTDfm',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
-            ]
+            ],
         ],
         'loginUrl' => null,
         'response' => [
@@ -67,6 +67,7 @@ $config = [
         ],
         'session' => [
             'class' => 'yii\web\DbSession',
+            'timeout' => 3600
         ],
         'db' => $db,
         'formatter' => [
