@@ -50,11 +50,11 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
                 'username' => 'sistemadedefesasufba@gmail.com',
-                'password' => 'lkcwmpltlxojzyod',
+                'password' => 'sisdef123',
                 'port' => '587',
                 'encryption' => 'tls',
             ],             
-            'useFileTransport' => true,
+            'useFileTransport' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
