@@ -50,7 +50,7 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
                 'username' => 'sistemadedefesasufba@gmail.com',
-                'password' => 'sisdef123',
+                'password' => $_ENV["MAIL_PASSWORD"],
                 'port' => '587',
                 'encryption' => 'tls',
             ],             
