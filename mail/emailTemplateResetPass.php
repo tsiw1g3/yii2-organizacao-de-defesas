@@ -16,7 +16,7 @@
         <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
           <tr>
             <td align="center" style="padding:40px 0 30px 0;background:#70bbd9;">
-              <img src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png" alt="" width="300" style="height:auto;display:block;" />
+              <img src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png" alt="" width="100" style="height:auto;display:block;" />
             </td>
           </tr>
           <tr>
