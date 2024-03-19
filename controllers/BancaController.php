@@ -62,28 +62,27 @@ class BancaController extends \yii\rest\ActiveController
 
 
             // Atribuindo os atributos da requição para o modelo
+            $owner = ValidatorRequest::getCurrentSessionOwner(Yii::$app->request->headers);
             if(isset($data['docente'])) {
-                // Valida caso em que a banca é cadastrada por um aluno.
-                $aluno = Usuario::findOne(Yii::$app->user->getId());                            
-
-                $data['matricula'] = $aluno->registration_id;
-                $data['pronome_autor'] = $aluno->pronoun;
-                $data['autor'] = $aluno->nome;
-            }        
+                $data['matricula'] = $owner->registration_id;
+                $data['pronome_autor'] = $owner->pronoun;
+                $data['autor'] = $owner->nome;
+            }
             
             $banca->attributes = $data;
 
             if ($banca->validate() && $banca->save()) {
                 $usuario_banca = new UsuarioBanca();
                 $usuario_banca->id_banca = $banca->id;                
-
                 
                 if(isset($data['docente']) && ($docente = Usuario::findOne($data['docente']))) {
                     $usuario_banca->id_usuario = $docente->id;
                     $role = $docente->role;
                 } else {
-                    $usuario_banca->id_usuario = Yii::$app->user->getId();
-                    $role = Yii::$app->user->identity->getRole();
+                    Yii::error('Owner: ' . VarDumper::dumpAsString($owner), 'banca');
+
+                    $usuario_banca->id_usuario = $owner->id;
+                    $role = $owner->role;
                 }
 
                 switch($role) {
@@ -100,7 +99,7 @@ class BancaController extends \yii\rest\ActiveController
 
                 $usuario_banca->save();
 
-                return [];
+                return $banca;
             }
 
             // Caso a validacao falhe, lançar erros para o front

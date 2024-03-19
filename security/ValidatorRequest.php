@@ -39,6 +39,7 @@ class ValidatorRequest
     public static function getCurrentSessionOwner($headers) {
         $token = $headers->get('Authorization');
         $session = Session::findOne($token);
+        
         if(!$session) return null;
         return Usuario::findIdentityByAccessToken($session->token_access);
     }
