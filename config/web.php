@@ -54,7 +54,7 @@ $config = [
                 'port' => '587',
                 'encryption' => 'tls',
             ],             
-            'useFileTransport' => false,
+            'useFileTransport' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
