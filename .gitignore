@@ -33,3 +33,6 @@ tests/_support/_generated
 /.vagrant
 
 /documents_banca
+
+#google auth keys
+/config/google_api_tokens/*
