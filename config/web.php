@@ -54,7 +54,7 @@ $config = [
                 'port' => '587',
                 'encryption' => 'tls',
             ],             
-            'useFileTransport' => true,
+            'useFileTransport' => empty($_ENV["MAIL_PASSWORD"]),
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
