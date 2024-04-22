@@ -54,6 +54,68 @@ class UsuarioController extends \yii\rest\ActiveController
         return $defaultActions;
     }
 
+    public static function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+    public function actionPreRegister() {
+        $owner = ValidatorRequest::getCurrentSessionOwner(Yii::$app->request->headers);
+        if($owner->role != 3) {
+            throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para realizar esta ação!', 403);
+        }
+
+        $model = new Usuario();
+
+        // Coletando valores da requisição POST que foi recebida
+        $data = Yii::$app->request->post();
+        
+        // Atribuindo os atributos da requição para o modelo
+        $model->attributes = $data; 
+
+        $dtz = new DateTimeZone("America/Sao_Paulo");
+        $now = new DateTime("now", $dtz);
+        $now = $now->format("Y-m-d H:i:s");
+        $model->created_at = $now;
+        $model->updated_at = $now;
+
+        // Coleta a senha enviada pelo formulário para fazer a validacao
+        $generated_password = $this->generateRandomString(10);
+        $model->password_has = $generated_password;
+        
+        $model->auth_key = Yii::$app->getSecurity()->generateRandomString();
+        while ($this->findModelByToken($model->auth_key)) {
+            $model->auth_key = Yii::$app->getSecurity()->generateRandomString();
+        }
+        $model->password_has = Yii::$app->getSecurity()->generatePasswordHash($generated_password);
+        
+        // Define o nível mais baixo de credenciais para usuários gerais
+        $model->role = 2;
+
+        if($model->validate() && $model->save()) {
+            $pre_registration_email = Yii::$app->mailer->compose('emailTemplatePreRegister', [
+                'author' => $owner->nome,
+            ]);
+            $pre_registration_email->setFrom('sistemadedefesasufba@gmail.com');
+            // $pre_registration_email->setTo($model->email);
+            $pre_registration_email->setTo('contato.joaocomp@gmail.com');
+            $pre_registration_email->setSubject("Pré-cadastro no Sistema de Defesas de TCC");
+            $pre_registration_email->send();
+            return [];
+        }
+
+        // Caso a validacao falhe, lançar erros para o front
+        Yii::$app->response->data = $model->errors;
+        Yii::$app->response->statusCode = 422;
+        
+        return Yii::$app->response->data;
+    }
+
 
     public function actionCreate()
     {
@@ -106,7 +168,6 @@ class UsuarioController extends \yii\rest\ActiveController
                     
                     return [];
                 }
-                
             }
             
             // Caso a validacao falhe, lançar erros para o front

@@ -419,7 +419,6 @@ class BancaController extends \yii\rest\ActiveController
                     ->from('banca')
                     ->innerJoin('curso', 'banca.curso = curso.id')
                     ->where(['banca.id' => $id])
-                    ->andWhere(['<>','visible', "0"])
                     ->one();
 
         if ($banca != NULL) {
