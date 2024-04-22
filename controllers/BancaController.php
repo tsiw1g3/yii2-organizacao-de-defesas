@@ -78,9 +78,16 @@ class BancaController extends \yii\rest\ActiveController
                 if(isset($data['docente']) && ($docente = Usuario::findOne($data['docente']))) {
                     $usuario_banca->id_usuario = $docente->id;
                     $role = $docente->role;
+                    
+                    $registration_email = Yii::$app->mailer->compose('emailTemplateCreateWork', [
+                        'author' => $owner->nome, 
+                        'title' => $data['titulo_trabalho']
+                    ]);
+                    $registration_email->setFrom('sistemadedefesasufba@gmail.com');
+                    $registration_email->setTo($docente->email);
+                    $registration_email->setSubject("Nova banca cadastrada");
+                    $registration_email->send();
                 } else {
-                    Yii::error('Owner: ' . VarDumper::dumpAsString($owner), 'banca');
-
                     $usuario_banca->id_usuario = $owner->id;
                     $role = $owner->role;
                 }
