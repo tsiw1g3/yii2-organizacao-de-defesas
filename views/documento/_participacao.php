@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     .report {
         padding: 2rem;        
         display: flex;
@@ -157,4 +157,7 @@
         <p><?= $cargo_coordenacao ?></p>
         <p>UFBA</p>
     </section>
-</section>
+</section> -->
+<h1>
+    Teste de geração estilo.
+</h1>
