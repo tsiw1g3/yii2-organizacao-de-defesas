@@ -1,4 +1,4 @@
-<!-- <style>
+<style>
     .report {
         padding: 2rem;        
         display: flex;
@@ -131,7 +131,7 @@
 </div>
 <div class="logo-ic-container">
     <img class="brasao" src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png">        
-</div> -->
+</div>
 <section class="report">
     <section class="header">
         <h1>MINISTÉRIO DA EDUCAÇÃO</h1>
