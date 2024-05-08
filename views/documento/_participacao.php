@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     .report {
         padding: 2rem;        
         display: flex;
@@ -131,8 +131,8 @@
 </div>
 <div class="logo-ic-container">
     <img class="brasao" src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png">        
-</div>
-<!-- <section class="report">
+</div> -->
+<section class="report">
     <section class="header">
         <h1>MINISTÉRIO DA EDUCAÇÃO</h1>
         <h1>UNIVERSIDADE FEDERAL DA BAHIA</h1>
@@ -157,4 +157,4 @@
         <p><?= $cargo_coordenacao ?></p>
         <p>UFBA</p>
     </section>
-</section> -->
+</section>
