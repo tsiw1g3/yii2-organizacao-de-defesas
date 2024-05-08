@@ -93,15 +93,15 @@ class UsuarioBancaController extends \yii\rest\ActiveController
             // return empty($aux);
             // Valida se o usuário já esta na banca
             if ($this->findUsuarioBancaByBanca($id, $model->id_usuario)) {
-                throw new \yii\web\ForbiddenHttpException('Usuário já cadastrado na banca.', 403);
+                throw new \yii\web\ForbiddenHttpException('Usuário já cadastrado na banca.', 400);
             }
 
             if (!$this->validateRole($model)) {
-                throw new \yii\web\ForbiddenHttpException($model->role . ' nao permitida.', 403);
+                throw new \yii\web\ForbiddenHttpException($model->role . ' nao permitida.', 400);
             }
 
             if (!$this->validateParticipants($model)) {
-                throw new \yii\web\ForbiddenHttpException('Limite de ' . $model->role . ' atingido', 403);
+                throw new \yii\web\ForbiddenHttpException('Limite de ' . $model->role . ' atingido', 400);
             }
 
 
@@ -173,7 +173,6 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         ->innerJoin('usuario', 'usuario_banca.id_usuario = usuario.id')
         ->innerJoin('banca', 'banca.id = usuario_banca.id_banca')
         ->where("usuario_banca.id_banca = $id_banca")
-        ->andWhere(['<>','banca.visible', "0"])
         ->all();
         return $query;
     }

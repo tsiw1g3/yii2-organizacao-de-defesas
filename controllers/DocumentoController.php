@@ -68,7 +68,6 @@ class DocumentoController extends \yii\web\Controller
 
         public function actionGetDoc($id_banca)
         {
-            $_POST["tempo3"] = time();
             $tcc = $this->renderPartial('_tcc.php', [
                 'curso' => $_POST['curso'],
                 'nome_curso' => $_POST['nome_curso'],
@@ -83,15 +82,10 @@ class DocumentoController extends \yii\web\Controller
                 'horario' => $_POST['horario'],
                 'semestre' => $_POST['semestre'],
             ]);
-            $_POST["tempo4"] = time();
             
             $mpdf = new \Mpdf\Mpdf();
             $mpdf->WriteHTML($tcc);
             $mpdf->Output();
-
-            $_POST["tempo5"] = time();
-
-            throw new Error;
         }
 
         public function actionGetDocParticipacao($id_banca) {
@@ -161,8 +155,6 @@ class DocumentoController extends \yii\web\Controller
         }
 
         public function actionDocumentoInfo($id_banca){
-            $_POST["tempo1"] = time();
-
             $banca = Banca::find()->where(['id' => $id_banca])->one();
             $curso = Curso::find()->where(['id' => $banca->curso])->one();
 
@@ -201,9 +193,7 @@ class DocumentoController extends \yii\web\Controller
                 'data' => $data,
                 'horario' => $horario,
                 'semestre' => $banca->ano . "." . $banca->semestre_letivo,
-                'tempo1' => time()
             ];
-            $_POST["tempo2"] = time();
 
             return json_encode($response);
         }

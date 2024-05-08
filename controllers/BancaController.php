@@ -367,8 +367,6 @@ class BancaController extends \yii\rest\ActiveController
         }
 
         public function actionReportInfo($id_banca){
-            $_POST["tempo1"] = time();
-
             $banca = Banca::find()->where(['id' => $id_banca])->one();
 
             $membros_banca = (new \yii\db\Query())
@@ -405,7 +403,6 @@ class BancaController extends \yii\rest\ActiveController
                 'data' => $data,
                 'horario' => $horario,
                 'semestre' => $banca->ano . "." . $banca->semestre_letivo,
-                'tempo1' => time()
             ];
             $_POST["tempo2"] = time();
 
