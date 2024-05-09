@@ -12,6 +12,10 @@
         {
             "name": "Bernado Flores",
             "email": "bfsalmeron@outlook.com"
+        },
+        {
+            "name": "João Pedro Brito Silva",
+            "email": "contato.joaocomp@gmail.com"
         }
     ],
     "minimum-stability": "stable",
