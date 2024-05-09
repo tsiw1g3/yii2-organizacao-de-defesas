@@ -124,13 +124,13 @@
     $student_role = $lista_pronomes_aluno[$pronome_aluno];    
 ?>
 <div class="marca-dagua-container">
-    <img class="marca-dagua" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">
+    <img class="marca-dagua" src="./resources/img/brasao-ufba.png">
 </div>
 <div class="brasao-container">
-    <img class="brasao" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">        
+    <img class="brasao" src="./resources/img/brasao-ufba.png">        
 </div>
 <div class="logo-ic-container">
-    <img class="brasao" src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png">        
+    <img class="brasao" src="./resources/img/instituto_de_computacao.png">        
 </div>
 <section class="report">
     <section class="header">
