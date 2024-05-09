@@ -116,7 +116,9 @@ class DocumentoController extends \yii\web\Controller
                 'cargo_coordenacao' => $curso->cargo_coordenacao,
             ]);
                         
-            $mpdf = new \Mpdf\Mpdf();            
+            $mpdf = new \Mpdf\Mpdf();        
+            $mpdf->showImageErrors = true;
+
             $mpdf->WriteHTML($participacao);
             $mpdf->Output();
         }
@@ -150,6 +152,8 @@ class DocumentoController extends \yii\web\Controller
             ]);
                         
             $mpdf = new \Mpdf\Mpdf();
+            $mpdf->showImageErrors = true;
+            
             $mpdf->WriteHTML($orientacao);
             $mpdf->Output();
         }

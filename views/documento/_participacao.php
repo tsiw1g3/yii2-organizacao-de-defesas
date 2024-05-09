@@ -123,7 +123,7 @@
     $teacher_role = $lista_pronomes_orientador[$pronome_orientador];
     $student_role = $lista_pronomes_aluno[$pronome_aluno];
 ?>
-<!-- <div class="marca-dagua-container">
+<div class="marca-dagua-container">
     <img class="marca-dagua" src="<?= $_ENV["BASE_URL"] ?>/resources/img/brasao-ufba.png">
 </div>
 <div class="brasao-container">
@@ -131,7 +131,7 @@
 </div>
 <div class="logo-ic-container">
     <img class="brasao" src="<?= $_ENV["BASE_URL"] ?>/resources/img/instituto_de_computacao.png">        
-</div> -->
+</div>
 <section class="report">
     <section class="header">
         <h1>MINISTÉRIO DA EDUCAÇÃO</h1>
