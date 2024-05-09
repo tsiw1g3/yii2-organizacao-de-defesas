@@ -15,14 +15,16 @@ use bitcko\googlecalendar\GoogleCalendarApi;
  */
 class GoogleCalendarController extends Controller
 {
-
-
     public function actionAuth(){
 
         $redirectUrl = Url::to(['/google-calendar/auth'], true);
         $calendarId = 'primary';
         $username="any_name";
-        $googleApi = new GoogleCalendarApi($username,$calendarId,$redirectUrl);
+        $googleApi = new GoogleCalendarApi($username, $calendarId, $redirectUrl);
+        
+        // $redirectUrl = Url::to(['/google-calendar/auth'], true);
+        \Yii::error($redirectUrl, 'Redirect URL');
+
         if(!$googleApi->checkIfCredentialFileExists()){
             $googleApi->generateGoogleApiAccessToken();
         }

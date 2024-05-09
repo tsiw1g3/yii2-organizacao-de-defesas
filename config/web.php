@@ -80,6 +80,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => true,
+            'baseUrl' => $_ENV["BASE_URL"],
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule', 'controller' =>
