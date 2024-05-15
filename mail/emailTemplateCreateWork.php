@@ -29,7 +29,7 @@
                       O seu aluno de TCC <strong><?=$author; ?></strong> iniciou o cadastro da defesa de TCC intitulada <strong><?=$title; ?></strong>.
                       <br />
                       <br />
-                      Por favor, adicione os membros e torne-a publica para visibilidade de todos os usuários.
+                      Para garantir a visibilidade de todos os usuários, por favor, torne sua banca pública. Você pode fazer isso facilmente editando suas configurações <a href="<?= $_ENV["BASE_FRONTEND_URL"] ?>/editarbanca/<?=$id; ?>">aqui</a>.
                     </p>
                   </td>
                 </tr>

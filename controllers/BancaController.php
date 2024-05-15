@@ -81,7 +81,8 @@ class BancaController extends \yii\rest\ActiveController
                     
                     $registration_email = Yii::$app->mailer->compose('emailTemplateCreateWork', [
                         'author' => $owner->nome, 
-                        'title' => $data['titulo_trabalho']
+                        'title' => $data['titulo_trabalho'],
+                        'id' => $banca->id
                     ]);
                     $registration_email->setFrom('sistemadedefesasufba@gmail.com');
                     $registration_email->setTo($docente->email);
