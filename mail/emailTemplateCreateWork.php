@@ -24,7 +24,7 @@
               <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;">
                 <tr>
                   <td style="color:#153643;">                  
-                    <h3 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Uma nova banca cadastrada:</h3>
+                    <h3 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Uma nova defesa de TCC foi cadastrada:</h3>
                     <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
                       O seu aluno de TCC <strong><?=$author; ?></strong> iniciou o cadastro da defesa de TCC intitulada <strong><?=$title; ?></strong>.
                       <br />
