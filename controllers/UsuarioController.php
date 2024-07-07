@@ -81,6 +81,8 @@ class UsuarioController extends \yii\rest\ActiveController
         $dtz = new DateTimeZone("America/Sao_Paulo");
         $now = new DateTime("now", $dtz);
         $now = $now->format("Y-m-d H:i:s");
+        
+        $model->username = strtok($model->email, '@');
         $model->created_at = $now;
         $model->updated_at = $now;
 
