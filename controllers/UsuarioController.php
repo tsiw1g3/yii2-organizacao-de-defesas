@@ -103,9 +103,8 @@ class UsuarioController extends \yii\rest\ActiveController
             $pre_registration_email = Yii::$app->mailer->compose('emailTemplatePreRegister', [
                 'author' => $owner->nome,
             ]);
-            $pre_registration_email->setFrom('sistemadedefesasufba@gmail.com');
-            // $pre_registration_email->setTo($model->email);
-            $pre_registration_email->setTo('contato.joaocomp@gmail.com');
+            $pre_registration_email->setFrom(['sistemadedefesasufba@gmail.com' => "Defesas TCC IC"]);
+            $pre_registration_email->setTo($model->email);
             $pre_registration_email->setSubject("Pré-cadastro no Sistema de Defesas de TCC");
             $pre_registration_email->send();
             return [];

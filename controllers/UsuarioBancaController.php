@@ -244,7 +244,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
                 'avaliadores' => $avaliadores,
                 'invite_google' => $inviteLink, 
             ]);
-            $message->setFrom('sistemadedefesasufba@gmail.com');
+            $message->setFrom(['sistemadedefesasufba@gmail.com' => "Defesas TCC IC"]);
             $message->setTo($emails);
             $message->setSubject($data['assunto']);
             $message->send();

@@ -126,7 +126,7 @@ class ResetPasswordController extends \yii\rest\ActiveController
             [
                 'reset_hash' => $hash, 
             ]);
-            $message->setFrom('sistemadedefesasufba@gmail.com');
+            $message->setFrom(['sistemadedefesasufba@gmail.com' => "Defesas TCC IC"]);
             $message->setTo($emails);
             $message->setSubject("Pedido de redefinição de senha");
             $message->send();

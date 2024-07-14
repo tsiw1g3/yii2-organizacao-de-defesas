@@ -84,7 +84,7 @@ class BancaController extends \yii\rest\ActiveController
                         'title' => $data['titulo_trabalho'],
                         'id' => $banca->id
                     ]);
-                    $registration_email->setFrom('sistemadedefesasufba@gmail.com');
+                    $registration_email->setFrom(['sistemadedefesasufba@gmail.com' => "Defesas TCC IC"]);
                     $registration_email->setTo($docente->email);
                     $registration_email->setSubject("[IC-UFBA] Nova banca de TCC cadastrada");
                     $registration_email->send();
