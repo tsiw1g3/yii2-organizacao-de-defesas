@@ -37,7 +37,7 @@ $data_defesa = date("d/m/Y", $timestamp);
                     <h3 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Resumo:</h3>
                     <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;text-align: justify;"><?= $banca["resumo"] ?></p>
                     <h3 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">Palavras chave:</h3>
-                    <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><?= $banca["palavras_chave"] ?></p>
+                    <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><?= $banca["palavras_chave"] ?></p>                    
                   </td>
                 </tr>
                 <tr>
@@ -68,12 +68,18 @@ $data_defesa = date("d/m/Y", $timestamp);
                           <?php endforeach; ?>
                         </td>
                       </tr>
+                      <tr style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
+                        <td colspan="3" style="width: 100%; text-align: center;">
+                          Para mais detalhes da defesa, clique 
+                          <a style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;" href="<?= $_ENV["BASE_FRONTEND_URL"] ?>/verbanca?id=<?= $banca["id"] ?>" target="_blank" rel="nofererrer">aqui</a>
+                        </td>
+                      </tr>
                       <tr>
                         <td style="max-width:540px;padding:0;vertical-align:top;color:#153643; text-align:center;" colspan="3">
                           <div>
 	                    	  <h3 style="font-size:24px;margin:16px 0 20px 0;font-family:Arial,sans-serif;">Adicionar ao google agenda:</h3>
 	                          <p style="font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
-                              <a href="<?= $invite_google; ?>">
+                            <a href="<?= $invite_google; ?>">
                                 <img style="margin-left:auto; margin-right:auto;" src="<?= $_ENV["BASE_URL"] ?>/resources/img/google_agenda.png" alt="Adicionar à agenda" width="300" style="height:auto;display:block;" />
                               </a>
                             </p>

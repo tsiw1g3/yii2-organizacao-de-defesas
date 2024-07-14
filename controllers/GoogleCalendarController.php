@@ -19,7 +19,7 @@ class GoogleCalendarController extends Controller
 
         $redirectUrl = Url::to(['/google-calendar/auth'], true);
         $calendarId = 'primary';
-        $username="any_name";
+        $username="sistema_de_defesas";
         $googleApi = new GoogleCalendarApi($username, $calendarId, $redirectUrl);
         
         // $redirectUrl = Url::to(['/google-calendar/auth'], true);
@@ -33,7 +33,7 @@ class GoogleCalendarController extends Controller
     public function actionCreateEvent(){
         $redirectUrl = Url::to(['/google-calendar/auth'], true);
         $calendarId = '1dimt5iv0ba88goaephucfrmqo@group.calendar.google.com';
-        $username="any_name";
+        $username="sistema_de_defesas";
         $googleApi = new GoogleCalendarApi($username,$calendarId, $redirectUrl);
         // var_dump($googleApi); die();
         if($googleApi->checkIfCredentialFileExists()){
@@ -75,7 +75,7 @@ class GoogleCalendarController extends Controller
 
     public function actionDeleteEvent(){
         $calendarId = 'primary';
-        $username="any_name";
+        $username="sistema_de_defesas";
         $googleApi = new GoogleCalendarApi($username,$calendarId);
         if($googleApi->checkIfCredentialFileExists()){
             $eventId ='event_id' ;
@@ -89,7 +89,7 @@ class GoogleCalendarController extends Controller
 
     public function actionCalendarsList(){
         $calendarId = 'primary';
-        $username="any_name";
+        $username="sistema_de_defesas";
         $googleApi = new GoogleCalendarApi($username,$calendarId);
         if($googleApi->checkIfCredentialFileExists()){
           $calendars =    $googleApi->calendarList();

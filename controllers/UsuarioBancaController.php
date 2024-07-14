@@ -180,7 +180,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
     public function CreateEvent($banca){
         $redirectUrl = Url::to(['/google-calendar/auth'], true);
         $calendarId = '1dimt5iv0ba88goaephucfrmqo@group.calendar.google.com';
-        $username="any_name";
+        $username="sistema_de_defesas";
         $googleApi = new GoogleCalendarApi($username, $calendarId, $redirectUrl);
         $date = new \DateTime($banca['data_realizacao'], new \DateTimeZone("America/Sao_paulo"));
         $dateEnd = new \DateTime($banca['data_realizacao'], new \DateTimeZone("America/Sao_paulo"));
@@ -192,7 +192,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
             $event = array(
                 'summary' => $banca['titulo_trabalho'],
                 'location' => $banca['local'],
-                'description' => 'Defesa de TCC da banca ' . $banca['titulo_trabalho'] . ' feita pelo aluno ' . $banca['autor'],
+                'description' => 'Defesa de TCC da banca "' . $banca['titulo_trabalho'] . '" feita pelo aluno ' . $banca['autor'],
                 'start' => array(
                     'dateTime' => $date->format(\DateTime::RFC3339),
                     'timeZone' => 'America/Sao_Paulo',
@@ -202,12 +202,9 @@ class UsuarioBancaController extends \yii\rest\ActiveController
                     'timeZone' => 'America/Sao_Paulo',
                 ),
                 'recurrence' => array(
-                    'RRULE:FREQ=DAILY;COUNT=2'
+                    'RRULE:FREQ=DAILY;COUNT=1'
                 ),
-                'attendees' => array(
-                    // array('email' => 'lpage@example.com'),
-                    // array('email' => 'sbrin@example.com'),
-                ),
+                'attendees' => array(),
                 'reminders' => array(
                     'useDefault' => FALSE,
                     'overrides' => array(
