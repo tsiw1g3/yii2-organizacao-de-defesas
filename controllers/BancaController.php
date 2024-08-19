@@ -19,24 +19,37 @@ use yii\helpers\VarDumper;
  */
 class BancaController extends \yii\rest\ActiveController
 {
-
     public $modelClass = 'app\models\Banca';
-
-    public function beforeAction($action)
+    public $enableCsrfValidation = false;
+    
+    public function behaviors()
     {
-        $_POST['action2'] = $action->id;
-        if($action->id == 'allow-cors' || $action->id == 'index' || $action->id == 'get-bancas' || $action->id == 'get-banca') {
-           $this->enableCsrfValidation = false;
-           return parent::beforeAction($action);
-        }
-        $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission && $action->id != "view") {
-            throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
-        }
-        return parent::beforeAction($action);
-    }
+        $behaviors = parent::behaviors();
 
-    public function actionAllowCors() {}
+        $behaviors['corsFilter'] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                'Origin' => ['http://localhost:3000', 'https://sistema-de-defesas.app.ic.ufba.br'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => null,
+                'Access-Control-Max-Age' => 86400,
+                'Access-Control-Expose-Headers' => []
+            ]
+
+        ];
+
+        $behaviors['authenticator'] = [
+			'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+			'except' => [
+				'options',
+                'get-bancas',
+                'get-banca'
+			],
+		];
+
+        return $behaviors;
+    }
 
     /**
      * @inheritdoc

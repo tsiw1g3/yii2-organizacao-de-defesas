@@ -86,55 +86,55 @@ $config = [
                     'class' => 'yii\rest\UrlRule', 'controller' =>
                     ['usuario' => 'usuario'], // CRUD Usuario
                     'extraPatterns' => [
-                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS' => 'options',
                         'GET' => 'get-usuarios',
-                        'OPTIONS <id>' => 'allow-cors',
-                        'OPTIONS pre-cadastro' => 'allow-cors',
+                        'OPTIONS <id>' => 'options',
+                        'OPTIONS pre-cadastro' => 'options',
                         'POST pre-cadastro' => 'pre-register',
                         'POST <id>' => 'view',
                         'POST <id>/role' => 'edit-role',
                         'PUT <id>' => 'edit-usuario',
-                        'OPTIONS <id>/role' => 'allow-cors',
-                        'OPTIONS <id>/invite' => 'allow-cors',
+                        'OPTIONS <id>/role' => 'options',
+                        'OPTIONS <id>/invite' => 'options',
                         'GET <id>/banca' => 'get-banca', // Listar todas as bancas de um usuario
-                        'OPTIONS <id>/banca' => 'allow-cors', // Listar todas as bancas de um usuario
+                        'OPTIONS <id>/banca' => 'options', // Listar todas as bancas de um usuario
                     ]
                 ],
                 [
                     'class' => 'yii\rest\UrlRule', 'controller' =>
                     ['invite' => 'invite'], // CRUD Usuario
                     'extraPatterns' => [
-                        'OPTIONS' => 'allow-cors',
-                        'OPTIONS <id>' => 'allow-cors',
+                        'OPTIONS' => 'options',
+                        'OPTIONS <id>' => 'options',
                         'GET <hash>' => 'get-invite',
-                        'OPTIONS <id>' => 'allow-cors',
+                        'OPTIONS <id>' => 'options',
                     ]
                 ],
                 [
                     'class' => 'yii\rest\UrlRule', 'controller' =>
                     ['banca' => 'banca'], // CRUD banca
                     'extraPatterns' => [
-                        'OPTIONS' => 'allow-cors',
-                        'OPTIONS <id>' => 'allow-cors',
+                        'OPTIONS' => 'options',
+                        'OPTIONS <id>' => 'options',
                         'GET <id>' => 'get-banca',
                         'GET <id>/users' => 'get-users', // Listar todos os usuarios de uma banca
-                        'OPTIONS <id>/users' => 'allow-cors', // Listar todos os usuarios de uma banca
+                        'OPTIONS <id>/users' => 'options', // Listar todos os usuarios de uma banca
                         'DELETE <id>/user/<user>' => 'delete-user-banca', // Deletar um usuário de uma banca
-                        'OPTIONS <id>/user/<user>' => 'allow-cors', // Deletar um usuário de uma banca
+                        'OPTIONS <id>/user/<user>' => 'options', // Deletar um usuário de uma banca
                         'GET <id>/documento' => 'get-documents', // Listar todos os documentos de uma banca
-                        'OPTIONS <id>/documento' => 'allow-cors', // Listar todos os documentos de uma banca
+                        'OPTIONS <id>/documento' => 'options', // Listar todos os documentos de uma banca
                         'GET <id>/documento/<doc>' => 'get-document', // Listar um documentos de uma banca
                         'GET <id>/documento/<doc>/view' => 'view-document', // Visualizar um documentos de uma banca
-                        'OPTIONS <id>/documento/<doc>/view' => 'allow-cors', // Visualizar um documentos de uma banca
+                        'OPTIONS <id>/documento/<doc>/view' => 'options', // Visualizar um documentos de uma banca
                         'POST <id>/documento' => 'add-document', // Adicionar um documentos a uma banca
                         'DELETE <id>/documento/<doc>' => 'delete-document', // Deletar um documentos a uma banca
-                        'OPTIONS <user_id>/bancas' => 'allow-cors',
+                        'OPTIONS <user_id>/bancas' => 'options',
                         'GET <user_id>/bancas' => 'get-bancas-by-user', // Listar todas as bancas de um usuário
                         'DELETE <id>/delete' => 'delete-banca', // Listar todas as bancas de um usuário
-                        'OPTIONS <id>/delete' => 'allow-cors', // Deletar uma banca
-                        'OPTIONS <id_banca>/report' => 'allow-cors', // Gerar o relatorio
+                        'OPTIONS <id>/delete' => 'options', // Deletar uma banca
+                        'OPTIONS <id_banca>/report' => 'options', // Gerar o relatorio
                         'POST <id_banca>/report' => 'get-report', // Gerar o relatorio
-                        'OPTIONS <id_banca>/reportInfo' => 'allow-cors', // Pegar informacoes para gerar relatorio
+                        'OPTIONS <id_banca>/reportInfo' => 'options', // Pegar informacoes para gerar relatorio
                         'GET <id_banca>/reportInfo' => 'report-info', // Pegar informacoes para gerar relatorio
                         'GET' => 'get-bancas', // Pegar todas as bancas de todos os usuários
                     ]
@@ -143,15 +143,15 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['usuario-banca' => 'usuario-banca'], // CRUD Usuario-banca
                     'extraPatterns' => [
-                        'OPTIONS' => 'allow-cors',
-                        'OPTIONS <id>' => 'allow-cors',
+                        'OPTIONS' => 'options',
+                        'OPTIONS <id>' => 'options',
                         'GET id/<id_banca>/<id_usuario>' => 'id', // Pegar id do ub com id do user e banca
-                        'OPTIONS id/<id_banca>/<id_usuario>' => 'allow-cors', // Pegar id do ub com id do user e banca
+                        'OPTIONS id/<id_banca>/<id_usuario>' => 'options', // Pegar id do ub com id do user e banca
                         'POST <id>' => 'add', // Adicionar usuario na banca
                         'GET usuarios/<id_banca>' => 'usuarios-banca-by-banca',
-                        'OPTIONS usuarios/<id_banca>' => 'allow-cors',
+                        'OPTIONS usuarios/<id_banca>' => 'options',
                         'POST usuarios/email' => 'send-email', // Envio de emails para convite
-                        'OPTIONS nota/<id_banca>/<id_user>' => 'allow-cors', // Dar nota para a banca
+                        'OPTIONS nota/<id_banca>/<id_user>' => 'options', // Dar nota para a banca
                         'POST nota/<id_banca>/<id_user>' => 'give-score', // Dar nota para a banca
                     ]
                 ],
@@ -159,9 +159,9 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['google-calendar' => 'google-calendar'], // CRUD google-calendar
                     'extraPatterns' => [
-                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS' => 'options',
                         'GET auth' => 'auth',
-                        'OPTIONS create' => 'allow-cors',
+                        'OPTIONS create' => 'options',
                         'POST create' => 'create-event',
                     ]
                 ],
@@ -169,12 +169,12 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['reset-password' => 'reset-password'], // CRUD google-calendar
                     'extraPatterns' => [
-                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS' => 'options',
                         'POST' => 'create',
                         'GET <hash>' => 'get-reset-hash',
-                        'OPTIONS <hash>' => 'allow-cors',
+                        'OPTIONS <hash>' => 'options',
                         'POST reset' => 'reset',
-                        'OPTIONS reset' => 'allow-cors',
+                        'OPTIONS reset' => 'options',
                     ]
                 ],
                 [
@@ -182,13 +182,13 @@ $config = [
                     'controller' => ['documento' => 'documento'], // CRUD google-calendar
                     'extraPatterns' => [                        
                         'POST <id_banca>' => 'get-doc', // Gerar o relatorio
-                        'OPTIONS <id_banca>' => 'allow-cors', // Gerar o relatorio
+                        'OPTIONS <id_banca>' => 'options', // Gerar o relatorio
                         'GET participacao/<id_banca>' => 'get-doc-participacao', // Gerar documento de participação na banca.
-                        'OPTIONS participacao/<id_banca>' => 'allow-cors', // Gerar documento de participação na banca.
+                        'OPTIONS participacao/<id_banca>' => 'options', // Gerar documento de participação na banca.
                         'GET orientacao/<id_banca>' => 'get-doc-orientacao', // Gerar documento de orientação na banca.
-                        'OPTIONS orientacao/<id_banca>' => 'allow-cors', // Gerar documento de orientação na banca.
+                        'OPTIONS orientacao/<id_banca>' => 'options', // Gerar documento de orientação na banca.
                         'GET documentoInfo/<id_banca>' => 'documento-info', // Pegar informacoes para gerar relatorio
-                        'OPTIONS documentoInfo/<id_banca>' => 'allow-cors', // Pegar informacoes para gerar relatorio
+                        'OPTIONS documentoInfo/<id_banca>' => 'options', // Pegar informacoes para gerar relatorio
                     ]
                 ],
                 [
@@ -196,12 +196,12 @@ $config = [
                     'controller' => ['cursos' => 'curso'], // CRUD cursos
                     'extraPatterns' => [                        
                         'GET' => 'get-cursos', // Obter lista de cursos
-                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS' => 'options',
                         'POST' => 'create-curso', // Cria um curso
-                        'OPTIONS' => 'allow-cors',
+                        'OPTIONS' => 'options',
                         'PUT <id>' => 'edit-cursos', // Editar um curso a partir de seu ID
                         'DELETE <id>' => 'delete-curso', // Editar um curso a partir de seu ID
-                        'OPTIONS <id_banca>' => 'allow-cors', // Editar um curso a partir de seu ID
+                        'OPTIONS <id_banca>' => 'options', // Editar um curso a partir de seu ID
                     ]
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
@@ -209,6 +209,11 @@ $config = [
                 'POST login' => 'login/login', // Realizar login
                 'POST logout' => 'login/logout', // Realizar logouut
             ],
+        ],
+        'jwt' => [
+            'class' => \sizeg\jwt\Jwt::class,
+            'key' => 'jUELuvknwfL2lyFTSbiv4zgKxqsxHflq',
+            'jwtValidationData' => \app\components\JwtValidationData::class,
         ],
     ],
     'params' => $params,

@@ -17,6 +17,7 @@ class LoginController extends \yii\rest\ActiveController
 {
 
     public $modelClass = 'app\models\LoginForm';
+    public $enableCsrfValidation = false;
 
     /**
      * @inheritdoc
@@ -28,55 +29,50 @@ class LoginController extends \yii\rest\ActiveController
         return $defaultActions;
     }
 
+    public function behaviors() {
+    	$behaviors = parent::behaviors();
+
+		$behaviors['authenticator'] = [
+			'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+			'except' => [
+				'refresh-token',
+				'options',
+				'login',
+			],
+		];
+
+		return $behaviors;
+	}
+
     public function actionLogin()
     {
-
         try {
             $model = new LoginForm();
-
-            // Coletando valores da requisição POST que foi recebida
             $data = Yii::$app->request->post();
 
-            // Atribuindo os atributos da requição para o modelo
             $model->attributes = $data;
-
             $model->validate();
 
-            // Validando o login
             if ($model->login()) {
-                $session = Yii::$app->session;
-                if (!$session->isActive) {
-                    $session->open();
-                }
-                $session_db = Session::findOne(Yii::$app->session->getId());
-
-                if ($session_db !== null) {
-                    $session_db->delete();
-                }
-
-                $session_db = new Session();
-                $session_db->id = Yii::$app->session->getId();
-
-                $id = Yii::$app->user->getId();
-                $usuario = Usuario::findOne($id);
-                $session_db->token_access = $usuario->auth_key;
-                $session_db->validate();
-
-                $session_db->save();
+                $user = Yii::$app->user->identity;
+                
+                $token = $this->generateJwt($user);
+                $this->generateRefreshToken($user);
+                
+                $id = Yii::$app->user->getId();                
 
                 return \Yii::createObject([
                     'class' => 'yii\web\Response',
                     'format' => \yii\web\Response::FORMAT_JSON,
                     'data' => [
                         'id' => $id,
-                        'token' => Yii::$app->session->getId(),
-                        'role' => $usuario->role,
-                        'name' => $usuario->nome,
+                        'token' => (string) $token,
+                        'role' => $user->role,
+                        'name' => $user->nome,
                     ],
                 ]);
             }
 
-            // Caso o login falhe, lançar erros para o front
             Yii::$app->response->data = $model->errors;
             Yii::$app->response->statusCode = 403;
 
@@ -88,22 +84,98 @@ class LoginController extends \yii\rest\ActiveController
 
     public function actionLogout()
     {
-
-        $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission) {
-            throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
-        }
-
-        $user = Usuario::findOne(Yii::$app->user->getId());
-        $sessions = Session::find()->where(['token_access' => $user->auth_key])->all();
-        foreach ($sessions as $session) {
-            $session->delete();
-        }
-
         Yii::$app->user->logout();
 
         Yii::$app->response->data = $user->errors;
         Yii::$app->response->statusCode = 204;
         return Yii::$app->response->data;
     }
+
+    public function actionRefreshToken() {
+		$refreshToken = Yii::$app->request->cookies->getValue('refresh-token', false);
+		if (!$refreshToken) {
+			return new \yii\web\UnauthorizedHttpException('No refresh token found.');
+		}
+
+		$userRefreshToken = \app\models\UserRefreshToken::findOne(['urf_token' => $refreshToken]);
+
+		if (Yii::$app->request->getMethod() == 'POST') {
+			if (!$userRefreshToken) {
+				return new \yii\web\UnauthorizedHttpException('The refresh token no longer exists.');
+			}
+
+			$user = \app\models\User::find() 
+				->where(['id' => $userRefreshToken->urf_userID])
+				->andWhere(['not', ['usr_status' => 'inactive']])
+				->one();
+
+			if (!$user) {
+				$userRefreshToken->delete();
+				return new \yii\web\UnauthorizedHttpException('The user is inactive.');
+			}
+
+			$token = $this->generateJwt($user);
+
+			return [
+				'status' => 'ok',
+				'token' => (string) $token,
+			];
+
+		} elseif (Yii::$app->request->getMethod() == 'DELETE') {
+			if ($userRefreshToken && !$userRefreshToken->delete()) {
+				return new \yii\web\ServerErrorHttpException('Failed to delete the refresh token.');
+			}
+
+			return ['status' => 'ok'];
+		} else {
+			return new \yii\web\UnauthorizedHttpException('The user is inactive.');
+		}
+	}
+
+    private function generateJwt(\app\models\User $user) {
+		$jwt = Yii::$app->jwt;
+		$signer = $jwt->getSigner('HS256');
+		$key = $jwt->getKey();
+		$time = time();
+
+		$jwtParams = Yii::$app->params['jwt'];
+
+		return $jwt->getBuilder()
+			->issuedBy($jwtParams['issuer'])
+			->permittedFor($jwtParams['audience'])
+			->identifiedBy($jwtParams['id'], true)
+			->issuedAt($time)
+			->expiresAt($time + $jwtParams['expire'])
+			->withClaim('uid', $user->id)
+			->getToken($signer, $key);
+	}
+
+	/**
+	 * @throws yii\base\Exception
+	 */
+	private function generateRefreshToken(\app\models\User $user, \app\models\User $impersonator = null): \app\models\UserRefreshToken {
+		$refreshToken = Yii::$app->security->generateRandomString(200);
+
+		$userRefreshToken = new \app\models\UserRefreshToken([
+			'urf_userID' => $user->id,
+			'urf_token' => $refreshToken,
+			'urf_ip' => Yii::$app->request->userIP,
+			'urf_user_agent' => Yii::$app->request->userAgent,
+			'urf_created' => gmdate('Y-m-d H:i:s'),
+		]);
+		if (!$userRefreshToken->save()) {
+			throw new \yii\web\ServerErrorHttpException('Failed to save the refresh token: '. $userRefreshToken->getErrorSummary(true));
+		}
+
+		Yii::$app->response->cookies->add(new \yii\web\Cookie([
+			'name' => 'refresh-token',
+			'value' => $refreshToken,
+			'httpOnly' => true,
+			'sameSite' => 'none',
+			'secure' => true,
+			'path' => '/login/refresh-token',  
+		]));
+
+		return $userRefreshToken;
+	}
 }

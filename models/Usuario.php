@@ -108,10 +108,12 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
      * @param string $token o token a ser localizado
      * @return IdentityInterface|null o objeto da identidade que corresponde ao token informado
      */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['auth_key' => $token]);
-    }
+    public static function findIdentityByAccessToken($token, $type = null) {
+		return static::find()
+			->where(['id' => (string) $token->getClaim('uid') ])
+			->one();
+	}
+    
 
     /**
      * @return int|string o ID do usuário atual
@@ -153,4 +155,12 @@ class Usuario extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->getAuthKey() === $authKey;
     }
+
+    public function afterSave($isInsert, $changedOldAttributes) {
+		if (array_key_exists('password_has', $changedOldAttributes)) {
+			\app\models\UserRefreshToken::deleteAll(['urf_userID' => $this->id]);
+		}
+
+		return parent::afterSave($isInsert, $changedOldAttributes);
+	}
 }

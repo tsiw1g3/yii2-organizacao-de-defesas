@@ -29,7 +29,8 @@
         "bitcko/yii2-bitcko-google-calendar-api": "dev-master",
         "yii2tech/html2pdf": "*",
         "mikehaertl/phpwkhtmltopdf": "^2.5",
-        "spiritix/html-to-pdf":"*"
+        "spiritix/html-to-pdf":"*",
+        "sizeg/yii2-jwt": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

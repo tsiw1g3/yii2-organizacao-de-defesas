@@ -15,6 +15,19 @@ use bitcko\googlecalendar\GoogleCalendarApi;
  */
 class GoogleCalendarController extends Controller
 {
+    public function behaviors() {
+        $behaviors = parent::behaviors();
+
+        $behaviors['authenticator'] = [
+            'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+            'except' => [
+                'options',
+                'auth'
+            ],
+        ];
+
+        return $behaviors;
+    }
     public function actionAuth(){
 
         $redirectUrl = Url::to(['/google-calendar/auth'], true);

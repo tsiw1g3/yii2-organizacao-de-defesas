@@ -14,24 +14,23 @@ use yii\helpers\VarDumper;
  */
 class ResetPasswordController extends \yii\rest\ActiveController
 {
-
     public $modelClass = 'app\models\ResetPassword';
+    public $enableCsrfValidation = false;
 
-    public function beforeAction($action)
-    {
-        if($action->id == 'allow-cors' || $action->id == 'index') {
-           $this->enableCsrfValidation = false;
-           return parent::beforeAction($action);
-        }
+    public function behaviors() {
+        $behaviors = parent::behaviors();
 
-        // $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        // if (!$permission && $action->id != 'get-reset') {
-        //     throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
-        // }
-        return parent::beforeAction($action);
+        $behaviors['authenticator'] = [
+            'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+            'except' => [
+                'options',
+                'create',
+                'get-reset-hash'
+            ],
+        ];
+
+        return $behaviors;
     }
-
-    public function actionAllowCors() {}
 
     /**
      * @inheritdoc

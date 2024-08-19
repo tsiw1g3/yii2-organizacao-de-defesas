@@ -13,24 +13,22 @@ use yii\helpers\VarDumper;
  */
 class InviteController extends \yii\rest\ActiveController
 {
-
     public $modelClass = 'app\models\Invite';
+    public $enableCsrfValidation = false;
 
-    public function beforeAction($action)
+    public function behaviors()
     {
-        if($action->id == 'allow-cors' || $action->id == 'index') {
-           $this->enableCsrfValidation = false;
-           return parent::beforeAction($action);
-        }
+        $behaviors = parent::behaviors();
 
-        $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission && $action->id != 'get-invite') {
-            throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
-        }
-        return parent::beforeAction($action);
+        $behaviors['authenticator'] = [
+            'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+            'except' => [
+                'options',
+            ],
+        ];
+
+        return $behaviors;
     }
-
-    public function actionAllowCors() {}
 
     /**
      * @inheritdoc

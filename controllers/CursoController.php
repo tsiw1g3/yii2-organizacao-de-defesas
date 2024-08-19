@@ -20,19 +20,20 @@ use Yii;
 class CursoController extends \yii\rest\ActiveController
 {
     public $modelClass = 'app\models\Curso';
+    public $enableCsrfValidation = false;
 
-    public function beforeAction($action)
+    public function behaviors()
     {
-        if($action->id == 'allow-cors') {
-           $this->enableCsrfValidation = false;
-           return parent::beforeAction($action);
-        }
+        $behaviors = parent::behaviors();
 
-        $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission) {
-            throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
-        }
-        return parent::beforeAction($action);
+        $behaviors['authenticator'] = [
+            'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+            'except' => [
+                'options',
+            ],
+        ];
+
+        return $behaviors;
     }
 
     public function actions() {
@@ -40,8 +41,6 @@ class CursoController extends \yii\rest\ActiveController
         
         unset($defaultActions['create']);
     }
-
-    public function actionAllowCors() {}
 
     public function actionCreateCurso() {
         $curso = new Curso();

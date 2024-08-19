@@ -17,8 +17,8 @@ use bitcko\googlecalendar\GoogleCalendarApi;
  */
 class UsuarioBancaController extends \yii\rest\ActiveController
 {
-
     public $modelClass = 'app\models\UsuarioBanca';
+    public $enableCsrfValidation = false;
 
     protected $role_allowed = [
         'aluno',
@@ -35,21 +35,19 @@ class UsuarioBancaController extends \yii\rest\ActiveController
         'avaliador' => 2
     ];
 
-    public function beforeAction($action)
-    {
-        if ($action->id == 'allow-cors' || $action->id == 'usuarios-banca-by-banca') {
-            $this->enableCsrfValidation = false;
-            return parent::beforeAction($action);
-        }
+    public function behaviors() {
+        $behaviors = parent::behaviors();
 
-        $permission = ValidatorRequest::validatorHeader(Yii::$app->request->headers);
-        if (!$permission) {
-            throw new \yii\web\ForbiddenHttpException('Voce nao tem permissao para acessar esta pagina', 403);
-        }
-        return parent::beforeAction($action);
+        $behaviors['authenticator'] = [
+            'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+            'except' => [
+                'usuarios-banca-by-banca',
+                'options',
+            ],
+        ];
+
+        return $behaviors;
     }
-
-    public function actionAllowCors() {}
 
     /**
      * @inheritdoc
