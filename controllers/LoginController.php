@@ -32,6 +32,19 @@ class LoginController extends \yii\rest\ActiveController
     public function behaviors() {
     	$behaviors = parent::behaviors();
 
+		$behaviors['corsFilter'] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                'Origin' => ['http://localhost:3000', 'https://sistema-de-defesas.app.ic.ufba.br'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => null,
+                'Access-Control-Max-Age' => 86400,
+                'Access-Control-Expose-Headers' => []
+            ]
+
+        ];
+
 		$behaviors['authenticator'] = [
 			'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
 			'except' => [
@@ -57,7 +70,7 @@ class LoginController extends \yii\rest\ActiveController
                 $user = Yii::$app->user->identity;
                 
                 $token = $this->generateJwt($user);
-                $this->generateRefreshToken($user);
+                $refresh_token = $this->generateRefreshToken($user);
                 
                 $id = Yii::$app->user->getId();                
 
@@ -67,6 +80,7 @@ class LoginController extends \yii\rest\ActiveController
                     'data' => [
                         'id' => $id,
                         'token' => (string) $token,
+						'refresh_token' => $refresh_token->urf_token,
                         'role' => $user->role,
                         'name' => $user->nome,
                     ],
@@ -92,12 +106,14 @@ class LoginController extends \yii\rest\ActiveController
     }
 
     public function actionRefreshToken() {
-		$refreshToken = Yii::$app->request->cookies->getValue('refresh-token', false);
-		if (!$refreshToken) {
+		$headers = Yii::$app->request->headers;
+		$refresh_token = $headers['refreshtoken'];
+		
+		if (!$refresh_token) {
 			return new \yii\web\UnauthorizedHttpException('No refresh token found.');
 		}
 
-		$userRefreshToken = \app\models\UserRefreshToken::findOne(['urf_token' => $refreshToken]);
+		$userRefreshToken = \app\models\UserRefreshToken::findOne(['urf_token' => $refresh_token]);
 
 		if (Yii::$app->request->getMethod() == 'POST') {
 			if (!$userRefreshToken) {

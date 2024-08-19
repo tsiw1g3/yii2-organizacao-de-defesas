@@ -205,9 +205,9 @@ $config = [
                     ]
                 ],
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
-                'OPTIONS nota/<id_banca>' => 'usuario-banca/allow-cors', // Pegar a nota final dado o id da banca
+                'OPTIONS login' => 'login/options', // Realizar login
                 'POST login' => 'login/login', // Realizar login
-                'POST logout' => 'login/logout', // Realizar logouut
+                'DELETE login' => 'login/refresh-token', // Realizar logouut
             ],
         ],
         'jwt' => [
