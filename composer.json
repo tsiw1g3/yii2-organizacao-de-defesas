@@ -47,6 +47,8 @@
     },
     "config": {
         "process-timeout": 1800,
+        "optimize-autoloader": true,
+        "apcu-autoloader": true,
         "fxp-asset": {
             "enabled": false
         },
@@ -84,5 +86,6 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "optimize-autoloader": true
 }

@@ -30,7 +30,9 @@ $config = [
             },
         ],
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => 'yii\caching\ApcCache',
+            'keyPrefix' => 'sisdef',
+            'useApcu' => true,
         ],
         'user' => [
             'identityClass' => 'app\models\Usuario',
@@ -195,15 +197,15 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['cursos' => 'curso'], // CRUD cursos
                     'extraPatterns' => [                        
+                        'OPTIONS' => 'options',
                         'GET' => 'get-cursos', // Obter lista de cursos
-                        'OPTIONS' => 'options',
                         'POST' => 'create-curso', // Cria um curso
-                        'OPTIONS' => 'options',
+                        'OPTIONS <id_banca>' => 'options', // Editar um curso a partir de seu ID
                         'PUT <id>' => 'edit-cursos', // Editar um curso a partir de seu ID
                         'DELETE <id>' => 'delete-curso', // Editar um curso a partir de seu ID
-                        'OPTIONS <id_banca>' => 'options', // Editar um curso a partir de seu ID
                     ]
                 ],
+                'OPTIONS nota/<id_banca>' => 'usuario-banca/options', // Pegar a nota final dado o id da banca
                 'GET nota/<id_banca>' => 'usuario-banca/nota', // Pegar a nota final dado o id da banca
                 'OPTIONS login' => 'login/options', // Realizar login
                 'POST login' => 'login/login', // Realizar login

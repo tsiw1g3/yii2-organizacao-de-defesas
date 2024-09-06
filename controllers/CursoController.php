@@ -26,6 +26,18 @@ class CursoController extends \yii\rest\ActiveController
     {
         $behaviors = parent::behaviors();
 
+        $behaviors['corsFilter'] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                'Origin' => ['http://localhost:3000', 'https://sistema-de-defesas.app.ic.ufba.br'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => null,
+                'Access-Control-Max-Age' => 86400,
+                'Access-Control-Expose-Headers' => []
+            ]
+        ];
+
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
             'except' => [
@@ -40,6 +52,8 @@ class CursoController extends \yii\rest\ActiveController
         $defaultActions = parent::actions();
         
         unset($defaultActions['create']);
+
+        return $defaultActions;
     }
 
     public function actionCreateCurso() {
