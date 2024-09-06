@@ -137,8 +137,6 @@ class BancaController extends \yii\rest\ActiveController
     }
 
     public function actionGetBancas() {
-        print_r(apcu_cache_info());
-        // Get all the bancas with their related information
         $bancas = (new \yii\db\Query())
             ->select(['banca.*', 'curso.sigla as sigla_curso', 'usuario_banca.id_usuario as id_orientador', 'usuario.nome as nome_orientador'])
             ->from('banca')

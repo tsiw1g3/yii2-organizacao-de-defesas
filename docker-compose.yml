@@ -9,6 +9,7 @@ services:
     volumes:      
       - ./:/app
       - ./tmp:/tmp
+      - /app/vendor # Exclude vendor from being overwritten
     ports:
       - '8080:80'
     depends_on:
