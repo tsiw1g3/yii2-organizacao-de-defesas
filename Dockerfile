@@ -4,8 +4,6 @@ WORKDIR /app
 COPY . .
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-RUN chmod 755 /app
-
 RUN pecl install apcu \
     && docker-php-ext-enable apcu
 
