@@ -51,7 +51,9 @@ class DocumentoController extends \yii\web\Controller
         return $this->render('index');
     }
 
-    public function actionAllowCors() {}
+    public function actionOptions() {
+        return true;
+    }
 
     public function actionGetDoc($id_banca)
     {
@@ -70,7 +72,7 @@ class DocumentoController extends \yii\web\Controller
             'semestre' => $_POST['semestre'],
         ]);
         
-        $mpdf = new \Mpdf\Mpdf();
+        $mpdf = $this->getMpdf();
         $mpdf->WriteHTML($tcc);
         $mpdf->Output();
     }
@@ -103,7 +105,7 @@ class DocumentoController extends \yii\web\Controller
             'cargo_coordenacao' => $curso->cargo_coordenacao,
         ]);
                     
-        $mpdf = new \Mpdf\Mpdf();        
+        $mpdf = $this->getMpdf();        
         $mpdf->showImageErrors = true;
 
         $mpdf->WriteHTML($participacao);
@@ -138,7 +140,7 @@ class DocumentoController extends \yii\web\Controller
             'cargo_coordenacao' => $curso->cargo_coordenacao,
         ]);
                     
-        $mpdf = new \Mpdf\Mpdf();
+        $mpdf = $this->getMpdf();
         $mpdf->showImageErrors = true;
         
         $mpdf->WriteHTML($orientacao);
@@ -187,5 +189,9 @@ class DocumentoController extends \yii\web\Controller
         ];
 
         return json_encode($response);
+    }
+
+    function getMpdf() {
+        return new \Mpdf\Mpdf(['tempDir' => sys_get_temp_dir().DIRECTORY_SEPARATOR.'mpdf']);
     }
 }

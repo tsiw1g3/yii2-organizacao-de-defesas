@@ -29,11 +29,6 @@ $config = [
                 ])->formatResponse();
             },
         ],
-        'cache' => [
-            'class' => 'yii\caching\ApcCache',
-            'keyPrefix' => 'sisdef',
-            'useApcu' => true,
-        ],
         'user' => [
             'identityClass' => 'app\models\Usuario',
             'enableAutoLogin' => false,
@@ -183,6 +178,8 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['documento' => 'documento'], // CRUD google-calendar
                     'extraPatterns' => [                        
+                        'OPTIONS' => 'options',
+                        'OPTIONS <id_banca>' => 'options',
                         'POST <id_banca>' => 'get-doc', // Gerar o relatorio
                         'OPTIONS <id_banca>' => 'options', // Gerar o relatorio
                         'GET participacao/<id_banca>' => 'get-doc-participacao', // Gerar documento de participação na banca.
