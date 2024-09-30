@@ -2,6 +2,7 @@
 
 namespace app\security;
 
+use app\models\UserRefreshToken;
 use app\models\Session;
 use app\models\User;
 use app\models\Usuario;
@@ -37,10 +38,13 @@ class ValidatorRequest
     }
 
     public static function getCurrentSessionOwner($headers) {
-        $token = $headers->get('Authorization');
-        $session = Session::findOne($token);
-        
-        if(!$session) return null;
-        return Usuario::findIdentityByAccessToken($session->token_access);
+        $raw_token = $headers->get('Authorization');
+        list($bearer, $raw_token) = explode(' ', $raw_token, 2);
+
+        if($raw_token) {
+            $token = Yii::$app->jwt->getParser()->parse((string) $raw_token);        
+            return Usuario::findIdentityByAccessToken($token);        
+        }
+        return null;
     }
 }

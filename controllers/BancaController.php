@@ -72,7 +72,6 @@ class BancaController extends \yii\rest\ActiveController
             // Coletando valores da requisição POST que foi recebida
             $data = Yii::$app->request->post();
 
-
             // Atribuindo os atributos da requição para o modelo
             $owner = ValidatorRequest::getCurrentSessionOwner(Yii::$app->request->headers);
             if(isset($data['docente'])) {
