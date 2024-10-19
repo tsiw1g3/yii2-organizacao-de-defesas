@@ -150,6 +150,8 @@ $config = [
                         'POST usuarios/email' => 'send-email', // Envio de emails para convite
                         'OPTIONS nota/<id_banca>/<id_user>' => 'options', // Dar nota para a banca
                         'POST nota/<id_banca>/<id_user>' => 'give-score', // Dar nota para a banca
+                        'POST notas/<id_banca>' => 'give-score-in-batch', // Dar nota para a banca em lote
+                        'OPTIONS notas/<id_banca>' => 'options', // Dar nota para a banca em lote
                     ]
                 ],
                 [

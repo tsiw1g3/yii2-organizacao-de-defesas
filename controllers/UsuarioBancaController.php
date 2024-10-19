@@ -171,9 +171,39 @@ class UsuarioBancaController extends \yii\rest\ActiveController
             return Yii::$app->response->data;
         } catch (Exception $e) {
             throw $e;
-        }
+        }        
+    }
 
+    public function actionGiveScoreInBatch($id_banca) {
+        try {
+            $owner = ValidatorRequest::getCurrentSessionOwner(Yii::$app->request->headers);
+            $work = $this->findBancaById($id_banca);
+            $owner_work_entry = $this->findUbByUserAndBanca($owner->id, $id_banca);
+            if($owner_work_entry->role === "orientador") {
+                $data = Yii::$app->request->post();
+                if($data['notas']) {                    
+                    foreach ($data['notas'] as $nota) {
+                        $model = UsuarioBanca::find()->where(['id_banca' => $id_banca, 'id_usuario' => $nota['avaliador']])->one();
+                        if ($model !== null) {
+                            $model->nota = $nota['nota'];
+                            if ($model->validate()) {
+                                $model->save();
+                            } else {
+                                Yii::$app->response->data = $model->errors;
+                                Yii::$app->response->statusCode = 422;
+                                return Yii::$app->response->data;
+                            }
+                        }
+                    }
+                    return $data['notas'];
+                }
+                throw new \yii\web\BadRequestHttpException('Não foi possível encontrar o atributo para alteração das notas.', 400);
+            }
         
+            throw new \yii\web\ForbiddenHttpException('Você não pode realizar esta ação!', 403);
+        } catch(Exception $e) {
+            throw $e;
+        }
     }
 
     public function actionUsuariosBancaByBanca($id_banca) {
@@ -284,7 +314,7 @@ class UsuarioBancaController extends \yii\rest\ActiveController
             return $ub;
         }
 
-        throw new \yii\web\NotFoundHttpException('O usuário informado não existe.', 404);
+        throw new \yii\web\NotFoundHttpException('O usuário informado não existe na banca selecionada.', 404);
     }
 
     protected function findUserById($id)
