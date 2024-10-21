@@ -41,10 +41,9 @@ class Banca extends \yii\db\ActiveRecord
         return [
             [['titulo_trabalho', 'resumo', 'abstract', 'palavras_chave', 'data_realizacao', 'curso', 'autor', 'pronome_autor', 'turma', 'user_id', 'ano', 'semestre_letivo', 'matricula', 'visible'], 'required'],
             [['resumo', 'abstract', 'palavras_chave', 'tipo_banca'], 'string'],
-            [['curso', 'nota_final'], 'number'],
-            ['visible', 'number'],
+            [['curso', 'nota_final', 'visible', 'ano'], 'number'],
             [['data_realizacao'], 'safe'],
-            [['titulo_trabalho', 'local', 'autor', 'turma', 'ano' , 'semestre_letivo', 'matricula'], 'string', 'max' => 255],
+            [['titulo_trabalho', 'local', 'autor', 'turma', 'semestre_letivo', 'matricula'], 'string', 'max' => 255],
         ];
     }
 

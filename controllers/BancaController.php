@@ -433,6 +433,26 @@ class BancaController extends \yii\rest\ActiveController
             return $response;
         }
 
+    public function actionUpdateVisibility($id) {
+        try {
+            $banca = Banca::findOne($id);
+            if($banca) {            
+                $data = Yii::$app->request->post();
+                $banca->updateAttributes(['visible' => $data['visible'] ? 1 : 0]);                
+    
+                if ($banca->validate() && $banca->save()) {
+                    return $banca;
+                } else {
+                    throw new \yii\web\BadRequestHttpException('Não foi possível alterar a visibilidade da banca selecionada.', 400);   
+                }
+            }
+            throw new \yii\web\NotFoundHttpException('A banca informada não existe.', 404);
+        } catch (Exception $e) {
+            throw $e;
+        }
+        
+    }
+
     protected function findByBancaById($id)
     {
         $banca = (new \yii\db\Query())

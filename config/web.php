@@ -134,6 +134,8 @@ $config = [
                         'OPTIONS <id_banca>/reportInfo' => 'options', // Pegar informacoes para gerar relatorio
                         'GET <id_banca>/reportInfo' => 'report-info', // Pegar informacoes para gerar relatorio
                         'GET' => 'get-bancas', // Pegar todas as bancas de todos os usuários
+                        'PUT visibilidade/<id>' => 'update-visibility', // Altera a visibilidade da banca
+                        'OPTIONS visibilidade/<id>' => 'options', // Altera a visibilidade da banca
                     ]
                 ],
                 [
