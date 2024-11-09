@@ -92,7 +92,7 @@
     $mes_extenso = array(
         '01' => 'Janeiro',
         '02' => 'Fevereiro',
-        '03' => 'Marco',
+        '03' => 'Março',
         '04' => 'Abril',
         '05' => 'Maio',
         '06' => 'Junho',
@@ -110,18 +110,20 @@
         2 => "e professore"
     );
     
-    $lista_pronomes_aluno = array(
-        0 => "do aluno",
-        1 => "da aluna",
-        2 => "de alune"
+    $lista_classes_aluno = array(
+        0 => "aluno",
+        1 => "aluna",
+        2 => "alune"
     );
 
-    $month = $mes_extenso[date("m", strtotime($data))];
+    $month = date("m", strtotime($data));
     $year = date("Y", strtotime($data));
     $day = date("d", strtotime($data));
+    
+    $month_string = $mes_extenso[$month];
 
     $teacher_role = $lista_pronomes_orientador[$pronome_orientador];
-    $student_role = $lista_pronomes_aluno[$pronome_aluno];
+    $student_class = $lista_classes_aluno[$pronome_aluno];
 ?>
 <div class="marca-dagua-container">
     <img class="marca-dagua" src="./resources/img/brasao-ufba.png">
@@ -146,13 +148,13 @@
         <h2>Declaração</h2>
         <p class="text">
             Declaro para os devidos fins, que <?= $teacher_role ?> <strong><?= $orientador ?></strong>,
-            participou como membro do Projeto Final de Curso II <?= $student_role ?> <?= $aluno ?>,
-            discente do Curso de Bacharelado em <?= $nome_curso ?>
-            da UFBA, intitulado “<?= $titulo_trabalho ?>”, apresentado em <?= $day ?> de <?= $month ?> de <?= $year ?>.
+            participou da banca de defesa do Projeto Final II de <strong><?= $aluno ?></strong>
+            <?= $student_class ?> do Curso de Bacharelado em <?= $nome_curso ?>
+            da UFBA, intitulado <strong>"<?= $titulo_trabalho ?>"</strong>, que ocorreu em <strong><?= $day ?>/<?= $month ?>/<?= $year ?></strong>.
         </p>
     </section>
     <section class="footer">
-        <p class="date">Salvador, <?= $day ?> de <?= $month ?> de <?= $year ?>.</p>
+        <p class="date">Salvador, <strong><?= $day ?> de <?= $month_string ?> de <?= $year ?>.</strong></p>
         <p class="leader"><?= $coordenacao ?></p>
         <p><?= $cargo_coordenacao ?></p>
         <p>UFBA</p>
