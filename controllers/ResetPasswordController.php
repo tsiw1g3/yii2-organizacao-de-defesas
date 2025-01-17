@@ -37,6 +37,7 @@ class ResetPasswordController extends \yii\rest\ActiveController
             'except' => [
                 'options',
                 'create',
+                'reset',
                 'get-reset-hash'
             ],
         ];
