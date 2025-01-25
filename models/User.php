@@ -56,6 +56,23 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             return null;
         }
     }
+    
+    /**
+     * Finds user by email
+     *
+     * @param string $email
+     * @return static|null
+     */
+    public static function findByEmail($email)
+    {
+        $user = Usuario::findOne((['email' => $email]));
+
+        if ($user && $user->email == $email) {
+            return new static($user);
+        } else {
+            return null;
+        }
+    }
 
     /**
      * {@inheritdoc}
